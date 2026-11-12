@@ -283,24 +283,49 @@ def _aim(names, pivot, marker, target):
     _spin(names, pivot, axis_n, angle)
 
 
+def _flex(names, pivot, marker, target_dir, lateral):
+    lat = lateral.normalized()
+    current = marker - pivot
+    cur = current - lat * current.dot(lat)
+    tgt = Vector(target_dir)
+    tgt = tgt - lat * tgt.dot(lat)
+    if cur.length < 1e-5 or tgt.length < 1e-5:
+        return
+    cur.normalize()
+    tgt.normalize()
+    angle = math.atan2(cur.cross(tgt).dot(lat), cur.dot(tgt))
+    _spin(names, pivot, lat, angle)
+
+
+def _bone_end(name, origin):
+    obj = bpy.data.objects[name]
+    corners = [obj.matrix_world @ Vector(corner) for corner in obj.bound_box]
+    center = sum(corners, Vector()) / len(corners)
+    direction = center - origin
+    if direction.length < 1e-5:
+        return center
+    direction = direction.normalized()
+    return max(corners, key=lambda point: (point - origin).dot(direction))
+
+
 def _stand_player():
+    hip = _pcenter(["F01_Trousers_seat"])
+    foot = _pcenter(["F01_near_canvas_shoe", "F01_far_canvas_shoe"])
+    forward = Vector((foot.x - hip.x, foot.y - hip.y, 0.0))
+    if forward.length < 1e-4:
+        forward = Vector((0.0, 1.0, 0.0))
+    lateral = Vector((0.0, 0.0, 1.0)).cross(forward.normalized())
+    down = Vector((0.0, 0.0, -1.0))
     for full, lower, thigh, shoe in (
         (NEAR_LEG, NEAR_LOWER, "F01_near_trouser_thigh", "F01_near_canvas_shoe"),
         (FAR_LEG, FAR_LOWER, "F01_far_trouser_thigh", "F01_far_canvas_shoe"),
     ):
-        seat = _pcenter(["F01_Trousers_seat"])
+        hip = _pcenter(["F01_Trousers_seat"])
         knee = _pcenter([thigh])
-        _aim(full, seat, knee, seat + Vector((0.0, 0.02, -1.0)))
-        knee = _pcenter([thigh])
+        _flex(full, hip, knee, down, lateral)
+        joint = _bone_end(thigh, hip)
         ankle = _pcenter([shoe])
-        _aim(lower, knee, ankle, Vector((knee.x, knee.y, knee.z - 0.8)))
-        ankle = _pcenter([shoe])
-        knee = _pcenter([thigh])
-        if ankle.z > knee.z - 0.05:
-            flip = (ankle - knee).cross(Vector((0.0, 0.0, -1.0)))
-            if flip.length < 1e-4:
-                flip = Vector((1.0, 0.0, 0.0))
-            _spin(lower, knee, flip.normalized(), math.pi)
+        _flex(lower, joint, ankle, down, lateral)
 
 
 def seat_player(target, yaw):
@@ -388,6 +413,34 @@ def _style_male():
 def _finish_player():
     if os.environ.get("PLACE_GENDER", "f") == "m":
         _style_male()
+
+
+def _hold_dumbbells():
+    hip = _pcenter(["F01_Trousers_seat"])
+    foot = _pcenter(["F01_near_canvas_shoe", "F01_far_canvas_shoe"])
+    forward = Vector((foot.x - hip.x, foot.y - hip.y, 0.0))
+    if forward.length < 1e-4:
+        forward = Vector((0.0, -1.0, 0.0))
+    forward.normalize()
+    lateral = Vector((0.0, 0.0, 1.0)).cross(forward)
+    if lateral.length < 1e-4:
+        lateral = Vector((1.0, 0.0, 0.0))
+    lateral.normalize()
+    for arm, cuff, hand, side in (
+        (NEAR_ARM, "F01_near_cuff", "F01_near_hand", 1.0),
+        (FAR_ARM, "F01_far_cuff", "F01_far_hand", -1.0),
+    ):
+        shoulder = _pcenter([cuff])
+        palm = _pcenter([hand])
+        # Chest-height curl: hand stays on its own side and lifts in front of the shoulder.
+        target = shoulder + forward * 0.22 + lateral * side * 0.08 + Vector((0.0, 0.0, 0.06))
+        _flex(arm, shoulder, palm, target - shoulder, lateral)
+        palm = _pcenter([hand])
+        prefix = "curl_%s" % hand
+        bar = palm
+        add("cyl", prefix + "_bar", (bar.x, bar.y, bar.z), (0.08, 0.08, 0.36), WOOD_D, (0, math.radians(90), 0))
+        add("cyl", prefix + "_a", (bar.x - 0.18, bar.y, bar.z), (0.18, 0.18, 0.07), INK, (0, math.radians(90), 0))
+        add("cyl", prefix + "_b", (bar.x + 0.18, bar.y, bar.z), (0.18, 0.18, 0.07), INK, (0, math.radians(90), 0))
 
 
 def _read_book():
@@ -530,11 +583,11 @@ def gym():
     add("cyl", "bar", (1.6, 0.15, 1.2), (0.07, 0.07, 1.9), WOOD_D, (0, math.radians(90), 0))
     add("cyl", "plate_l", (0.75, 0.15, 1.2), (0.36, 0.36, 0.08), CLAY, (0, math.radians(90), 0))
     add("cyl", "plate_r", (2.45, 0.15, 1.2), (0.36, 0.36, 0.08), CLAY, (0, math.radians(90), 0))
-    add("cube", "bench_pad", (1.6, -1.25, 0.48), (1.2, 0.36, 0.08), SAGE)
-    add("cube", "bench_leg", (1.15, -1.25, 0.22), (0.08, 0.28, 0.42), WOOD_D)
-    add("cube", "bench_leg_b", (2.05, -1.25, 0.22), (0.08, 0.28, 0.42), WOOD_D)
-    # The door "stand" folds this seated mesh backward. Sit beside the rack instead.
-    seat_player((1.6, -1.15, 0.58), math.pi / 2.0)
+    add("cube", "bench_pad", (1.6, -1.45, 0.48), (1.2, 0.42, 0.08), SAGE)
+    add("cube", "bench_leg", (1.15, -1.45, 0.22), (0.08, 0.32, 0.42), WOOD_D)
+    add("cube", "bench_leg_b", (2.05, -1.45, 0.22), (0.08, 0.32, 0.42), WOOD_D)
+    seat_player((1.6, -1.35, 0.58), math.pi / 2.0)
+    _hold_dumbbells()
     _finish_player()
 
 

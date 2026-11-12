@@ -1639,6 +1639,15 @@ func _play_path() -> void:
 	gender = "m" if OS.get_cmdline_user_args().has("--male") else "f"
 	_start_game()
 	await shots.capture(self, "play_room")
+	sim.pose = "door"
+	_apply_visuals()
+	_close_page()
+	await shots.capture(self, "play_door")
+	sim.house_tier = 2
+	_apply_visuals()
+	await shots.capture(self, "play_door_wide")
+	sim.house_tier = 1
+	_apply_visuals()
 	_open_city()
 	await shots.capture(self, "play_city")
 	_enter_place("park")

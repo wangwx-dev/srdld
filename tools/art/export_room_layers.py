@@ -362,25 +362,66 @@ def _reach(target):
         _aim(arm, shoulder, palm, target + Vector((side, 0.0, 0.0)))
 
 
+def _flex(names, pivot, marker, target_dir, lateral):
+    """Bend on the body's left-right axis only.
+
+    A free aim twists the seated meshes around the bone, so the centers stack
+    while the knees and soles face backward. Flexion keeps the knee forward
+    and the sole flat.
+    """
+    lat = lateral.normalized()
+    current = marker - pivot
+    cur = current - lat * current.dot(lat)
+    tgt = Vector(target_dir)
+    tgt = tgt - lat * tgt.dot(lat)
+    if cur.length < 1e-5 or tgt.length < 1e-5:
+        return
+    cur.normalize()
+    tgt.normalize()
+    angle = math.atan2(cur.cross(tgt).dot(lat), cur.dot(tgt))
+    _spin(names, pivot, lat, angle)
+
+
+def _bone_end(name, origin):
+    obj = bpy.data.objects[name]
+    corners = [obj.matrix_world @ Vector(corner) for corner in obj.bound_box]
+    center = sum(corners, Vector()) / len(corners)
+    direction = center - origin
+    if direction.length < 1e-5:
+        return center
+    direction = direction.normalized()
+    return max(corners, key=lambda point: (point - origin).dot(direction))
+
+
 def _stand_legs():
+    hip = _part_center(["F01_Trousers_seat"])
+    foot = _part_center(["F01_near_canvas_shoe", "F01_far_canvas_shoe"])
+    forward = Vector((foot.x - hip.x, foot.y - hip.y, 0.0))
+    if forward.length < 1e-4:
+        forward = Vector((0.0, 1.0, 0.0))
+    lateral = Vector((0.0, 0.0, 1.0)).cross(forward.normalized())
+    down = Vector((0.0, 0.0, -1.0))
     for full, lower, thigh, shoe in (
         (NEAR_LEG, NEAR_LOWER, "F01_near_trouser_thigh", "F01_near_canvas_shoe"),
         (FAR_LEG, FAR_LOWER, "F01_far_trouser_thigh", "F01_far_canvas_shoe"),
     ):
-        seat = _part_center(["F01_Trousers_seat"])
+        hip = _part_center(["F01_Trousers_seat"])
         knee = _part_center([thigh])
-        _aim(full, seat, knee, seat + Vector((0.0, 0.02, -1.0)))
-        knee = _part_center([thigh])
+        _flex(full, hip, knee, down, lateral)
+        joint = _bone_end(thigh, hip)
         ankle = _part_center([shoe])
-        below = Vector((knee.x, knee.y, knee.z - 0.8))
-        _aim(lower, knee, ankle, below)
-        ankle = _part_center([shoe])
-        knee = _part_center([thigh])
-        if ankle.z > knee.z - 0.05:
-            flip = (ankle - knee).cross(Vector((0.0, 0.0, -1.0)))
-            if flip.length < 1e-4:
-                flip = Vector((1.0, 0.0, 0.0))
-            _spin(lower, knee, flip.normalized(), math.pi)
+        _flex(lower, joint, ankle, down, lateral)
+
+
+def _sole_bottom():
+    zs = []
+    for name in ("F01_near_shoe_sole", "F01_far_shoe_sole", "F01_near_canvas_shoe", "F01_far_canvas_shoe"):
+        obj = bpy.data.objects.get(name)
+        if obj is None:
+            continue
+        for corner in obj.bound_box:
+            zs.append((obj.matrix_world @ Vector(corner)).z)
+    return min(zs) if zs else 0.0
 
 
 def _pose_report(label):
@@ -437,7 +478,8 @@ def apply_pose(kind, extra):
         _stand_legs()
         _rest_arms()
         foot = _part_center(["F01_near_canvas_shoe", "F01_far_canvas_shoe"])
-        _move_all(Vector((3.20, 1.45, 0.08)) - foot)
+        sole = _sole_bottom()
+        _move_all(Vector((3.20 - foot.x, 1.45 - foot.y, 0.04 - sole)))
     if extra.length > 0.001:
         _move_all(extra)
         if kind == "read":
