@@ -1,0 +1,15 @@
+{
+  "canvas": [1760, 1400],
+  "anchors": {
+    "computer": {"label": "创作", "pixel": [935, 593]},
+    "bed": {"label": "休息", "pixel": [760, 760]},
+    "bookshelf": {"label": "阅读", "pixel": [977, 520]},
+    "door": {"label": "出门", "pixel": [1369, 491]}
+  },
+  "anchors_b": {
+    "computer": {"label": "创作", "pixel": [560, 443]},
+    "bed": {"label": "休息", "pixel": [930, 860]},
+    "bookshelf": {"label": "阅读", "pixel": [977, 520]},
+    "door": {"label": "出门", "pixel": [1369, 491]}
+  }
+}

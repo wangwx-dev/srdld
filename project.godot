@@ -6,9 +6,9 @@ config_version=5
 [application]
 
 config/name="自媒体经营日记"
-config/description="离线虚构的自媒体经营。第一个月，把房租和自己都留住。"
-config/version="0.1.0"
-run/main_scene="res://scenes/main_menu.tscn"
+config/description="离线虚构的自媒体经营。写作、长尾收入、交租和出门。"
+config/version="0.2.0"
+run/main_scene="res://scenes/play.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.png"
 
