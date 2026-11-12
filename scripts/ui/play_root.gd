@@ -37,6 +37,8 @@ var page: Control
 var page_scroll: Control
 var page_box: VBoxContainer
 var place_view: PlaceView
+var place_tray: PanelContainer
+var place_tray_box: HFlowContainer
 var tutor: Label
 var tutor_wrap: PanelContainer
 var name_edit: LineEdit
@@ -203,6 +205,23 @@ func _build_page() -> void:
 	page_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	page_box.add_theme_constant_override("separation", 8)
 	scroll.add_child(page_box)
+	place_tray = PanelContainer.new()
+	var tray_style := ThemeBuilder.panel_style()
+	tray_style.bg_color = Color("FFF8EE")
+	place_tray.add_theme_stylebox_override("panel", tray_style)
+	place_tray.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	place_tray.offset_left = 16
+	place_tray.offset_right = -16
+	place_tray.offset_top = -128
+	place_tray.offset_bottom = -10
+	place_tray.z_index = 20
+	place_tray.visible = false
+	place_tray.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(place_tray)
+	place_tray_box = HFlowContainer.new()
+	place_tray_box.add_theme_constant_override("h_separation", 8)
+	place_tray_box.add_theme_constant_override("v_separation", 6)
+	place_tray.add_child(place_tray_box)
 	var hud := PanelContainer.new()
 	var hud_style := ThemeBuilder.panel_style()
 	hud_style.bg_color = Color("FFF8EE")
@@ -287,6 +306,8 @@ func _fill(rows: Array) -> void:
 	page.visible = true
 	if place_view != null:
 		place_view.visible = false
+	if place_tray != null:
+		place_tray.visible = false
 	if page_scroll != null:
 		page_scroll.visible = true
 	for child in page_box.get_children():
@@ -351,8 +372,9 @@ func _show_create() -> void:
 	page_box.add_child(_wrap_label("先选形式。文章更快，视频更花时间。预览不揭开这次能不能融住。"))
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 16)
-	row.add_child(_pick_card("res://assets/ui/icon_article.png", "文章", "3 小时", Color("F3E6D0"), func(): form = "article"; _show_topics()))
-	row.add_child(_pick_card("res://assets/ui/icon_video.png", "视频", "5 小时", Color("D7E4EA"), func(): form = "video"; _show_topics()))
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(_cover_card("res://assets/ui/cover_article.png", "文章", "3 小时，把看到的写成一篇", func(): form = "article"; _show_topics()))
+	row.add_child(_cover_card("res://assets/ui/cover_video.png", "视频", "5 小时，镜头、声音和剪辑", func(): form = "video"; _show_topics()))
 	page_box.add_child(row)
 	page_box.add_child(_text_button("返回", _show_computer))
 
@@ -378,7 +400,7 @@ func _show_topics() -> void:
 		var tags: Array = topic.get("tags", [])
 		var mark := "本周喜爱" if sim._on_chart(id) else (str(tags[0]) if not tags.is_empty() else "题材")
 		var tint: Color = tints.get(id, Color("F6EFE4"))
-		flow.add_child(_pick_card("", str(topic.get("name", id)), mark, tint, _set_topic.bind(id)))
+		flow.add_child(_cover_card("res://assets/ui/cover_%s.png" % id, str(topic.get("name", id)), mark, _set_topic.bind(id), tint))
 	page_box.add_child(flow)
 	page_box.add_child(_text_button("返回", _show_create))
 
@@ -398,8 +420,17 @@ func _show_memes() -> void:
 		var id := str(owned.get("id", ""))
 		var picked := chosen_memes.has(id)
 		var tint := Color("F6E2A8") if picked else Color("FFF8EE")
-		var subtitle := "热度 %.0f%s" % [sim.heat_of(owned), " · 已选" if picked else ""]
-		flow.add_child(_pick_card("res://assets/ui/icon_idea.png", str(spec.get("name", id)), subtitle, tint, _toggle_meme.bind(id)))
+		var heat := sim.heat_of(owned)
+		var subtitle := "热度 %.0f%s" % [heat, " · 已选" if picked else ""]
+		var card := _cover_card("res://assets/ui/cover_mood.png", str(spec.get("name", id)), subtitle, _toggle_meme.bind(id), tint)
+		var heat_bar := ProgressBar.new()
+		heat_bar.max_value = 100.0
+		heat_bar.value = heat
+		heat_bar.show_percentage = false
+		heat_bar.custom_minimum_size = Vector2(180, 14)
+		heat_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		card.add_child(heat_bar)
+		flow.add_child(card)
 		shown += 1
 	if sim.memes.is_empty():
 		page_box.add_child(_wrap_label("你还没有梗。可以先出门，也可以直接写。"))
@@ -565,34 +596,48 @@ func _show_chart() -> void:
 	_fill([])
 	page_box.add_child(_label("本周观众喜爱", 28))
 	page_box.add_child(_wrap_label("这周大家更爱这些题材。靠前更好接，不是一定能成。下周会换。"))
+	page_box.add_child(_label("题材", 20))
 	var rows: Array = sim.chart_rows()
 	var top := 1
 	if not rows.is_empty():
 		top = maxi(1, int(rows[0].get("score", 1)))
 	var rank := 1
 	for row in rows:
-		var line := HBoxContainer.new()
-		line.add_theme_constant_override("separation", 12)
-		var name := _label("%d  %s" % [rank, str(row.get("name", ""))], 18)
-		name.custom_minimum_size = Vector2(220, 0)
-		name.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-		line.add_child(name)
-		var bar := ProgressBar.new()
-		bar.max_value = float(top)
-		bar.value = float(row.get("score", 0))
-		bar.show_percentage = false
-		bar.custom_minimum_size = Vector2(220, 22)
-		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		line.add_child(bar)
-		page_box.add_child(line)
+		page_box.add_child(_rank_line(rank, str(row.get("name", "")), float(row.get("score", 0)), float(top), "res://assets/ui/cover_%s.png" % str(row.get("id", ""))))
 		rank += 1
-	var back_row := HBoxContainer.new()
-	var back := Button.new()
-	back.text = "返回往期"
-	back.custom_minimum_size = Vector2(140, 44)
-	back.pressed.connect(_show_history)
-	back_row.add_child(back)
-	page_box.add_child(back_row)
+	page_box.add_child(_label("内容偏好", 20))
+	page_box.add_child(_wrap_label("现在的受众更吃这些。发文之后会慢慢偏过去。"))
+	var tags: Array = []
+	for key in sim.audience.keys():
+		tags.append({"name": str(key), "score": float(sim.audience[key])})
+	tags.sort_custom(func(a, b): return float(a["score"]) > float(b["score"]))
+	var tag_top := 0.01
+	if not tags.is_empty():
+		tag_top = maxf(0.01, float(tags[0]["score"]))
+	rank = 1
+	for tag in tags:
+		page_box.add_child(_rank_line(rank, str(tag["name"]), float(tag["score"]), tag_top, ""))
+		rank += 1
+	page_box.add_child(_label("梗的热度", 20))
+	var meme_rows: Array = []
+	for meme in content.get("memes", []):
+		var id := str(meme.get("id", ""))
+		var heat := float(meme.get("heat", 0))
+		var owned := false
+		for item in sim.memes:
+			if str(item.get("id", "")) == id:
+				heat = sim.heat_of(item)
+				owned = true
+		meme_rows.append({"name": str(meme.get("name", id)) + (" · 已带回" if owned else ""), "heat": heat})
+	meme_rows.sort_custom(func(a, b): return float(a["heat"]) > float(b["heat"]))
+	var heat_top := 1.0
+	if not meme_rows.is_empty():
+		heat_top = maxf(1.0, float(meme_rows[0]["heat"]))
+	rank = 1
+	for meme in meme_rows:
+		page_box.add_child(_rank_line(rank, str(meme["name"]), float(meme["heat"]), heat_top, "res://assets/ui/cover_mood.png"))
+		rank += 1
+	page_box.add_child(_text_button("返回往期", _show_history))
 
 
 func _show_items() -> void:
@@ -634,11 +679,11 @@ func _open_city() -> void:
 
 func _show_map() -> void:
 	_use_place("map")
-	_place_button("公园", Vector2(0.12, 0.50), _enter_place.bind("park"))
-	_place_button("电影院", Vector2(0.30, 0.46), _enter_place.bind("cinema"))
-	_place_button("图书馆", Vector2(0.46, 0.40), _enter_place.bind("library"))
-	_place_button("商场", Vector2(0.62, 0.50), _enter_place.bind("mall"))
-	_place_button("健身房", Vector2(0.80, 0.48), _enter_place.bind("gym"))
+	_place_button("公园", Vector2(0.06, 0.62), _enter_place.bind("park"))
+	_place_button("电影院", Vector2(0.24, 0.60), _enter_place.bind("cinema"))
+	_place_button("图书馆", Vector2(0.42, 0.58), _enter_place.bind("library"))
+	_place_button("商场", Vector2(0.60, 0.62), _enter_place.bind("mall"))
+	_place_button("健身房", Vector2(0.80, 0.60), _enter_place.bind("gym"))
 	_place_button("回到房间", Vector2(0.08, 0.12), _close_page)
 
 
@@ -654,6 +699,43 @@ func _use_place(id: String) -> void:
 	for child in place_view.get_children():
 		place_view.remove_child(child)
 		child.free()
+	if id == "map" and place_tray != null:
+		place_tray.visible = false
+
+
+func _open_tray() -> void:
+	if place_tray == null:
+		return
+	place_tray.visible = true
+	for child in place_tray_box.get_children():
+		place_tray_box.remove_child(child)
+		child.free()
+
+
+func _tray_button(text: String, icon_path: String, callback: Callable) -> void:
+	var button := Button.new()
+	button.custom_minimum_size = Vector2(168, 64)
+	button.text = ""
+	button.focus_mode = Control.FOCUS_NONE
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", 8)
+	if icon_path != "":
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(42, 42)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var texture: Resource = load(icon_path)
+		if texture is Texture2D:
+			icon.texture = texture
+		row.add_child(icon)
+	var caption := _label(text, 16)
+	caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(caption)
+	button.add_child(row)
+	button.pressed.connect(callback)
+	place_tray_box.add_child(button)
 
 
 func _place_button(text: String, anchor: Vector2, callback: Callable) -> void:
@@ -678,42 +760,45 @@ func _enter_place(place_id: String) -> void:
 		_show_mall()
 		return
 	_use_place(place_id)
+	_open_tray()
 	var label := "逛一逛"
+	var icon := ""
 	if place_id == "cinema":
 		label = "看一场"
+		icon = "res://assets/ui/cover_film.png"
 	elif place_id == "library":
 		label = "坐下来读"
+		icon = "res://assets/ui/cover_knowledge.png"
 	elif place_id == "park":
-		label = "在长椅上坐一会儿"
-	_place_button(label, Vector2(0.34, 0.78), _do_outing.bind(place_id))
-	_place_button("返回地图", Vector2(0.08, 0.12), _show_map)
+		label = "坐一会儿"
+		icon = "res://assets/ui/cover_life.png"
+	_tray_button(label, icon, _do_outing.bind(place_id))
+	_tray_button("返回地图", "", _show_map)
 
 
 func _show_gym() -> void:
 	_use_place("gym")
-	var x := 0.12
+	_open_tray()
 	for pack in content.get("gym_packages", []):
 		var id := str(pack.get("id", ""))
-		_place_button("%s %s" % [str(pack.get("name", "")), sim.gold_text(int(pack.get("cost", 0)))], Vector2(x, 0.78), _do_gym.bind(id))
-		x += 0.22
-	_place_button("离开", Vector2(0.78, 0.12), _show_map)
+		_tray_button("%s %s" % [str(pack.get("name", "")), sim.gold_text(int(pack.get("cost", 0)))], "res://assets/ui/icon_gym.png", _do_gym.bind(id))
+	_tray_button("离开", "", _show_map)
 
 
 func _show_mall() -> void:
 	_use_place("mall")
-	_place_button("先逛街", Vector2(0.08, 0.78), _mall_walk)
-	var goods: Array = content.get("goods", [])
-	var x := 0.28
-	for good in goods:
+	_open_tray()
+	_tray_button("先逛街", "res://assets/ui/item_snack.png", _mall_walk)
+	var icons := {"snack": "res://assets/ui/item_snack.png", "bento": "res://assets/ui/item_bento.png", "drink": "res://assets/ui/item_drink.png"}
+	for good in content.get("goods", []):
 		var id := str(good.get("id", ""))
-		_place_button(str(good.get("name", id)), Vector2(x, 0.78), _do_buy.bind(id))
-		x += 0.16
-	_place_button("升级床", Vector2(0.08, 0.88), _do_upgrade.bind("bed"))
-	_place_button("升级书桌", Vector2(0.28, 0.88), _do_upgrade.bind("desk"))
-	_place_button("升级书架", Vector2(0.48, 0.88), _do_upgrade.bind("shelf"))
-	_place_button("换租", Vector2(0.68, 0.88), _do_move)
-	_place_button("买房", Vector2(0.84, 0.88), _do_buy_home)
-	_place_button("离开", Vector2(0.82, 0.12), _show_map)
+		_tray_button("%s %s" % [str(good.get("name", id)), sim.gold_text(int(good.get("cost", 0)))], str(icons.get(id, "")), _do_buy.bind(id))
+	_tray_button("升级床", "res://assets/ui/icon_bed.png", _do_upgrade.bind("bed"))
+	_tray_button("升级书桌", "res://assets/ui/icon_computer.png", _do_upgrade.bind("desk"))
+	_tray_button("升级书架", "res://assets/ui/icon_bookshelf.png", _do_upgrade.bind("shelf"))
+	_tray_button("换租", "", _do_move)
+	_tray_button("买房", "", _do_buy_home)
+	_tray_button("离开", "", _show_map)
 
 
 func _shop_result(result: Dictionary) -> void:
@@ -1069,6 +1154,72 @@ func _fusion_line(work: Dictionary) -> String:
 	if memes.is_empty():
 		return "这篇没有放梗"
 	return ""
+
+
+func _cover_card(image_path: String, title: String, subtitle: String, callback: Callable, tint: Color = Color("FFF8EE")) -> Button:
+	var button := Button.new()
+	button.custom_minimum_size = Vector2(340, 250)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.text = ""
+	button.focus_mode = Control.FOCUS_NONE
+	var fill := ThemeBuilder.button_style(tint, Color("2C241C"), 2)
+	fill.content_margin_left = 10
+	fill.content_margin_right = 10
+	fill.content_margin_top = 10
+	fill.content_margin_bottom = 10
+	button.add_theme_stylebox_override("normal", fill)
+	button.add_theme_stylebox_override("hover", ThemeBuilder.button_style(tint.lightened(0.05), Color("2C241C"), 2))
+	button.add_theme_stylebox_override("pressed", ThemeBuilder.button_style(tint.darkened(0.05), Color("2C241C"), 2))
+	button.add_theme_stylebox_override("focus", fill)
+	var box := VBoxContainer.new()
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_theme_constant_override("separation", 6)
+	var art := TextureRect.new()
+	art.custom_minimum_size = Vector2(300, 148)
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var texture: Resource = load(image_path)
+	if texture is Texture2D:
+		art.texture = texture
+	box.add_child(art)
+	var title_label := _label(title, 22)
+	title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(title_label)
+	if subtitle != "":
+		var sub := _label(subtitle, 15)
+		sub.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		sub.add_theme_color_override("font_color", Color("5C5348"))
+		box.add_child(sub)
+	button.add_child(box)
+	button.pressed.connect(callback)
+	return button
+
+
+func _rank_line(rank: int, title: String, value: float, top: float, icon_path: String) -> HBoxContainer:
+	var line := HBoxContainer.new()
+	line.add_theme_constant_override("separation", 10)
+	if icon_path != "":
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(42, 28)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var texture: Resource = load(icon_path)
+		if texture is Texture2D:
+			icon.texture = texture
+		line.add_child(icon)
+	var name := _label("%d  %s" % [rank, title], 18)
+	name.custom_minimum_size = Vector2(220, 0)
+	line.add_child(name)
+	var bar := ProgressBar.new()
+	bar.max_value = top
+	bar.value = value
+	bar.show_percentage = false
+	bar.custom_minimum_size = Vector2(180, 18)
+	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.add_child(bar)
+	return line
 
 
 func _text_button(text: String, callback: Callable) -> Button:

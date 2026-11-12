@@ -574,7 +574,7 @@ def ensure_cat():
         return
     col = bpy.data.collections.new("80_Cat")
     bpy.context.scene.collection.children.link(col)
-    fur = _clay("Cat_fur", (0.86, 0.55, 0.32, 1))
+    fur = _clay("Cat_fur", (0.72, 0.40, 0.18, 1))
     dark = _clay("Cat_dark", (0.22, 0.14, 0.10, 1))
     cream = _clay("Cat_cream", (0.96, 0.90, 0.82, 1))
 
@@ -583,6 +583,8 @@ def ensure_cat():
             bpy.ops.mesh.primitive_uv_sphere_add(segments=28, ring_count=14, radius=1, location=loc)
         elif kind == "cube":
             bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+        elif kind == "cyl":
+            bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=1, depth=1, location=loc)
         else:
             bpy.ops.mesh.primitive_cone_add(vertices=16, radius1=1, depth=1, location=loc)
         obj = bpy.context.active_object
@@ -593,18 +595,24 @@ def ensure_cat():
         _link_only(obj, col)
         return obj
 
-    # In front of the bed's foot, on the camera side of the room.
-    add("sphere", "Cat_body", (-0.28, -1.92, 0.32), (0.46, 0.24, 0.22), fur)
-    add("sphere", "Cat_chest", (-0.48, -1.90, 0.30), (0.16, 0.16, 0.12), cream)
-    add("sphere", "Cat_head", (-0.62, -1.90, 0.48), (0.20, 0.18, 0.17), fur)
-    add("cone", "Cat_ear", (-0.70, -2.02, 0.66), (0.07, 0.06, 0.12), dark)
-    add("cone", "Cat_ear_b", (-0.70, -1.78, 0.66), (0.07, 0.06, 0.12), dark)
-    add("sphere", "Cat_tail", (0.16, -1.86, 0.48), (0.07, 0.07, 0.22), fur, (0.4, 0.2, 0.4))
-    add("sphere", "Cat_tail_tip", (0.22, -1.78, 0.66), (0.07, 0.07, 0.07), dark)
-    add("sphere", "Cat_eye", (-0.78, -1.98, 0.52), (0.035, 0.03, 0.04), dark)
-    add("sphere", "Cat_eye_b", (-0.78, -1.82, 0.52), (0.035, 0.03, 0.04), dark)
-    add("sphere", "Cat_nose", (-0.80, -1.90, 0.44), (0.03, 0.03, 0.02), dark)
-    add("cube", "Cat_rug", (-0.22, -1.90, 0.025), (1.15, 0.72, 0.04), cream)
+    # Ginger cat on the rug at the foot of the bed, facing the camera.
+    add("sphere", "Cat_body", (-0.22, -1.92, 0.30), (0.40, 0.20, 0.18), fur)
+    add("sphere", "Cat_chest", (-0.42, -1.90, 0.26), (0.14, 0.13, 0.10), cream)
+    add("sphere", "Cat_head", (-0.52, -1.90, 0.42), (0.18, 0.16, 0.15), fur)
+    add("sphere", "Cat_snout", (-0.66, -1.90, 0.38), (0.07, 0.08, 0.06), cream)
+    add("cone", "Cat_ear", (-0.56, -2.02, 0.58), (0.055, 0.045, 0.11), dark, (0.2, 0.15, -0.2))
+    add("cone", "Cat_ear_b", (-0.56, -1.78, 0.58), (0.055, 0.045, 0.11), dark, (0.2, -0.15, 0.2))
+    add("cyl", "Cat_leg", (-0.42, -2.02, 0.12), (0.09, 0.09, 0.18), fur)
+    add("cyl", "Cat_leg_b", (-0.42, -1.78, 0.12), (0.045, 0.045, 0.16), fur)
+    add("cyl", "Cat_leg_c", (0.02, -2.00, 0.12), (0.05, 0.05, 0.16), fur)
+    add("cyl", "Cat_leg_d", (0.02, -1.80, 0.12), (0.05, 0.05, 0.16), fur)
+    add("sphere", "Cat_tail", (0.16, -1.90, 0.36), (0.05, 0.05, 0.05), fur)
+    add("sphere", "Cat_tail_b", (0.26, -1.84, 0.48), (0.045, 0.045, 0.045), fur)
+    add("sphere", "Cat_tail_c", (0.22, -1.74, 0.60), (0.04, 0.04, 0.04), dark)
+    add("sphere", "Cat_eye", (-0.64, -1.97, 0.46), (0.028, 0.022, 0.032), dark)
+    add("sphere", "Cat_eye_b", (-0.64, -1.83, 0.46), (0.028, 0.022, 0.032), dark)
+    add("sphere", "Cat_nose", (-0.72, -1.90, 0.39), (0.018, 0.02, 0.014), dark)
+    add("cube", "Cat_rug", (-0.16, -1.90, 0.02), (1.05, 0.68, 0.035), cream)
 
 
 if not CHAR_ONLY:
@@ -742,6 +750,14 @@ def _store_cat_rect():
     path.write_text(json.dumps(data, indent=2) + "\n")
     print("CAT_RECT", rect)
 
+
+if "--cat" in sys.argv:
+    scene.cycles.samples = 24
+    ensure_cat()
+    _store_cat_rect()
+    render_prop(OUT / "cat.png", ["80_Cat"])
+    print("CAT_DONE")
+    raise SystemExit(0)
 
 if "--door" in sys.argv:
     scene.cycles.samples = 12

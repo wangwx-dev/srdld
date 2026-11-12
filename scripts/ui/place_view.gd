@@ -28,7 +28,6 @@ func _draw() -> void:
 		return
 	if picture != null:
 		draw_texture_rect(picture, Rect2(Vector2.ZERO, box), false)
-		draw_rect(Rect2(0, box.y * 0.72, box.x, box.y * 0.28), Color(0.16, 0.13, 0.1, 0.38))
 		return
 	match place_id:
 		"park":
