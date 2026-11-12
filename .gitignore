@@ -1,0 +1,28 @@
+# Godot cache and import state
+.godot/
+.import/
+*.translation
+
+# Local exports (source and presets stay in git; binaries do not)
+builds/
+export/
+*.apk
+*.aab
+*.exe
+*.pck
+*.zip
+*.tmp
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*~
+
+# Signing material must never be committed
+*.keystore
+*.jks
+*.mobileprovision
+*.pfx
+*.p12
+.env
+*.secret

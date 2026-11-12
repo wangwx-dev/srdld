@@ -1,0 +1,88 @@
+[
+  {
+    "id": "rent_makeover",
+    "name": "租房改造",
+    "summary": "出租屋角落的小改造",
+    "tags": ["生活"],
+    "fatigue_weight": 1.1,
+    "fit": {"shizi": 0.96, "qingtie": 1.32, "changhe": 0.78}
+  },
+  {
+    "id": "city_walk",
+    "name": "城市散步",
+    "summary": "下班路和街区灯光",
+    "tags": ["城市", "生活"],
+    "fatigue_weight": 1.0,
+    "fit": {"shizi": 1.16, "qingtie": 1.18, "changhe": 1.08}
+  },
+  {
+    "id": "budget_recipe",
+    "name": "省钱食谱",
+    "summary": "一个人也做得起的饭",
+    "tags": ["美食", "省钱"],
+    "fatigue_weight": 1.0,
+    "fit": {"shizi": 1.28, "qingtie": 1.34, "changhe": 0.88}
+  },
+  {
+    "id": "worker_mood",
+    "name": "打工人情绪",
+    "summary": "把说不出口的累说出来",
+    "tags": ["情绪"],
+    "fatigue_weight": 1.05,
+    "fit": {"shizi": 1.4, "qingtie": 1.08, "changhe": 1.0}
+  },
+  {
+    "id": "editing_diary",
+    "name": "剪辑学习日记",
+    "summary": "今天剪片时学会的一件小事",
+    "tags": ["技能"],
+    "fatigue_weight": 1.0,
+    "fit": {"shizi": 0.72, "qingtie": 1.05, "changhe": 1.38}
+  },
+  {
+    "id": "town_tale",
+    "name": "小城奇闻",
+    "summary": "老家或邻街的一件怪事",
+    "tags": ["故事"],
+    "fatigue_weight": 1.0,
+    "fit": {"shizi": 1.02, "qingtie": 0.9, "changhe": 1.36}
+  },
+  {
+    "id": "gadget_avoid",
+    "name": "数码避坑",
+    "summary": "帮同预算的人少花一笔",
+    "tags": ["数码"],
+    "fatigue_weight": 1.0,
+    "fit": {"shizi": 0.84, "qingtie": 1.16, "changhe": 1.3}
+  },
+  {
+    "id": "morning_routine",
+    "name": "晨间例行",
+    "summary": "起床后的固定流程，观众容易腻",
+    "tags": ["生活"],
+    "fatigue_weight": 1.75,
+    "fit": {"shizi": 1.0, "qingtie": 1.26, "changhe": 0.7}
+  },
+  {
+    "id": "side_hustle",
+    "name": "副业复盘",
+    "summary": "这个月的账和教训",
+    "tags": ["省钱", "技能"],
+    "fatigue_weight": 1.0,
+    "fit": {"shizi": 0.9, "qingtie": 1.24, "changhe": 1.16}
+  },
+  {
+    "id": "street_interview",
+    "name": "街头一问",
+    "summary": "出门时问到的一句话",
+    "tags": ["城市", "情绪"],
+    "fatigue_weight": 1.0,
+    "fit": {"shizi": 1.3, "qingtie": 0.86, "changhe": 1.12},
+    "bonus": {
+      "kind": "outing_or_inspiration",
+      "inspiration_at_least": 55,
+      "quality": 5,
+      "fit_mult": 1.08
+    }
+  }
+]
