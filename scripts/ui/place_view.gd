@@ -9,9 +9,13 @@ var portrait: Texture2D
 var picture: Texture2D
 
 
-func show_place(id: String) -> void:
+func show_place(id: String, who: String = "f") -> void:
 	place_id = id
 	var file_id := "city" if id == "map" else id
+	if who == "m" and file_id != "city":
+		var male_path := "res://assets/places/%s_m.png" % file_id
+		if ResourceLoader.exists(male_path):
+			file_id = "%s_m" % file_id
 	var loaded: Resource = load("res://assets/places/%s.png" % file_id)
 	picture = loaded if loaded is Texture2D else null
 	queue_redraw()
@@ -29,6 +33,7 @@ func _draw() -> void:
 	if picture != null:
 		draw_texture_rect(picture, Rect2(Vector2.ZERO, box), false)
 		return
+	# Missing art stays an empty scene. Do not draw a block stand-in.
 	match place_id:
 		"park":
 			_draw_park(box)
@@ -42,10 +47,6 @@ func _draw() -> void:
 			_draw_library(box)
 		_:
 			_draw_map(box)
-	if place_id != "park":
-		_figure(Vector2(box.x * 0.72, box.y * 0.62))
-
-
 func _draw_map(box: Vector2) -> void:
 	draw_rect(Rect2(Vector2.ZERO, box), Color("E7F0EA"))
 	draw_rect(Rect2(0, box.y * 0.62, box.x, box.y * 0.38), Color("E4D2B0"))
@@ -69,7 +70,6 @@ func _draw_park(box: Vector2) -> void:
 	draw_rect(Rect2(seat, Vector2(150, 14)), Color("C4A574"))
 	draw_rect(Rect2(seat + Vector2(12, 14), Vector2(8, 26)), Color("8A6244"))
 	draw_rect(Rect2(seat + Vector2(130, 14), Vector2(8, 26)), Color("8A6244"))
-	_figure(seat + Vector2(75, -8))
 	_caption("公园")
 
 
@@ -129,13 +129,6 @@ func _tree(at: Vector2) -> void:
 
 func _caption(text: String) -> void:
 	_text(Vector2(28, 86), text, 28, Color("FBF7F1") if place_id == "cinema" else Color("3E4A45"))
-
-
-func _figure(at: Vector2) -> void:
-	draw_circle(at + Vector2(0, -36), 12, Color("E6C2A6"))
-	draw_rect(Rect2(at.x - 14, at.y - 24, 28, 26), Color("E6C07B"))
-	draw_rect(Rect2(at.x - 12, at.y + 2, 9, 22), Color("4A5568"))
-	draw_rect(Rect2(at.x + 3, at.y + 2, 9, 22), Color("4A5568"))
 
 
 func _text(at: Vector2, text: String, size: int, color: Color) -> void:

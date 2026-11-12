@@ -16,6 +16,7 @@ func _ready() -> void:
 	_test_corrupt()
 	_test_fifty_six()
 	_test_house_keeps_upgrades()
+	_test_place_art()
 	await _test_boot()
 	print("CHECKS %d FAILURES %d" % [checks, failures.size()])
 	for failure in failures:
@@ -218,6 +219,19 @@ func _test_boot() -> void:
 	await get_tree().process_frame
 	check(node.get_child_count() > 2, "play scene builds a room")
 	node.queue_free()
+
+
+func _test_place_art() -> void:
+	for id in ["city", "mall", "park", "cinema", "gym", "library"]:
+		var path := "res://assets/places/%s.png" % id
+		var file := FileAccess.open(path, FileAccess.READ)
+		var length := file.get_length() if file != null else 0
+		check(length > 200000, "%s is a rendered scene, bytes=%d" % [path, length])
+	for id in ["park", "cinema", "gym", "library"]:
+		var path := "res://assets/places/%s_m.png" % id
+		var file := FileAccess.open(path, FileAccess.READ)
+		var length := file.get_length() if file != null else 0
+		check(length > 200000, "%s matches the male player, bytes=%d" % [path, length])
 
 
 func check(condition: bool, message: String) -> void:

@@ -8,7 +8,17 @@ import os
 from pathlib import Path
 
 import bpy
-from mathutils import Vector
+from mathutils import Matrix, Vector
+
+CHAR_BLEND = Path(__file__).resolve().parent / "room_sample_v2.blend"
+NEAR_ARM = ["F01_near_forearm", "F01_near_hand", "F01_near_cuff", "F01_near_finger_0", "F01_near_finger_1", "F01_near_finger_2"]
+FAR_ARM = ["F01_far_forearm", "F01_far_hand", "F01_far_cuff", "F01_far_finger_0", "F01_far_finger_1", "F01_far_finger_2"]
+NEAR_LACES = ["F01_Shoe_lace", "F01_Shoe_lace.001", "F01_Shoe_lace.002"]
+FAR_LACES = ["F01_Shoe_lace.003", "F01_Shoe_lace.004", "F01_Shoe_lace.005"]
+NEAR_LOWER = ["F01_near_trouser_calf", "F01_near_canvas_shoe", "F01_near_shoe_sole", "F01_near_sock", "F01_near_turned_hem"] + NEAR_LACES
+FAR_LOWER = ["F01_far_trouser_calf", "F01_far_canvas_shoe", "F01_far_shoe_sole", "F01_far_sock", "F01_far_turned_hem"] + FAR_LACES
+NEAR_LEG = ["F01_near_trouser_thigh"] + NEAR_LOWER
+FAR_LEG = ["F01_far_trouser_thigh"] + FAR_LOWER
 
 OUT = Path(__file__).resolve().parents[2] / "assets" / "places"
 FONT_PATH = Path(__file__).resolve().parents[2] / "assets" / "fonts" / "SourceHanSansCN-Regular.otf"
@@ -185,12 +195,210 @@ def bench(name, x, y, z=0.0):
     add("cube", name + "_leg_b", (x + 0.5, y, z + 0.2), (0.08, 0.36, 0.4), WOOD_D)
 
 
-def sitter(name, x, y, z, shirt):
-    add("sphere", name + "_head", (x, y - 0.02, z + 0.72), (0.2, 0.2, 0.2), CLAY)
-    add("cube", name + "_body", (x, y, z + 0.46), (0.3, 0.18, 0.32), shirt)
-    add("cube", name + "_thigh", (x, y - 0.16, z + 0.3), (0.28, 0.22, 0.1), INK)
-    add("cube", name + "_shin", (x - 0.06, y - 0.22, z + 0.14), (0.08, 0.08, 0.22), INK)
-    add("cube", name + "_shin_b", (x + 0.06, y - 0.22, z + 0.14), (0.08, 0.08, 0.22), INK)
+def _player_names():
+    col = bpy.data.collections.get("50_Character_F01_Seated")
+    if col is None:
+        return []
+    return [obj.name for obj in col.objects]
+
+
+PLAYER_REST = {}
+
+
+def _ensure_player():
+    if "F01_Trousers_seat" not in bpy.data.objects:
+        bpy.ops.wm.append(
+            directory=str(CHAR_BLEND) + "/Collection/",
+            filename="50_Character_F01_Seated",
+        )
+    ok = "F01_Trousers_seat" in bpy.data.objects
+    if ok and not PLAYER_REST:
+        for name in _player_names():
+            PLAYER_REST[name] = bpy.data.objects[name].matrix_world.copy()
+    print("PLAYER", len(_player_names()), "ok" if ok else "MISSING")
+    return ok
+
+
+def _restore_player():
+    for name, matrix in PLAYER_REST.items():
+        obj = bpy.data.objects.get(name)
+        if obj is None:
+            continue
+        obj.matrix_world = matrix.copy()
+        obj.hide_render = False
+
+
+def hide_player():
+    for name in _player_names():
+        bpy.data.objects[name].hide_render = True
+
+
+def _pcenter(names):
+    xs, ys, zs = [], [], []
+    for name in names:
+        obj = bpy.data.objects.get(name)
+        if obj is None:
+            continue
+        for corner in obj.bound_box:
+            world = obj.matrix_world @ Vector(corner)
+            xs.append(world.x)
+            ys.append(world.y)
+            zs.append(world.z)
+    if not xs:
+        return Vector((0.0, 0.0, 0.0))
+    return Vector(((min(xs) + max(xs)) * 0.5, (min(ys) + max(ys)) * 0.5, (min(zs) + max(zs)) * 0.5))
+
+
+def _spin(names, pivot, axis, angle):
+    rot = Matrix.Rotation(angle, 4, axis)
+    for name in names:
+        obj = bpy.data.objects.get(name)
+        if obj is None:
+            continue
+        obj.matrix_world = Matrix.Translation(pivot) @ rot @ Matrix.Translation(-pivot) @ obj.matrix_world
+
+
+def _move_player(delta):
+    shift = Matrix.Translation(Vector(delta))
+    for name in _player_names():
+        obj = bpy.data.objects[name]
+        obj.matrix_world = shift @ obj.matrix_world
+        obj.hide_render = False
+
+
+def _aim(names, pivot, marker, target):
+    aim_a = marker - pivot
+    aim_b = target - pivot
+    axis = aim_a.cross(aim_b)
+    if aim_a.length < 1e-4 or aim_b.length < 1e-4 or axis.length < 1e-5:
+        return
+    axis_n = axis.normalized()
+    flat_a = aim_a - axis_n * aim_a.dot(axis_n)
+    flat_b = aim_b - axis_n * aim_b.dot(axis_n)
+    if flat_a.length < 1e-5 or flat_b.length < 1e-5:
+        return
+    flat_a.normalize()
+    flat_b.normalize()
+    angle = math.atan2(flat_a.cross(flat_b).dot(axis_n), flat_a.dot(flat_b))
+    _spin(names, pivot, axis_n, angle)
+
+
+def _stand_player():
+    for full, lower, thigh, shoe in (
+        (NEAR_LEG, NEAR_LOWER, "F01_near_trouser_thigh", "F01_near_canvas_shoe"),
+        (FAR_LEG, FAR_LOWER, "F01_far_trouser_thigh", "F01_far_canvas_shoe"),
+    ):
+        seat = _pcenter(["F01_Trousers_seat"])
+        knee = _pcenter([thigh])
+        _aim(full, seat, knee, seat + Vector((0.0, 0.02, -1.0)))
+        knee = _pcenter([thigh])
+        ankle = _pcenter([shoe])
+        _aim(lower, knee, ankle, Vector((knee.x, knee.y, knee.z - 0.8)))
+        ankle = _pcenter([shoe])
+        knee = _pcenter([thigh])
+        if ankle.z > knee.z - 0.05:
+            flip = (ankle - knee).cross(Vector((0.0, 0.0, -1.0)))
+            if flip.length < 1e-4:
+                flip = Vector((1.0, 0.0, 0.0))
+            _spin(lower, knee, flip.normalized(), math.pi)
+
+
+def seat_player(target, yaw):
+    if not _ensure_player():
+        return
+    _restore_player()
+    names = _player_names()
+    hip = _pcenter(["F01_Trousers_seat"])
+    _spin(names, hip, "Z", yaw)
+    hip = _pcenter(["F01_Trousers_seat"])
+    _move_player(Vector(target) - hip)
+
+
+def stand_player(foot_target, yaw):
+    if not _ensure_player():
+        return
+    _restore_player()
+    names = _player_names()
+    hip = _pcenter(["F01_Trousers_seat"])
+    _spin(names, hip, "Z", yaw)
+    _stand_player()
+    foot = _pcenter(["F01_near_canvas_shoe", "F01_far_canvas_shoe"])
+    _move_player(Vector(foot_target) - foot)
+
+
+def _head_names():
+    keys = ("Head", "Hair", "Bob", "fringe", "Fringe", "Ear", "Eye", "lid", "Lid", "Eyebrow", "Cheek", "Nose", "smile", "Neck")
+    return [name for name in _player_names() if any(key in name for key in keys)]
+
+
+def _reach(target):
+    for arm, cuff, hand, side in (
+        (NEAR_ARM, "F01_near_cuff", "F01_near_hand", -0.06),
+        (FAR_ARM, "F01_far_cuff", "F01_far_hand", 0.06),
+    ):
+        shoulder = _pcenter([cuff])
+        palm = _pcenter([hand])
+        _aim(arm, shoulder, palm, Vector(target) + Vector((side, 0.0, 0.0)))
+
+
+def _style_male():
+    for name in _player_names():
+        obj = bpy.data.objects[name]
+        if "fringe" in name or "Fringe" in name or "Side_swept" in name:
+            obj.hide_render = True
+        for slot in obj.material_slots:
+            mat = slot.material
+            if mat is None or not mat.use_nodes:
+                continue
+            for node in mat.node_tree.nodes:
+                if node.type != "BSDF_PRINCIPLED":
+                    continue
+                if "Knit" in mat.name or "knit" in name or "Knit" in name:
+                    node.inputs["Base Color"].default_value = (0.20, 0.38, 0.42, 1)
+                elif "Hair" in name or "Bob" in name or "fringe" in name:
+                    node.inputs["Base Color"].default_value = (0.12, 0.10, 0.09, 1)
+                elif "Trouser" in name:
+                    node.inputs["Base Color"].default_value = (0.18, 0.20, 0.24, 1)
+    cap = bpy.data.objects.get("F01_Hair_sculpted_cap")
+    head = _pcenter(["F01_Head_sculpt"])
+    nose = _pcenter(["F01_Nose"])
+    back = head - nose
+    if back.length < 1e-4:
+        back = Vector((1.0, 0.0, 0.0))
+    back = back.normalized()
+    if cap is not None:
+        cap.matrix_world = (
+            Matrix.Translation(head + back * 0.05 + Vector((0.0, 0.0, 0.03)))
+            @ Matrix.Diagonal(Vector((1.28, 1.28, 1.02, 1.0)))
+            @ Matrix.Translation(-head)
+            @ cap.matrix_world
+        )
+    for name in _player_names():
+        if not name.startswith("F01_Bob_lock"):
+            continue
+        obj = bpy.data.objects[name]
+        obj.matrix_world = (
+            Matrix.Translation(head)
+            @ Matrix.Scale(0.58, 4)
+            @ Matrix.Translation(-head)
+            @ obj.matrix_world
+        )
+
+
+def _finish_player():
+    if os.environ.get("PLACE_GENDER", "f") == "m":
+        _style_male()
+
+
+def _read_book():
+    head = _pcenter(["F01_Head_sculpt"])
+    _spin(_head_names(), head, "X", -0.32)
+    hand = _pcenter(["F01_near_hand", "F01_far_hand"])
+    book = Vector((hand.x, hand.y - 0.02, hand.z + 0.02))
+    _reach(book)
+    hand = _pcenter(["F01_near_hand", "F01_far_hand"])
+    add("cube", "held_cover", (hand.x, hand.y, hand.z), (0.28, 0.20, 0.035), WOOD, (0.65, 0.05, 0.1))
+    add("cube", "held_page", (hand.x, hand.y - 0.01, hand.z + 0.03), (0.24, 0.16, 0.012), CREAM, (0.65, 0.05, 0.1))
 
 
 def facade(name, x, width, depth, height, wall, roof):
@@ -207,6 +415,7 @@ def render(name):
 
 
 def city():
+    hide_player()
     sky((0.63, 0.76, 0.86, 1), 0.55)
     look((6.2, -8.6, 4.8), (0.4, 0.2, 1.15), 32)
     add("cube", "grass", (0.3, 0.6, -0.08), (14, 8, 0.1), GRASS)
@@ -246,6 +455,7 @@ def city():
 
 
 def park():
+    hide_player()
     sky((0.66, 0.80, 0.90, 1), 0.6)
     look((4.2, -5.2, 2.8), (0.1, 0.15, 0.7), 34)
     add("cube", "grass", (0, 0.2, -0.05), (9, 7, 0.1), GRASS)
@@ -260,12 +470,14 @@ def park():
     bench("seat", 1.25, 0.2)
     flowerbed("flowers", -1.15, 0.7)
     flowerbed("flowers_b", -1.4, -0.5)
-    add("cyl", "lamp", (2.05, -0.95, 0.85), (0.07, 0.07, 1.7), INK)
-    add("sphere", "lamp_head", (2.05, -0.95, 1.75), (0.32, 0.32, 0.2), GOLD)
-    sitter("person", 1.25, 0.05, 0.42, SAGE)
+    add("cyl", "lamp", (2.55, -1.45, 0.85), (0.07, 0.07, 1.7), INK)
+    add("sphere", "lamp_head", (2.55, -1.45, 1.75), (0.32, 0.32, 0.2), GOLD)
+    seat_player((1.15, 0.12, 0.50), math.pi / 2.0)
+    _finish_player()
 
 
 def cinema():
+    hide_player()
     sky((0.05, 0.06, 0.07, 1), 0.15)
     look((0.15, -3.6, 1.7), (0.0, 1.5, 1.25), 30)
     add("cube", "floor", (0, 0.2, -0.04), (6.6, 6.2, 0.08), INK)
@@ -288,12 +500,14 @@ def cinema():
                 add("cube", prefix + "_arm", (x - 0.24, y, z + 0.18), (0.05, 0.36, 0.08), WOOD_D)
                 add("cube", prefix + "_arm_b", (x + 0.24, y, z + 0.18), (0.05, 0.36, 0.08), WOOD_D)
         add("cube", "step_%d" % row, (0, y, z - 0.12), (0.7, 0.5, 0.05), WOOD_D)
-    sitter("viewer", -0.42, 0.95, 0.28, CLAY)
+    seat_player((-1.0, -0.35, 0.52), -math.pi / 2.0)
+    _finish_player()
     add("sphere", "sconce", (-2.9, 0.4, 1.7), (0.12, 0.08, 0.16), GOLD)
     add("sphere", "sconce_b", (2.9, 0.4, 1.7), (0.12, 0.08, 0.16), GOLD)
 
 
 def gym():
+    hide_player()
     sky((0.80, 0.84, 0.82, 1), 0.4)
     look((3.4, -4.4, 2.3), (0.1, 0.15, 0.85), 32)
     add("cube", "floor", (0, 0, -0.04), (7.4, 5.6, 0.08), CREAM)
@@ -316,16 +530,16 @@ def gym():
     add("cyl", "bar", (1.6, 0.15, 1.2), (0.07, 0.07, 1.9), WOOD_D, (0, math.radians(90), 0))
     add("cyl", "plate_l", (0.75, 0.15, 1.2), (0.36, 0.36, 0.08), CLAY, (0, math.radians(90), 0))
     add("cyl", "plate_r", (2.45, 0.15, 1.2), (0.36, 0.36, 0.08), CLAY, (0, math.radians(90), 0))
-    add("cube", "bench_pad", (1.6, -0.7, 0.48), (1.2, 0.36, 0.08), SAGE)
-    add("cube", "bench_leg", (1.15, -0.7, 0.22), (0.08, 0.28, 0.42), WOOD_D)
-    add("cube", "bench_leg_b", (2.05, -0.7, 0.22), (0.08, 0.28, 0.42), WOOD_D)
-    add("sphere", "lifter_head", (2.7, -0.9, 1.55), (0.2, 0.2, 0.2), CLAY)
-    add("cube", "lifter_body", (2.7, -0.9, 1.15), (0.32, 0.18, 0.4), SAGE)
-    add("cube", "lifter_leg", (2.62, -0.9, 0.55), (0.09, 0.09, 0.7), INK)
-    add("cube", "lifter_leg_b", (2.78, -0.9, 0.55), (0.09, 0.09, 0.7), INK)
+    add("cube", "bench_pad", (1.6, -1.25, 0.48), (1.2, 0.36, 0.08), SAGE)
+    add("cube", "bench_leg", (1.15, -1.25, 0.22), (0.08, 0.28, 0.42), WOOD_D)
+    add("cube", "bench_leg_b", (2.05, -1.25, 0.22), (0.08, 0.28, 0.42), WOOD_D)
+    # The door "stand" folds this seated mesh backward. Sit beside the rack instead.
+    seat_player((1.6, -1.15, 0.58), math.pi / 2.0)
+    _finish_player()
 
 
 def mall():
+    hide_player()
     sky((0.93, 0.89, 0.82, 1), 0.4)
     look((0.1, -4.8, 2.15), (0.0, 0.4, 0.95), 32)
     add("cube", "floor", (0, 0.1, -0.04), (8.8, 5.6, 0.08), PATH)
@@ -350,6 +564,7 @@ def mall():
 
 
 def library():
+    hide_player()
     sky((0.90, 0.86, 0.78, 1), 0.38)
     look((3.2, -4.2, 2.2), (-0.2, 0.4, 0.95), 32)
     add("cube", "floor", (0, 0.15, -0.04), (7.6, 5.6, 0.08), PATH)
@@ -370,10 +585,12 @@ def library():
     add("cube", "open_l", (0.55, 0.1, 0.49), (0.22, 0.3, 0.02), CREAM, (0, math.radians(8), 0))
     add("cube", "open_r", (0.82, 0.1, 0.49), (0.22, 0.3, 0.02), CREAM, (0, math.radians(-8), 0))
     add("cube", "chair_seat", (0.7, -0.55, 0.4), (0.46, 0.46, 0.06), WOOD)
-    add("cube", "chair_back", (0.7, -0.78, 0.72), (0.46, 0.06, 0.55), WOOD)
+    add("cube", "chair_back", (0.7, -0.22, 0.72), (0.46, 0.06, 0.55), WOOD)
     add("cyl", "lamp", (1.6, 0.35, 0.85), (0.04, 0.04, 0.7), INK)
     add("cone", "shade", (1.6, 0.35, 1.28), (0.28, 0.28, 0.2), GOLD)
-    sitter("reader", 0.7, -0.42, 0.4, SAGE)
+    seat_player((0.7, -0.62, 0.55), math.pi / 2.0)
+    _read_book()
+    _finish_player()
 
 
 jobs = [
@@ -387,8 +604,10 @@ jobs = [
 only = [name for name in os.environ.get("PLACE_ONLY", "").split(",") if name]
 if only:
     jobs = [job for job in jobs if job[0] in only]
+gender = os.environ.get("PLACE_GENDER", "f")
+suffix = "" if gender == "f" else "_m"
 for filename, builder in jobs:
     clear()
     builder()
-    render(filename + ".png")
+    render(filename + suffix + ".png")
 print("DONE")

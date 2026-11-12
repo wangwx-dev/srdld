@@ -38,7 +38,8 @@ var page_scroll: Control
 var page_box: VBoxContainer
 var place_view: PlaceView
 var place_tray: PanelContainer
-var place_tray_box: HFlowContainer
+var place_tray_scroll: ScrollContainer
+var place_tray_box: HBoxContainer
 var tutor: Label
 var tutor_wrap: PanelContainer
 var name_edit: LineEdit
@@ -72,7 +73,10 @@ func _ready() -> void:
 			await get_tree().process_frame
 			await get_tree().process_frame
 			print("WINDOW ", get_window().size, " VIEW ", get_viewport().get_visible_rect().size)
-		await _shot_tour()
+		if OS.get_cmdline_user_args().has("--play"):
+			await _play_path()
+		else:
+			await _shot_tour()
 
 
 func _load_content() -> Dictionary:
@@ -197,12 +201,17 @@ func _build_page() -> void:
 	page.add_child(place_view)
 	var scroll := ScrollContainer.new()
 	scroll.set_anchors_preset(Control.PRESET_FULL_RECT)
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.offset_left = 24
+	scroll.offset_top = 100
+	scroll.offset_right = -24
+	scroll.offset_bottom = -12
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	margin.add_child(scroll)
+	scroll.mouse_filter = Control.MOUSE_FILTER_STOP
+	page.add_child(scroll)
 	page_scroll = scroll
 	page_box = VBoxContainer.new()
 	page_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	page_box.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	page_box.add_theme_constant_override("separation", 8)
 	scroll.add_child(page_box)
 	place_tray = PanelContainer.new()
@@ -218,10 +227,14 @@ func _build_page() -> void:
 	place_tray.visible = false
 	place_tray.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(place_tray)
-	place_tray_box = HFlowContainer.new()
-	place_tray_box.add_theme_constant_override("h_separation", 8)
-	place_tray_box.add_theme_constant_override("v_separation", 6)
-	place_tray.add_child(place_tray_box)
+	place_tray_scroll = ScrollContainer.new()
+	place_tray_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	place_tray_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	place_tray_scroll.custom_minimum_size = Vector2(0, 84)
+	place_tray.add_child(place_tray_scroll)
+	place_tray_box = HBoxContainer.new()
+	place_tray_box.add_theme_constant_override("separation", 12)
+	place_tray_scroll.add_child(place_tray_box)
 	var hud := PanelContainer.new()
 	var hud_style := ThemeBuilder.panel_style()
 	hud_style.bg_color = Color("FFF8EE")
@@ -319,7 +332,7 @@ func _fill(rows: Array) -> void:
 		if kind == "title":
 			page_box.add_child(_label(str(row[1]), 28))
 		elif kind == "body":
-			var label := _label(str(row[1]), 16)
+			var label := _label(str(row[1]), 18)
 			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			page_box.add_child(label)
 		elif kind == "name":
@@ -344,7 +357,8 @@ func _fill(rows: Array) -> void:
 		elif kind == "button":
 			var button := Button.new()
 			button.text = str(row[1])
-			button.custom_minimum_size = Vector2(0, 48)
+			button.custom_minimum_size = Vector2(0, 52)
+			button.add_theme_font_size_override("font_size", 20)
 			button.pressed.connect(row[2])
 			page_box.add_child(button)
 
@@ -427,9 +441,10 @@ func _show_memes() -> void:
 		heat_bar.max_value = 100.0
 		heat_bar.value = heat
 		heat_bar.show_percentage = false
-		heat_bar.custom_minimum_size = Vector2(180, 14)
+		heat_bar.custom_minimum_size = Vector2(180, 16)
 		heat_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		card.add_child(heat_bar)
+		var body: VBoxContainer = card.get_meta("body")
+		body.add_child(heat_bar)
 		flow.add_child(card)
 		shown += 1
 	if sim.memes.is_empty():
@@ -461,20 +476,25 @@ func _show_polish() -> void:
 
 func _show_preview() -> void:
 	var preview := sim.preview_work(form, topic_id, chosen_memes, link, polish)
-	var body := "预计 %d 分钟，到 %s。灵感 %d，体力 %d。\n%s\n%s" % [
+	_fill([])
+	var topic_name := str(sim.topic_by_id(topic_id).get("name", topic_id))
+	var cover := "res://assets/ui/cover_video.png" if form == "video" else "res://assets/ui/cover_article.png"
+	page_box.add_child(_poster(cover, "视频" if form == "video" else "文章", topic_name))
+	page_box.add_child(_wrap_label("预计 %d 分钟，到 %s。灵感 %d，体力 %d。" % [
 		int(preview.get("minutes", 0)), str(preview.get("end_text", "")),
 		int(preview.get("inspiration", 0)), int(preview.get("stamina", 0)),
-		str(preview.get("risk", "")), str(preview.get("potential", "")),
-	]
+	]))
+	page_box.add_child(_label("风险", 20))
+	page_box.add_child(_wrap_label(str(preview.get("risk", ""))))
+	page_box.add_child(_label("潜力", 20))
+	page_box.add_child(_wrap_label(str(preview.get("potential", ""))))
 	if bool(preview.get("cross_rent", false)):
-		body += "\n途中会碰到账单。"
-	var rows: Array = [["title", "预览"], ["body", body]]
+		page_box.add_child(_wrap_label("途中会碰到账单。"))
 	if bool(preview.get("can_afford", false)):
-		rows.append(["button", "确认开写", _confirm_create])
+		page_box.add_child(_text_button("确认开写", _confirm_create))
 	else:
-		rows.append(["body", "现在开不了：资源、今天的篇幅，或会跨过付不起的账单。"])
-	rows.append(["button", "返回", _show_polish])
-	_fill(rows)
+		page_box.add_child(_wrap_label("现在开不了：资源、今天的篇幅，或会跨过付不起的账单。"))
+	page_box.add_child(_text_button("返回", _show_polish))
 
 
 func _confirm_create() -> void:
@@ -488,15 +508,23 @@ func _confirm_create() -> void:
 		return
 	var work: Dictionary = result.get("work", {})
 	var scores: Dictionary = work.get("scores", {})
-	var body := "%s · %s\n%s %d · 互动 %d · 涨粉 %d\n深度 %.0f · 趣味 %.0f · 表达 %.0f · 契合 %.0f" % [
-		"视频" if str(work.get("form", "")) == "video" else "文章", str(work.get("topic_name", "")),
-		"播放" if str(work.get("form", "")) == "video" else "阅读",
-		int(work.get("reach", 0)), int(work.get("engage", 0)), int(work.get("follow", 0)),
-		float(scores.get("depth", 0)), float(scores.get("fun", 0)), float(scores.get("voice", 0)), float(scores.get("fit", 0)),
-	]
-	body += _report_text(result.get("report", {}))
 	_consume_reports(result.get("report", {}))
-	_fill([["title", "发出去了"], ["body", body], ["button", "看往期", _show_history], ["button", "回到房间", _close_page]])
+	_fill([])
+	var made_form := str(work.get("form", ""))
+	var made_cover := "res://assets/ui/cover_video.png" if made_form == "video" else "res://assets/ui/cover_article.png"
+	page_box.add_child(_label("发出去了", 28))
+	page_box.add_child(_poster(made_cover, "视频" if made_form == "video" else "文章", str(work.get("topic_name", ""))))
+	var reach_name := "播放" if made_form == "video" else "阅读"
+	page_box.add_child(_wrap_label("%s %d    互动 %d    涨粉 %d" % [reach_name, int(work.get("reach", 0)), int(work.get("engage", 0)), int(work.get("follow", 0))]))
+	page_box.add_child(_score_bar("深度", float(scores.get("depth", 0))))
+	page_box.add_child(_score_bar("趣味", float(scores.get("fun", 0))))
+	page_box.add_child(_score_bar("表达", float(scores.get("voice", 0))))
+	page_box.add_child(_score_bar("契合", float(scores.get("fit", 0))))
+	var note := _report_text(result.get("report", {}))
+	if note != "":
+		page_box.add_child(_wrap_label(note))
+	page_box.add_child(_text_button("看往期", _show_history))
+	page_box.add_child(_text_button("回到房间", _close_page))
 	_refresh_hud()
 
 
@@ -596,7 +624,8 @@ func _show_chart() -> void:
 	_fill([])
 	page_box.add_child(_label("本周观众喜爱", 28))
 	page_box.add_child(_wrap_label("这周大家更爱这些题材。靠前更好接，不是一定能成。下周会换。"))
-	page_box.add_child(_label("题材", 20))
+	page_box.add_child(_label("题材", 22))
+	page_box.add_child(_wrap_label("横条是本周分数。越长越容易接上这个题材。"))
 	var rows: Array = sim.chart_rows()
 	var top := 1
 	if not rows.is_empty():
@@ -605,8 +634,8 @@ func _show_chart() -> void:
 	for row in rows:
 		page_box.add_child(_rank_line(rank, str(row.get("name", "")), float(row.get("score", 0)), float(top), "res://assets/ui/cover_%s.png" % str(row.get("id", ""))))
 		rank += 1
-	page_box.add_child(_label("内容偏好", 20))
-	page_box.add_child(_wrap_label("现在的受众更吃这些。发文之后会慢慢偏过去。"))
+	page_box.add_child(_label("内容偏好", 22))
+	page_box.add_child(_wrap_label("横条是现在的受众比重。发出作品之后，会慢慢偏向那一篇的内容。"))
 	var tags: Array = []
 	for key in sim.audience.keys():
 		tags.append({"name": str(key), "score": float(sim.audience[key])})
@@ -618,7 +647,8 @@ func _show_chart() -> void:
 	for tag in tags:
 		page_box.add_child(_rank_line(rank, str(tag["name"]), float(tag["score"]), tag_top, ""))
 		rank += 1
-	page_box.add_child(_label("梗的热度", 20))
+	page_box.add_child(_label("梗的热度", 22))
+	page_box.add_child(_wrap_label("横条是热度。已经带回的会随天数和使用下降；没带回的是现在外面的热度。"))
 	var meme_rows: Array = []
 	for meme in content.get("memes", []):
 		var id := str(meme.get("id", ""))
@@ -692,7 +722,8 @@ func _use_place(id: String) -> void:
 	if page_scroll != null:
 		page_scroll.visible = false
 	place_view.visible = true
-	place_view.show_place(id)
+	var who := "m" if sim != null and sim.gender == "m" else "f"
+	place_view.show_place(id, who)
 	place_view.portrait = null
 	place_view.mouse_filter = Control.MOUSE_FILTER_STOP
 	place_view.queue_redraw()
@@ -703,26 +734,41 @@ func _use_place(id: String) -> void:
 		place_tray.visible = false
 
 
-func _open_tray() -> void:
+func _open_tray(tall: bool = false) -> void:
 	if place_tray == null:
 		return
+	place_tray.offset_top = -312.0 if tall else -112.0
+	place_tray.offset_bottom = -8.0
+	if place_tray_scroll != null:
+		place_tray_scroll.custom_minimum_size = Vector2(0, 268 if tall else 92)
 	place_tray.visible = true
 	for child in place_tray_box.get_children():
 		place_tray_box.remove_child(child)
 		child.free()
 
 
+func _pin(host: Control, child: Control, pad: float) -> void:
+	host.add_child(child)
+	child.set_anchors_preset(Control.PRESET_FULL_RECT)
+	child.offset_left = pad
+	child.offset_top = pad
+	child.offset_right = -pad
+	child.offset_bottom = -pad
+	child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
 func _tray_button(text: String, icon_path: String, callback: Callable) -> void:
 	var button := Button.new()
-	button.custom_minimum_size = Vector2(168, 64)
+	button.custom_minimum_size = Vector2(260, 84)
+	button.add_theme_font_size_override("font_size", 22)
 	button.text = ""
 	button.focus_mode = Control.FOCUS_NONE
 	var row := HBoxContainer.new()
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_theme_constant_override("separation", 8)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 12)
 	if icon_path != "":
 		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(42, 42)
+		icon.custom_minimum_size = Vector2(56, 56)
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -730,10 +776,42 @@ func _tray_button(text: String, icon_path: String, callback: Callable) -> void:
 		if texture is Texture2D:
 			icon.texture = texture
 		row.add_child(icon)
-	var caption := _label(text, 16)
+	var caption := _label(text, 22)
 	caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	row.add_child(caption)
-	button.add_child(row)
+	_pin(button, row, 10.0)
+	button.pressed.connect(callback)
+	place_tray_box.add_child(button)
+
+
+func _goods_card(title: String, detail: String, icon_path: String, callback: Callable) -> void:
+	var button := Button.new()
+	button.custom_minimum_size = Vector2(220, 236)
+	button.text = ""
+	button.focus_mode = Control.FOCUS_NONE
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 6)
+	if icon_path != "":
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(196, 128)
+		icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		icon.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var texture: Resource = load(icon_path)
+		if texture is Texture2D:
+			icon.texture = texture
+		box.add_child(icon)
+	var name := _label(title, 22)
+	name.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(name)
+	var price := _label(detail, 18)
+	price.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	price.add_theme_color_override("font_color", Color("5C5348"))
+	box.add_child(price)
+	_pin(button, box, 8.0)
 	button.pressed.connect(callback)
 	place_tray_box.add_child(button)
 
@@ -781,24 +859,24 @@ func _show_gym() -> void:
 	_open_tray()
 	for pack in content.get("gym_packages", []):
 		var id := str(pack.get("id", ""))
-		_tray_button("%s %s" % [str(pack.get("name", "")), sim.gold_text(int(pack.get("cost", 0)))], "res://assets/ui/icon_gym.png", _do_gym.bind(id))
+		_tray_button("%s  %s 金" % [str(pack.get("name", "")), sim.gold_text(int(pack.get("cost", 0)))], "res://assets/ui/icon_gym.png", _do_gym.bind(id))
 	_tray_button("离开", "", _show_map)
 
 
 func _show_mall() -> void:
 	_use_place("mall")
-	_open_tray()
-	_tray_button("先逛街", "res://assets/ui/item_snack.png", _mall_walk)
+	_open_tray(true)
+	_goods_card("先逛街", "看看橱窗", "res://assets/ui/cover_consume.png", _mall_walk)
 	var icons := {"snack": "res://assets/ui/item_snack.png", "bento": "res://assets/ui/item_bento.png", "drink": "res://assets/ui/item_drink.png"}
 	for good in content.get("goods", []):
 		var id := str(good.get("id", ""))
-		_tray_button("%s %s" % [str(good.get("name", id)), sim.gold_text(int(good.get("cost", 0)))], str(icons.get(id, "")), _do_buy.bind(id))
-	_tray_button("升级床", "res://assets/ui/icon_bed.png", _do_upgrade.bind("bed"))
-	_tray_button("升级书桌", "res://assets/ui/icon_computer.png", _do_upgrade.bind("desk"))
-	_tray_button("升级书架", "res://assets/ui/icon_bookshelf.png", _do_upgrade.bind("shelf"))
-	_tray_button("换租", "", _do_move)
-	_tray_button("买房", "", _do_buy_home)
-	_tray_button("离开", "", _show_map)
+		_goods_card(str(good.get("name", id)), "购买  %s 金" % sim.gold_text(int(good.get("cost", 0))), str(icons.get(id, "")), _do_buy.bind(id))
+	_goods_card("升级床", "购买  %s 金" % sim.gold_text(520 * DiarySim.GOLD), "res://assets/ui/icon_bed.png", _do_upgrade.bind("bed"))
+	_goods_card("升级书桌", "购买  %s 金" % sim.gold_text(580 * DiarySim.GOLD), "res://assets/ui/icon_computer.png", _do_upgrade.bind("desk"))
+	_goods_card("升级书架", "购买  %s 金" % sim.gold_text(460 * DiarySim.GOLD), "res://assets/ui/icon_bookshelf.png", _do_upgrade.bind("shelf"))
+	_goods_card("换租", "搬家  %s 金" % sim.gold_text(600 * DiarySim.GOLD), "res://assets/ui/cover_life.png", _do_move)
+	_goods_card("买房", "付清  %s 金" % sim.gold_text(4800 * DiarySim.GOLD), "res://assets/ui/cover_society.png", _do_buy_home)
+	_goods_card("离开", "返回地图", "", _show_map)
 
 
 func _shop_result(result: Dictionary) -> void:
@@ -1156,6 +1234,27 @@ func _fusion_line(work: Dictionary) -> String:
 	return ""
 
 
+func _poster(image_path: String, title: String, subtitle: String) -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", ThemeBuilder.panel_style())
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 12)
+	var art := TextureRect.new()
+	art.custom_minimum_size = Vector2(220, 132)
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	var texture: Resource = load(image_path)
+	if texture is Texture2D:
+		art.texture = texture
+	row.add_child(art)
+	var text := VBoxContainer.new()
+	text.add_child(_label(title, 24))
+	text.add_child(_label(subtitle, 18))
+	row.add_child(text)
+	panel.add_child(row)
+	return panel
+
+
 func _cover_card(image_path: String, title: String, subtitle: String, callback: Callable, tint: Color = Color("FFF8EE")) -> Button:
 	var button := Button.new()
 	button.custom_minimum_size = Vector2(340, 250)
@@ -1172,7 +1271,6 @@ func _cover_card(image_path: String, title: String, subtitle: String, callback: 
 	button.add_theme_stylebox_override("pressed", ThemeBuilder.button_style(tint.darkened(0.05), Color("2C241C"), 2))
 	button.add_theme_stylebox_override("focus", fill)
 	var box := VBoxContainer.new()
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_theme_constant_override("separation", 6)
 	var art := TextureRect.new()
 	art.custom_minimum_size = Vector2(300, 148)
@@ -1191,7 +1289,8 @@ func _cover_card(image_path: String, title: String, subtitle: String, callback: 
 		sub.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		sub.add_theme_color_override("font_color", Color("5C5348"))
 		box.add_child(sub)
-	button.add_child(box)
+	_pin(button, box, 10.0)
+	button.set_meta("body", box)
 	button.pressed.connect(callback)
 	return button
 
@@ -1219,13 +1318,21 @@ func _rank_line(rank: int, title: String, value: float, top: float, icon_path: S
 	bar.custom_minimum_size = Vector2(180, 18)
 	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	line.add_child(bar)
+	var shown := "%d" % int(round(value))
+	if top <= 1.2:
+		shown = "%d%%" % int(round(value * 100.0))
+	var figure := _label(shown, 18)
+	figure.custom_minimum_size = Vector2(64, 0)
+	figure.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	line.add_child(figure)
 	return line
 
 
 func _text_button(text: String, callback: Callable) -> Button:
 	var button := Button.new()
 	button.text = text
-	button.custom_minimum_size = Vector2(140, 48)
+	button.custom_minimum_size = Vector2(180, 52)
+	button.add_theme_font_size_override("font_size", 20)
 	button.pressed.connect(callback)
 	return button
 
@@ -1245,9 +1352,8 @@ func _pick_card(icon_path: String, title: String, subtitle: String, tint: Color,
 	button.add_theme_stylebox_override("pressed", ThemeBuilder.button_style(tint.darkened(0.06), Color("2C241C"), 2))
 	button.add_theme_stylebox_override("focus", fill)
 	var box := VBoxContainer.new()
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_theme_constant_override("separation", 4)
-	button.add_child(box)
+	_pin(button, box, 12.0)
 	if icon_path != "":
 		var icon := TextureRect.new()
 		icon.custom_minimum_size = Vector2(36, 36)
@@ -1468,6 +1574,172 @@ func _clear_hover() -> void:
 	selected = ""
 	if room_view != null:
 		room_view.set_hover(0)
+
+
+func _scroll_end() -> void:
+	if page_scroll == null:
+		return
+	var bar: VScrollBar = page_scroll.get_v_scroll_bar()
+	var guard := 0
+	while bar.max_value <= 1.0 and guard < 10:
+		await get_tree().process_frame
+		guard += 1
+	page_scroll.scroll_vertical = int(bar.max_value)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+
+func _find_button_text(wanted: String) -> Button:
+	var stack: Array[Node] = [self]
+	while not stack.is_empty():
+		var node: Node = stack.pop_back()
+		if node is Button and str((node as Button).text).find(wanted) >= 0 and (node as Button).is_visible_in_tree():
+			return node
+		for child in node.get_children():
+			stack.append(child)
+	return null
+
+
+func _button_on_screen(wanted: String) -> bool:
+	var button := _find_button_text(wanted)
+	if button == null:
+		print("CHECK missing ", wanted)
+		return false
+	var rect := button.get_global_rect()
+	var view := get_viewport().get_visible_rect()
+	var seen := view.encloses(rect) or (view.intersects(rect) and rect.size.y >= 36.0 and rect.position.y + 20.0 < view.size.y)
+	print("CHECK button ", wanted, " rect=", rect, " view=", view.size, " seen=", seen)
+	return seen
+
+
+func _label_on_screen(wanted: String, partial: bool = false) -> bool:
+	var stack: Array[Node] = [self]
+	var view := get_viewport().get_visible_rect()
+	while not stack.is_empty():
+		var node: Node = stack.pop_back()
+		if node is Label and (node as Label).is_visible_in_tree():
+			var text := str((node as Label).text)
+			var hit := text == wanted or (partial and text.find(wanted) >= 0)
+			if hit:
+				var rect := (node as Label).get_global_rect()
+				var seen := view.intersects(rect) and rect.position.y >= 70.0 and rect.position.y + 8.0 < view.size.y
+				print("CHECK label ", wanted, " rect=", rect, " view=", view.size, " seen=", seen)
+				return seen
+		for child in node.get_children():
+			stack.append(child)
+	print("CHECK missing label ", wanted)
+	return false
+
+
+func _play_path() -> void:
+	var shots := ShotUtil.new()
+	add_child(shots)
+	if name_edit != null:
+		name_edit.text = "小林"
+	gender = "m" if OS.get_cmdline_user_args().has("--male") else "f"
+	_start_game()
+	await shots.capture(self, "play_room")
+	_open_city()
+	await shots.capture(self, "play_city")
+	_enter_place("park")
+	await shots.capture(self, "play_park")
+	_enter_place("cinema")
+	await shots.capture(self, "play_cinema")
+	_enter_place("library")
+	await shots.capture(self, "play_library")
+	_enter_place("gym")
+	await shots.capture(self, "play_gym")
+	var outing := sim.go_out("park")
+	print("CHECK outing ", outing.get("ok", false), " ", outing.get("reason", ""))
+	_close_page()
+	sim.inspiration = 90
+	sim.stamina = 90
+	_show_create()
+	await shots.capture(self, "play_create")
+	_show_topics()
+	await shots.capture(self, "play_topics")
+	await _scroll_end()
+	await shots.capture(self, "play_topics_end")
+	print("CHECK topics back=", _button_on_screen("返回"))
+	page_scroll.scroll_vertical = 0
+	topic_id = "life"
+	_show_memes()
+	await shots.capture(self, "play_memes")
+	link = "串联"
+	polish = "none"
+	_show_preview()
+	await shots.capture(self, "play_preview")
+	print("CHECK preview risk=", _label_on_screen("风险"), " potential=", _label_on_screen("潜力"))
+	_confirm_create()
+	await shots.capture(self, "play_published")
+	print("CHECK published=", _label_on_screen("发出去了"))
+	sim.advance_time(DiarySim.DAY)
+	_refresh_hud()
+	selected_work = 0
+	_show_history()
+	await shots.capture(self, "play_income")
+	_show_chart()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var topic_seen := _label_on_screen("题材")
+	await shots.capture(self, "play_chart_top")
+	await _scroll_end()
+	await shots.capture(self, "play_chart_bottom")
+	var chart_bar: VScrollBar = page_scroll.get_v_scroll_bar()
+	var back_seen := _button_on_screen("返回往期")
+	var meme_seen := _label_on_screen("试吃的小勺", true)
+	print("CHECK chart max=", chart_bar.max_value, " scroll=", page_scroll.scroll_vertical, " topic=", topic_seen, " meme=", meme_seen, " back=", back_seen)
+	sim.money = 9000 * DiarySim.GOLD
+	_show_mall()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await shots.capture(self, "play_mall")
+	var goods_seen := _label_on_screen("盒饭")
+	var mall_end := false
+	if place_tray_scroll != null:
+		var hbar: HScrollBar = place_tray_scroll.get_h_scroll_bar()
+		place_tray_scroll.scroll_horizontal = int(hbar.max_value)
+		await get_tree().process_frame
+		await shots.capture(self, "play_mall_end")
+		mall_end = _label_on_screen("离开")
+		print("CHECK mall hmax=", hbar.max_value, " goods=", goods_seen, " end=", mall_end)
+		place_tray_scroll.scroll_horizontal = 0
+	var bought := sim.buy_good("bento")
+	var upgraded := sim.upgrade("bed")
+	print("CHECK buy ", bought.get("ok", false), " upgrade ", upgraded.get("ok", false), " bed ", sim.furniture.get("bed", 1))
+	_apply_visuals()
+	_refresh_hud()
+	_show_mall()
+	await shots.capture(self, "play_mall_bought")
+	var money_before := sim.money
+	var saved := DiarySave.save_to_path(sim, DiarySave.manual_path(1))
+	sim.money = 1
+	var loaded := DiarySave.load_from_path(DiarySave.manual_path(1), content)
+	var load_ok := bool(loaded.get("ok", false)) and int(loaded["sim"].money) == money_before
+	print("CHECK save ", saved.get("ok", false), " load ", load_ok)
+	if loaded.get("ok", false):
+		sim = loaded["sim"]
+	_apply_visuals()
+	_refresh_hud()
+	_close_page()
+	await shots.capture(self, "play_loaded")
+	var crossed := sim.advance_time(DiarySim.DAY)
+	_consume_reports(crossed)
+	var auto := DiarySave.load_from_path(DiarySave.AUTO_PATH, content)
+	var auto_ok := bool(auto.get("ok", false)) and int(auto["sim"].clock_minutes) == sim.clock_minutes
+	print("CHECK autosave ", auto_ok, " clock ", sim.clock_text())
+	sim.money = 0
+	sim.works.clear()
+	sim.ledger.clear()
+	sim.clock_minutes = 7 * DiarySim.DAY - 20
+	sim.last_settled = 6 * DiarySim.DAY
+	sim.advance_time(60)
+	if sim.phase != "playing":
+		_show_over()
+	await shots.capture(self, "play_rent_fail")
+	print("CHECK rent ", sim.phase, " ", sim.loss_reason)
+	print("PLAY_DONE outing=", outing.get("ok", false), " chart_back=", back_seen, " load=", load_ok, " auto=", auto_ok, " phase=", sim.phase)
+	get_tree().quit()
 
 
 func _shot_tour() -> void:
