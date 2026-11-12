@@ -6,6 +6,15 @@ class_name PlaceView
 
 var place_id := "map"
 var portrait: Texture2D
+var picture: Texture2D
+
+
+func show_place(id: String) -> void:
+	place_id = id
+	var file_id := "city" if id == "map" else id
+	var loaded: Resource = load("res://assets/places/%s.png" % file_id)
+	picture = loaded if loaded is Texture2D else null
+	queue_redraw()
 
 
 func _ready() -> void:
@@ -16,6 +25,10 @@ func _ready() -> void:
 func _draw() -> void:
 	var box := get_size()
 	if box.x < 8.0 or box.y < 8.0:
+		return
+	if picture != null:
+		draw_texture_rect(picture, Rect2(Vector2.ZERO, box), false)
+		draw_rect(Rect2(0, box.y * 0.72, box.x, box.y * 0.28), Color(0.16, 0.13, 0.1, 0.38))
 		return
 	match place_id:
 		"park":

@@ -37,6 +37,7 @@ var loss_reason := ""
 var rent_streak := 0
 var goals := {"steady": false, "audience": false, "moved": false, "owned": false}
 var rest_today := 0
+var cat_today := 0
 var works_today := 0
 var item_stamina_today := 0
 var gym_week := 0
@@ -91,14 +92,14 @@ func gold_text(fen: int) -> String:
 
 func next_rent_text() -> String:
 	var due := _next_multiple(7 * DAY)
-	return "房租 %s · 第%d日结束" % [gold_text(_rent_due_amount()), int(due / DAY)]
+	return "房租 %s 金，第%d日结束" % [gold_text(_rent_due_amount()), int(due / DAY)]
 
 
 func next_loan_text() -> String:
 	if loan_left <= 0:
 		return "贷款已还清"
 	var due := _next_multiple(14 * DAY)
-	return "贷款 %s · 第%d日结束" % [gold_text(180 * GOLD), int(due / DAY)]
+	return "贷款 %s 金，第%d日结束" % [gold_text(180 * GOLD), int(due / DAY)]
 
 
 func topic_by_id(id: String) -> Dictionary:
@@ -245,6 +246,21 @@ func rest(minutes: int = 120) -> Dictionary:
 	var reason := "躺了 %d 分钟，体力 %+d，现在 %d。%s" % [minutes, gain, stamina, spark]
 	_log_line("%s%s" % [clock_text(), reason])
 	return {"ok": true, "gain": gain, "reason": reason, "report": moved}
+
+
+func pet_cat() -> Dictionary:
+	if cat_today >= 2:
+		return {"ok": false, "reason": "猫今天已经陪过两次了。"}
+	var moved := advance_time(20)
+	if phase != "playing":
+		return {"ok": false, "reason": loss_reason, "bankrupt": true}
+	inspiration = mini(100, inspiration + 8)
+	stamina = maxi(0, stamina - 2)
+	cat_today += 1
+	pose = "cat"
+	var reason := "蹲下来逗了逗猫，灵感 +8。"
+	_log_line("%s%s" % [clock_text(), reason])
+	return {"ok": true, "reason": reason, "report": moved}
 
 
 func read_home() -> Dictionary:
@@ -488,6 +504,7 @@ func state_dict() -> Dictionary:
 		"rent_streak": rent_streak,
 		"goals": goals.duplicate(true),
 		"rest_today": rest_today,
+		"cat_today": cat_today,
 		"works_today": works_today,
 		"item_stamina_today": item_stamina_today,
 		"gym_week": gym_week,
@@ -537,6 +554,7 @@ static func from_state(content: Dictionary, data: Dictionary) -> DiarySim:
 	sim.rent_streak = int(data["rent_streak"])
 	sim.goals = data["goals"].duplicate(true)
 	sim.rest_today = int(data["rest_today"])
+	sim.cat_today = int(data.get("cat_today", 0))
 	sim.works_today = int(data["works_today"])
 	sim.item_stamina_today = int(data["item_stamina_today"])
 	sim.gym_week = int(data["gym_week"])
@@ -583,6 +601,7 @@ func _settle_boundary(boundary: int) -> Dictionary:
 		loan_left -= 1
 		loan_paid = loan
 	rest_today = 0
+	cat_today = 0
 	works_today = 0
 	item_stamina_today = 0
 	if ended % 7 == 0:
