@@ -18,7 +18,11 @@ var status_text := ""
 var top_day: Label
 var top_money: Label
 var top_bill: Label
-var home_box: VBoxContainer
+var room: RoomView
+var work_layer: Control
+var tray: Control
+var stats_panel: Control
+var ledger_panel: Control
 var publish_box: VBoxContainer
 var result_box: VBoxContainer
 var home_hint: Label
@@ -31,7 +35,6 @@ var topic_box: VBoxContainer
 var log_box: VBoxContainer
 var right_box: VBoxContainer
 var sponsor_check: CheckButton
-var backdrop: DeskBackdrop
 var dimmer: ColorRect
 var card: VBoxContainer
 var stat_labels := {}
@@ -116,35 +119,201 @@ func _boot() -> bool:
 
 
 func _build() -> void:
-	backdrop = DeskBackdrop.new()
-	add_child(backdrop)
-	var margin := MarginContainer.new()
-	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
-	margin.add_theme_constant_override("margin_left", 10)
-	margin.add_theme_constant_override("margin_right", 10)
-	margin.add_theme_constant_override("margin_top", 8)
-	margin.add_theme_constant_override("margin_bottom", 8)
-	add_child(margin)
-	var root_box := VBoxContainer.new()
-	root_box.add_theme_constant_override("separation", 8)
-	root_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	root_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	margin.add_child(root_box)
-	root_box.add_child(_build_top())
-	var desk_gap := Control.new()
-	desk_gap.custom_minimum_size = Vector2(0, 78)
-	desk_gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	root_box.add_child(desk_gap)
-	var columns := HBoxContainer.new()
-	columns.add_theme_constant_override("separation", 8)
-	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	columns.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	root_box.add_child(columns)
-	columns.add_child(_build_left())
-	columns.add_child(_build_center())
-	columns.add_child(_build_right())
-	root_box.add_child(_build_log())
+	room = RoomView.new()
+	room.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(room)
+	_place_hotspots()
+	_anchor_top(_build_hud(), 8, 8, 8, 60)
+	stats_panel = _build_left()
+	stats_panel.visible = false
+	_anchor_box(stats_panel, 16, 72, 0, 88)
+	stats_panel.offset_right = 280
+	ledger_panel = _build_ledger()
+	ledger_panel.visible = false
+	_anchor_box(ledger_panel, 0, 72, 16, 88)
+	ledger_panel.offset_left = -340
+	_build_tray()
+	_build_work_sheet()
 	_build_overlay()
+
+
+func _anchor_top(node: Control, left: float, top: float, right: float, bottom: float) -> void:
+	add_child(node)
+	node.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	node.offset_left = left
+	node.offset_top = top
+	node.offset_right = -right
+	node.offset_bottom = bottom
+
+
+func _anchor_box(node: Control, left: float, top: float, right: float, bottom: float) -> void:
+	add_child(node)
+	node.set_anchors_preset(Control.PRESET_FULL_RECT)
+	node.offset_left = left
+	node.offset_top = top
+	node.offset_right = -right
+	node.offset_bottom = -bottom
+
+
+func _build_hud() -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	panel.add_child(row)
+	var day_chip := _chip()
+	top_day = _label("第 1 / 30 天", 20, ThemeBuilder.INK, false)
+	day_chip.add_child(top_day)
+	row.add_child(day_chip)
+	var money_chip := _chip()
+	top_money = _label("¥0", 22, ThemeBuilder.CLAY, false)
+	money_chip.add_child(top_money)
+	row.add_child(money_chip)
+	var bill_chip := _chip()
+	bill_chip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	top_bill = _label("账单", 15, ThemeBuilder.INK, false)
+	bill_chip.add_child(top_bill)
+	row.add_child(bill_chip)
+	row.add_child(_icon_button("状态", "stats_toggle", _toggle_stats))
+	row.add_child(_icon_button("账本", "ledger_toggle", _toggle_ledger))
+	row.add_child(_icon_button("帮助", "help_game", _open_help))
+	row.add_child(_icon_button("暂停", "pause", _open_pause))
+	return panel
+
+
+func _chip() -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", ThemeBuilder.panel_style())
+	panel.custom_minimum_size = Vector2(0, 48)
+	return panel
+
+
+func _build_tray() -> void:
+	tray = PanelContainer.new()
+	tray.add_theme_stylebox_override("panel", ThemeBuilder.panel_style())
+	add_child(tray)
+	tray.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	tray.offset_left = 12
+	tray.offset_right = -12
+	tray.offset_top = -104
+	tray.offset_bottom = -10
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 2)
+	tray.add_child(box)
+	home_hint = _label("", 14, ThemeBuilder.INK, false)
+	box.add_child(home_hint)
+	status_label = _label("", 14, ThemeBuilder.DANGER, false)
+	status_label.visible = false
+	box.add_child(status_label)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	box.add_child(row)
+	_tray_button(row, "action_publish", "写稿", _open_publish)
+	_tray_button(row, "action_rest", "休息", _do_rest)
+	_tray_button(row, "action_outing", "出门", _do_outing)
+	_tray_button(row, "action_freelance", "私活", _do_freelance)
+	_tray_button(row, "action_study_writing", "学写作", _do_study_writing)
+	_tray_button(row, "action_study_editing", "学剪辑", _do_study_editing)
+	var end_button := _icon_button("结束今天", "end_day", _do_end_day)
+	ThemeBuilder.paint_primary(end_button)
+	end_button.custom_minimum_size = Vector2(120, 48)
+	row.add_child(end_button)
+	action_buttons["end_day"] = end_button
+
+
+func _tray_button(row: HBoxContainer, ui_id: String, text: String, callback: Callable) -> void:
+	var button := _icon_button(text, ui_id, callback)
+	button.custom_minimum_size = Vector2(96, 48)
+	row.add_child(button)
+	action_buttons[ui_id] = button
+
+
+func _place_hotspots() -> void:
+	_hotspot("书桌写稿", "spot_publish", _open_publish, Vector2(360, 548))
+	_hotspot("床上休息", "spot_rest", _do_rest, Vector2(900, 548))
+	_hotspot("门口出门", "spot_outing", _do_outing, Vector2(48, 400))
+	_hotspot("门口私活", "spot_freelance", _do_freelance, Vector2(160, 400))
+	_hotspot("书架学习", "spot_study", _do_study_writing, Vector2(1088, 400))
+
+
+func _hotspot(text: String, ui_id: String, callback: Callable, at: Vector2) -> void:
+	var button := _icon_button(text, ui_id, callback)
+	button.custom_minimum_size = Vector2(108, 48)
+	button.position = at
+	button.size = Vector2(108, 48)
+	add_child(button)
+
+
+func _build_ledger() -> PanelContainer:
+	var panel := _panel()
+	var box := VBoxContainer.new()
+	box.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_child(box)
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	box.add_child(scroll)
+	right_box = VBoxContainer.new()
+	right_box.add_theme_constant_override("separation", 6)
+	right_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(right_box)
+	var log_scroll := ScrollContainer.new()
+	log_scroll.custom_minimum_size = Vector2(0, 140)
+	log_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	box.add_child(log_scroll)
+	log_box = VBoxContainer.new()
+	log_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	log_scroll.add_child(log_box)
+	return panel
+
+
+func _build_work_sheet() -> void:
+	work_layer = Control.new()
+	work_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	work_layer.visible = false
+	work_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(work_layer)
+	var shade := ColorRect.new()
+	shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	shade.color = Color(0.2, 0.12, 0.08, 0.28)
+	shade.mouse_filter = Control.MOUSE_FILTER_STOP
+	work_layer.add_child(shade)
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_STOP
+	work_layer.add_child(center)
+	var paper := PanelContainer.new()
+	paper.custom_minimum_size = Vector2(860, 520)
+	paper.add_theme_stylebox_override("panel", ThemeBuilder.panel_style())
+	center.add_child(paper)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 4)
+	paper.add_child(column)
+	publish_box = VBoxContainer.new()
+	publish_box.add_theme_constant_override("separation", 4)
+	publish_box.visible = false
+	column.add_child(publish_box)
+	_build_publish(publish_box)
+	result_box = VBoxContainer.new()
+	result_box.add_theme_constant_override("separation", 6)
+	result_box.visible = false
+	column.add_child(result_box)
+	result_title = _label("发出去了", 24, ThemeBuilder.INK)
+	result_box.add_child(result_title)
+	result_body = _reading_text(180)
+	result_box.add_child(result_body)
+	var back := _icon_button("继续安排今天", "result_continue", _show_home)
+	ThemeBuilder.paint_primary(back)
+	result_box.add_child(back)
+
+
+func _toggle_stats() -> void:
+	stats_panel.visible = not stats_panel.visible
+
+
+func _toggle_ledger() -> void:
+	ledger_panel.visible = not ledger_panel.visible
 
 
 func _build_top() -> PanelContainer:
@@ -186,60 +355,6 @@ func _build_left() -> PanelContainer:
 	_add_stat(box, "reputation", "口碑", ThemeBuilder.CLAY)
 	_add_stat(box, "writing", "写作", ThemeBuilder.TEAL)
 	_add_stat(box, "editing", "剪辑", ThemeBuilder.GOLD)
-	return panel
-
-
-func _build_center() -> PanelContainer:
-	var panel := _panel()
-	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 6)
-	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	box.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	panel.add_child(box)
-	status_label = _label("", 15, ThemeBuilder.DANGER)
-	status_label.visible = false
-	box.add_child(status_label)
-	home_box = VBoxContainer.new()
-	home_box.add_theme_constant_override("separation", 8)
-	home_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	box.add_child(home_box)
-	home_hint = _label("", 16, ThemeBuilder.INK)
-	home_box.add_child(home_hint)
-	var grid := GridContainer.new()
-	grid.columns = 2
-	grid.add_theme_constant_override("h_separation", 8)
-	grid.add_theme_constant_override("v_separation", 8)
-	home_box.add_child(grid)
-	_add_action(grid, "action_publish", "写稿发布", _open_publish)
-	_add_action(grid, "action_rest", "休息", _do_rest)
-	_add_action(grid, "action_outing", "出门采风", _do_outing)
-	_add_action(grid, "action_freelance", "自由职业", _do_freelance)
-	_add_action(grid, "action_study_writing", "学写作", _do_study_writing)
-	_add_action(grid, "action_study_editing", "学剪辑", _do_study_editing)
-	var end_button := _icon_button("结束今天", "end_day", _do_end_day)
-	ThemeBuilder.paint_primary(end_button)
-	end_button.custom_minimum_size = Vector2(0, 52)
-	home_box.add_child(end_button)
-	action_buttons["end_day"] = end_button
-	publish_box = VBoxContainer.new()
-	publish_box.add_theme_constant_override("separation", 4)
-	publish_box.visible = false
-	box.add_child(publish_box)
-	_build_publish(publish_box)
-	result_box = VBoxContainer.new()
-	result_box.add_theme_constant_override("separation", 6)
-	result_box.visible = false
-	result_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	box.add_child(result_box)
-	result_title = _label("发出去了", 24, ThemeBuilder.INK)
-	result_box.add_child(result_title)
-	result_body = _reading_text(120)
-	result_box.add_child(result_body)
-	var back := _icon_button("继续安排今天", "result_continue", _show_home)
-	ThemeBuilder.paint_primary(back)
-	result_box.add_child(back)
 	return panel
 
 
@@ -362,15 +477,7 @@ func _refresh() -> void:
 	_refresh_right()
 	_refresh_log()
 	_refresh_center_visibility()
-	backdrop.sky_phase = mini(3, 3 - sim.actions_left) if sim.phase == "playing" else 0
-	var max_fans := 1
-	for value in sim.fans.values():
-		max_fans = max(max_fans, int(value))
-	backdrop.fan_ratios = [
-		float(sim.fans.get("shizi", 0)) / float(max_fans),
-		float(sim.fans.get("qingtie", 0)) / float(max_fans),
-		float(sim.fans.get("changhe", 0)) / float(max_fans),
-	]
+	_refresh_room()
 	status_label.text = status_text
 	status_label.visible = status_text != ""
 	_rebuild_overlay()
@@ -401,30 +508,30 @@ func _refresh_stats() -> void:
 func _refresh_home() -> void:
 	var trend := sim.trend_for_day(sim.day)
 	var upcoming := sim.next_trend()
-	var next_text := "下周预告「%s」。" % upcoming if upcoming != "" else "这是本月最后一段趋势。"
-	home_hint.text = "今天还剩 %d 次行动。本周趋势「%s」。%s结束今天会结算伙食 %s。" % [
+	var next_text := upcoming if upcoming != "" else "月底"
+	home_hint.text = "还剩 %d 次 · 本周「%s」· 下周「%s」· 伙食 %s" % [
 		sim.actions_left, trend, next_text, Loc.yuan(int(sim.catalog.balance["food_per_day"]))
 	]
 	var locked := _ui_locked()
 	var tired := sim.stamina < float(sim.catalog.balance["min_stamina_to_work"])
-	_set_action("action_publish", locked or sim.actions_left <= 0 or tired, "写稿发布" if not tired else "写稿发布（太累）")
+	_set_action("action_publish", locked or sim.actions_left <= 0 or tired, "写稿" if not tired else "太累")
 	_set_action("action_rest", locked or sim.actions_left <= 0, "休息")
 	var outing_cost := -int(sim.catalog.balance["actions"]["outing"]["money"])
 	var outing_block := locked or sim.actions_left <= 0 or tired or sim.money < outing_cost
-	var outing_text := "出门采风"
+	var outing_text := "出门"
 	if tired:
-		outing_text = "出门采风（太累）"
+		outing_text = "太累"
 	elif sim.money < outing_cost:
-		outing_text = "出门采风（钱不够）"
+		outing_text = "没钱"
 	_set_action("action_outing", outing_block, outing_text)
-	_set_action("action_freelance", locked or sim.actions_left <= 0 or tired, "自由职业" if not tired else "自由职业（太累）")
+	_set_action("action_freelance", locked or sim.actions_left <= 0 or tired, "私活" if not tired else "太累")
 	var write_cost := -int(sim.catalog.balance["actions"]["study_writing"]["money"])
 	var edit_cost := -int(sim.catalog.balance["actions"]["study_editing"]["money"])
-	_set_action("action_study_writing", locked or sim.actions_left <= 0 or sim.money < write_cost, "学写作" if sim.money >= write_cost else "学写作（钱不够）")
-	_set_action("action_study_editing", locked or sim.actions_left <= 0 or sim.money < edit_cost, "学剪辑" if sim.money >= edit_cost else "学剪辑（钱不够）")
+	_set_action("action_study_writing", locked or sim.actions_left <= 0 or sim.money < write_cost, "学写作" if sim.money >= write_cost else "没钱")
+	_set_action("action_study_editing", locked or sim.actions_left <= 0 or sim.money < edit_cost, "学剪辑" if sim.money >= edit_cost else "没钱")
 	var end_button: Button = action_buttons["end_day"]
 	end_button.disabled = locked
-	end_button.text = "结束今天" if sim.actions_left > 0 else "结束今天 · 去结算"
+	end_button.text = "结束今天" if sim.actions_left > 0 else "去结算"
 
 
 func _refresh_publish() -> void:
@@ -562,9 +669,32 @@ func _refresh_log() -> void:
 
 
 func _refresh_center_visibility() -> void:
-	home_box.visible = center_mode == "home"
+	if work_layer:
+		work_layer.visible = center_mode != "home"
+	if tray:
+		tray.visible = center_mode == "home"
 	publish_box.visible = center_mode == "publish"
 	result_box.visible = center_mode == "result"
+
+
+func _refresh_room() -> void:
+	if room == null or sim == null:
+		return
+	room.sky_phase = mini(3, 3 - sim.actions_left) if sim.phase == "playing" else 0
+	room.trend_text = sim.trend_for_day(sim.day)
+	room.next_trend = sim.next_trend() if sim.next_trend() != "" else "月底"
+	room.sponsor = not sim.sponsor_offer.is_empty() or not sim.contract.is_empty()
+	room.stamina = sim.stamina
+	room.mood = sim.mood
+	room.stress = sim.stress
+	var max_fans := 1
+	for value in sim.fans.values():
+		max_fans = max(max_fans, int(value))
+	room.fan_ratios = [
+		float(sim.fans.get("shizi", 0)) / float(max_fans),
+		float(sim.fans.get("qingtie", 0)) / float(max_fans),
+		float(sim.fans.get("changhe", 0)) / float(max_fans),
+	]
 
 
 func _sync_forced_overlay() -> void:
@@ -740,6 +870,7 @@ func _show_home() -> void:
 
 
 func _open_publish() -> void:
+	room.pose = "type"
 	if not sim.contract.is_empty():
 		sponsor_on = true
 		sel_platform = str(sim.contract.get("platform", sel_platform))
@@ -823,6 +954,15 @@ func _apply_simple(result: Dictionary) -> void:
 		status_text = Loc.error_text(str(result.get("code", "")))
 	else:
 		status_text = ""
+		match str(result.get("code", "")):
+			"rest":
+				room.pose = "rest"
+			"outing":
+				room.pose = "outing"
+			"freelance":
+				room.pose = "freelance"
+			"study_writing", "study_editing":
+				room.pose = "study"
 	center_mode = "home"
 	_refresh()
 
@@ -1107,6 +1247,24 @@ func _demo() -> void:
 	if sim.phase == "playing":
 		await _click_or_call(shots, "recap_next", _close_overlay)
 		await shots.capture(self, "11_next_day")
+	room.pose = "rest"
+	room.sky_phase = 3
+	await shots.capture(self, "12_rest_night")
+	room.pose = "study"
+	room.sky_phase = 1
+	await shots.capture(self, "13_study")
+	room.pose = "outing"
+	await shots.capture(self, "14_outing")
+	room.pose = "type"
+	await shots.capture(self, "15_typing")
+	room.pose = "idle"
+	_refresh_room()
+	stats_panel.visible = true
+	await shots.capture(self, "16_stats")
+	stats_panel.visible = false
+	ledger_panel.visible = true
+	await shots.capture(self, "17_ledger")
+	ledger_panel.visible = false
 	var layout_ok := shots.audit(self)
 	var report := "day=%d phase=%s posts=%d layout=%s" % [sim.day, sim.phase, sim.post_count, layout_ok]
 	print("PLAYTEST ", report)

@@ -23,8 +23,10 @@ func _set_title() -> void:
 
 
 func _build() -> void:
-	var backdrop := DeskBackdrop.new()
-	backdrop.sky_phase = 2
+	var backdrop := RoomView.new()
+	backdrop.sky_phase = 1
+	backdrop.trend_text = "生活"
+	backdrop.next_trend = "城市"
 	add_child(backdrop)
 	var center := CenterContainer.new()
 	center.set_anchors_preset(Control.PRESET_FULL_RECT)
