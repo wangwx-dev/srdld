@@ -43,9 +43,41 @@ def set_render(names):
         obj.hide_render = obj.hide_render
 
 
+def _setup_depth_output():
+    scene.view_layers[0].use_pass_z = True
+    scene.use_nodes = True
+    tree = scene.node_tree
+    tree.nodes.clear()
+    layers = tree.nodes.new("CompositorNodeRLayers")
+    composite = tree.nodes.new("CompositorNodeComposite")
+    tree.links.new(layers.outputs["Image"], composite.inputs["Image"])
+    mapped = tree.nodes.new("CompositorNodeMapRange")
+    mapped.inputs[1].default_value = 1.0
+    mapped.inputs[2].default_value = 22.0
+    mapped.inputs[3].default_value = 0.0
+    mapped.inputs[4].default_value = 1.0
+    tree.links.new(layers.outputs["Depth"], mapped.inputs[0])
+    writer = tree.nodes.new("CompositorNodeOutputFile")
+    writer.base_path = str(OUT)
+    writer.format.file_format = "PNG"
+    writer.format.color_mode = "BW"
+    writer.format.color_depth = "16"
+    tree.links.new(mapped.outputs[0], writer.inputs[0])
+    return writer
+
+
+DEPTH_OUT = _setup_depth_output()
+
+
 def render(path):
+    path = Path(path)
     scene.render.filepath = str(path)
+    DEPTH_OUT.file_slots[0].path = path.stem + "_z_"
     bpy.ops.render.render(write_still=True)
+    produced = OUT / ("%s_z_0001.png" % path.stem)
+    target = OUT / ("%s_z.png" % path.stem)
+    if produced.exists():
+        produced.replace(target)
     print("WROTE", path)
 
 
@@ -104,6 +136,68 @@ def move_character(delta, rot_x=0.0, rot_z=0.0):
         local = matrices[obj.name].copy()
         local.translation -= PIVOT
         obj.matrix_world = Matrix.Translation(shift) @ rot @ local
+
+
+NEAR_ARM = ["F01_near_forearm", "F01_near_hand", "F01_near_cuff", "F01_near_finger_0", "F01_near_finger_1", "F01_near_finger_2"]
+FAR_ARM = ["F01_far_forearm", "F01_far_hand", "F01_far_cuff", "F01_far_finger_0", "F01_far_finger_1", "F01_far_finger_2"]
+
+
+def _part_center(names):
+    xs, ys, zs = [], [], []
+    for name in names:
+        obj = bpy.data.objects[name]
+        for corner in obj.bound_box:
+            world = obj.matrix_world @ Vector(corner)
+            xs.append(world.x)
+            ys.append(world.y)
+            zs.append(world.z)
+    return Vector(((min(xs) + max(xs)) * 0.5, (min(ys) + max(ys)) * 0.5, (min(zs) + max(zs)) * 0.5))
+
+
+def _spin(names, pivot, axis, angle):
+    rot = Matrix.Rotation(angle, 4, axis)
+    for name in names:
+        obj = bpy.data.objects[name]
+        obj.matrix_world = Matrix.Translation(pivot) @ rot @ Matrix.Translation(-pivot) @ obj.matrix_world
+
+
+def _spin_all(pivot, axis, angle):
+    _spin([obj.name for obj in char_objects], pivot, axis, angle)
+
+
+def _move_all(delta):
+    shift = Matrix.Translation(Vector(delta))
+    for obj in char_objects:
+        obj.matrix_world = shift @ obj.matrix_world
+
+
+def _lift_arms(amount):
+    for names, cuff in ((NEAR_ARM, "F01_near_cuff"), (FAR_ARM, "F01_far_cuff")):
+        _spin(names, _part_center([cuff]), "Y", amount)
+
+
+def apply_pose(kind, extra):
+    """Pose independent parts. Sit stays the sculpt. Bed lays the body on the mattress and rests the arms. Read turns toward the shelf and lifts the hands."""
+    restore_character()
+    if kind == "bed":
+        hip = _part_center(["F01_Trousers_seat"])
+        _spin_all(hip, "X", -1.5708)
+        _lift_arms(0.45)
+        hip = _part_center(["F01_Trousers_seat"])
+        _move_all(Vector((-1.70, -0.05, 0.84)) - hip)
+    elif kind == "read":
+        hip = _part_center(["F01_Trousers_seat"])
+        _spin_all(hip, "Z", 1.5708)
+        _lift_arms(-1.1)
+        foot = _part_center(["F01_near_canvas_shoe", "F01_far_canvas_shoe"])
+        _move_all(Vector((-0.35, 0.72, 0.12)) - foot)
+    elif kind == "door":
+        hip = _part_center(["F01_Trousers_seat"])
+        _spin_all(hip, "Z", 1.15)
+        foot = _part_center(["F01_near_canvas_shoe", "F01_far_canvas_shoe"])
+        _move_all(Vector((2.75, 1.45, 0.12)) - foot)
+    if extra.length > 0.001:
+        _move_all(extra)
 
 
 def render_character(path, delta, rot_x, male, rot_z=0.0):
@@ -223,12 +317,32 @@ desk_tint = tint_desk()
 render_prop(OUT / "desk_l2.png", ["20_Desk"])
 restore_nodes(desk_tint)
 
-render_character(OUT / "char_f_bed.png", BED_A[0], BED_A[1], False, BED_A[2])
-render_character(OUT / "char_m_bed.png", BED_A[0], BED_A[1], True, BED_A[2])
-render_character(OUT / "char_f_read.png", READ_A[0], READ_A[1], False, READ_A[2])
-render_character(OUT / "char_m_read.png", READ_A[0], READ_A[1], True, READ_A[2])
-render_character(OUT / "char_f_door.png", DOOR_A[0], DOOR_A[1], False, DOOR_A[2])
-render_character(OUT / "char_m_door.png", DOOR_A[0], DOOR_A[1], True, DOOR_A[2])
+def render_posed(path, kind, male, extra):
+    set_render([CHAR, "00_Structure"])
+    for obj in bpy.data.collections["00_Structure"].objects:
+        obj.hide_render = not obj.name.startswith("Floor_")
+    for obj in floors:
+        obj.is_shadow_catcher = True
+        obj.hide_render = False
+    tint_male(male)
+    apply_pose(kind, extra)
+    render(path)
+    restore_character()
+    tint_male(False)
+    for obj in bpy.data.collections["00_Structure"].objects:
+        obj.hide_render = False
+    for obj in floors:
+        obj.is_shadow_catcher = False
+
+
+render_posed(OUT / "char_f_sit.png", "sit", False, Vector((0, 0, 0)))
+render_posed(OUT / "char_m_sit.png", "sit", True, Vector((0, 0, 0)))
+render_posed(OUT / "char_f_bed.png", "bed", False, Vector((0, 0, 0)))
+render_posed(OUT / "char_m_bed.png", "bed", True, Vector((0, 0, 0)))
+render_posed(OUT / "char_f_read.png", "read", False, Vector((0, 0, 0)))
+render_posed(OUT / "char_m_read.png", "read", True, Vector((0, 0, 0)))
+render_posed(OUT / "char_f_door.png", "door", False, Vector((0, 0, 0)))
+render_posed(OUT / "char_m_door.png", "door", True, Vector((0, 0, 0)))
 
 saved = snapshot(["10_Bed", "20_Desk", "30_Chair"])
 shift_collection("10_Bed", BED_SHIFT, saved)
@@ -243,9 +357,9 @@ render_prop(OUT / "desk_b.png", ["20_Desk"])
 desk_tint = tint_desk()
 render_prop(OUT / "desk_b_l2.png", ["20_Desk"])
 restore_nodes(desk_tint)
-render_character(OUT / "char_f_sit_b.png", DESK_SHIFT, 0.0, False)
-render_character(OUT / "char_m_sit_b.png", DESK_SHIFT, 0.0, True)
-render_character(OUT / "char_f_bed_b.png", BED_A[0] + BED_SHIFT, BED_A[1], False, BED_A[2])
-render_character(OUT / "char_m_bed_b.png", BED_A[0] + BED_SHIFT, BED_A[1], True, BED_A[2])
+render_posed(OUT / "char_f_sit_b.png", "sit", False, DESK_SHIFT)
+render_posed(OUT / "char_m_sit_b.png", "sit", True, DESK_SHIFT)
+render_posed(OUT / "char_f_bed_b.png", "bed", False, BED_SHIFT)
+render_posed(OUT / "char_m_bed_b.png", "bed", True, BED_SHIFT)
 restore_snapshot(saved)
 print("DONE")

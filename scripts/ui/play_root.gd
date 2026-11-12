@@ -22,22 +22,20 @@ var click_player: AudioStreamPlayer
 var music_player: AudioStreamPlayer
 
 var world: Control
-var shell_layer: TextureRect
-var bed_layer: TextureRect
-var shelf_layer: TextureRect
-var chair_layer: TextureRect
-var char_layer: TextureRect
-var desk_layer: TextureRect
+var room_view: RoomComposite
+var selected_work := -1
 var hotspots: Dictionary = {}
 var hud_time: Label
 var hud_money: Label
 var hud_body: Label
 var hud_bill: Label
+var hud_loan: Label
 var page: Control
 var page_scroll: Control
 var page_box: VBoxContainer
 var place_view: PlaceView
 var tutor: Label
+var tutor_wrap: PanelContainer
 var name_edit: LineEdit
 var gender := "f"
 var seen_tutor := false
@@ -64,6 +62,11 @@ func _ready() -> void:
 	_apply_visuals()
 	_show_title()
 	if ShotUtil.enabled():
+		if OS.get_cmdline_user_args().has("--small"):
+			get_window().size = Vector2i(1024, 576)
+			await get_tree().process_frame
+			await get_tree().process_frame
+			print("WINDOW ", get_window().size, " VIEW ", get_viewport().get_visible_rect().size)
 		await _shot_tour()
 
 
@@ -76,27 +79,29 @@ func _load_content() -> Dictionary:
 
 
 func _build_world() -> void:
+	var backdrop := ColorRect.new()
+	backdrop.color = Color("E4DDD2")
+	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(backdrop)
 	world = Control.new()
-	world.position = Vector2(80, 40)
+	world.position = Vector2(40, 160)
 	world.size = CANVAS
 	world.scale = Vector2(zoom, zoom)
+	world.z_index = 1
 	add_child(world)
 	var catch := ColorRect.new()
 	catch.color = Color(0, 0, 0, 0)
 	catch.size = CANVAS
 	catch.gui_input.connect(_world_input)
 	world.add_child(catch)
-	shell_layer = _layer("res://assets/room/layers/shell.png")
-	bed_layer = _layer("res://assets/room/layers/bed.png")
-	shelf_layer = _layer("res://assets/room/layers/shelf.png")
-	chair_layer = _layer("res://assets/room/layers/chair.png")
-	char_layer = _layer("res://assets/room/layers/char_f_sit.png")
-	desk_layer = _layer("res://assets/room/layers/desk_front.png")
-	var anchors := _anchors()
-	_hotspot("创作", "computer", anchors["computer"], _open_computer)
-	_hotspot("休息", "bed", anchors["bed"], _rest)
-	_hotspot("阅读", "bookshelf", anchors["bookshelf"], _read)
-	_hotspot("出门", "door", anchors["door"], _open_city)
+	room_view = RoomComposite.new()
+	room_view.size = CANVAS
+	world.add_child(room_view)
+	_hotspot("休息", "bed", _rest)
+	_hotspot("阅读", "bookshelf", _read)
+	_hotspot("出门", "door", _open_city)
+	_hotspot("创作", "computer", _open_computer)
 
 
 func _layer(path: String) -> TextureRect:
@@ -120,15 +125,23 @@ func _anchors() -> Dictionary:
 	return parsed.get("anchors", {})
 
 
-func _hotspot(text: String, id: String, spec: Dictionary, callback: Callable) -> void:
-	var pixel: Array = spec.get("pixel", [100, 100])
+func _hotspot(text: String, id: String, callback: Callable) -> void:
 	var button := Button.new()
 	button.text = text
-	button.custom_minimum_size = Vector2(96, 44)
-	button.size = Vector2(96, 44)
-	button.position = Vector2(float(pixel[0]), float(pixel[1])) - Vector2(48, 62)
+	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button.add_theme_constant_override("outline_size", 6)
+	button.add_theme_color_override("font_outline_color", Color("FFF8EE"))
+	button.add_theme_color_override("font_color", Color("2C241C"))
+	button.add_theme_color_override("font_hover_color", Color("2C241C"))
+	button.add_theme_color_override("font_pressed_color", Color("2C241C"))
 	button.set_meta("ui_id", "hot_%s" % id)
 	button.set_meta("action", callback)
+	button.add_theme_font_size_override("font_size", 22)
+	button.add_theme_stylebox_override("normal", _hot_style(0.0))
+	button.add_theme_stylebox_override("hover", _hot_style(0.22))
+	button.add_theme_stylebox_override("pressed", _hot_style(0.32))
+	button.focus_mode = Control.FOCUS_NONE
+	button.add_theme_stylebox_override("focus", _hot_style(0.0))
 	button.mouse_entered.connect(_hot_hover.bind(id, button, true))
 	button.mouse_exited.connect(_hot_hover.bind(id, button, false))
 	button.gui_input.connect(_hot_input.bind(id, button))
@@ -138,16 +151,17 @@ func _hotspot(text: String, id: String, spec: Dictionary, callback: Callable) ->
 
 func _build_page() -> void:
 	page = ColorRect.new()
-	page.color = Color(0.96, 0.93, 0.88, 0.94)
+	page.color = Color("E7E1D6")
 	page.set_anchors_preset(Control.PRESET_FULL_RECT)
 	page.visible = false
 	page.mouse_filter = Control.MOUSE_FILTER_STOP
+	page.z_index = 10
 	add_child(page)
 	var margin := MarginContainer.new()
 	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
 	margin.add_theme_constant_override("margin_left", 28)
 	margin.add_theme_constant_override("margin_right", 28)
-	margin.add_theme_constant_override("margin_top", 64)
+	margin.add_theme_constant_override("margin_top", 158)
 	margin.add_theme_constant_override("margin_bottom", 16)
 	page.add_child(margin)
 	place_view = PlaceView.new()
@@ -165,36 +179,62 @@ func _build_page() -> void:
 	page_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	page_box.add_theme_constant_override("separation", 8)
 	scroll.add_child(page_box)
-	var hud := HBoxContainer.new()
-	hud.add_theme_constant_override("separation", 12)
+	var hud := PanelContainer.new()
+	var hud_style := ThemeBuilder.panel_style()
+	hud_style.bg_color = Color("FFF8EE")
+	hud.add_theme_stylebox_override("panel", hud_style)
+	hud.z_index = 30
 	add_child(hud)
 	hud.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	hud.offset_left = 12
-	hud.offset_top = 8
+	hud.offset_top = 10
 	hud.offset_right = -12
-	hud.offset_bottom = 56
-	hud_time = _label("时间")
-	hud_money = _label("钱")
-	hud_body = _label("状态")
-	hud_bill = _label("账单")
-	hud.add_child(hud_time)
-	hud.add_child(hud_money)
-	hud.add_child(hud_body)
-	hud.add_child(hud_bill)
-	tutor = _label("点家具上的字。拖空白处移动房间，滚轮缩放。拖动超过一小段不会误触。", 15)
+	hud.offset_bottom = 146
+	var hud_box := VBoxContainer.new()
+	hud_box.add_theme_constant_override("separation", 6)
+	hud.add_child(hud_box)
+	var row_a := HBoxContainer.new()
+	row_a.add_theme_constant_override("separation", 18)
+	var row_b := HBoxContainer.new()
+	row_b.add_theme_constant_override("separation", 18)
+	var row_c := HBoxContainer.new()
+	row_c.add_theme_constant_override("separation", 18)
+	hud_box.add_child(row_a)
+	hud_box.add_child(row_b)
+	hud_box.add_child(row_c)
+	hud_time = _hud_label("时间")
+	hud_money = _hud_label("现金")
+	hud_body = _hud_label("状态")
+	hud_bill = _hud_label("房租")
+	hud_loan = _hud_label("贷款")
+	row_a.add_child(hud_time)
+	row_a.add_child(hud_money)
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row_a.add_child(spacer)
+	row_b.add_child(hud_body)
+	row_c.add_child(hud_bill)
+	row_c.add_child(hud_loan)
+	tutor = _label("点整件家具。拖空白处移动房间，滚轮缩放。拖过一小段不会当成点击。", 16)
+	tutor.add_theme_color_override("font_color", Color("2C241C"))
 	tutor.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	tutor.visible = false
-	tutor.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	tutor.offset_left = 16
-	tutor.offset_right = -16
-	tutor.offset_top = -64
-	tutor.offset_bottom = -12
-	add_child(tutor)
+	tutor_wrap = PanelContainer.new()
+	tutor_wrap.add_theme_stylebox_override("panel", hud_style)
+	tutor_wrap.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	tutor_wrap.offset_left = 16
+	tutor_wrap.offset_right = -16
+	tutor_wrap.offset_top = -72
+	tutor_wrap.offset_bottom = -12
+	tutor_wrap.z_index = 30
+	tutor_wrap.visible = false
+	tutor_wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(tutor_wrap)
+	tutor_wrap.add_child(tutor)
 	var pause := Button.new()
 	pause.text = "菜单"
-	pause.custom_minimum_size = Vector2(88, 44)
+	pause.custom_minimum_size = Vector2(96, 40)
 	pause.pressed.connect(_open_pause)
-	hud.add_child(pause)
+	row_a.add_child(pause)
 
 
 func _show_title() -> void:
@@ -214,7 +254,7 @@ func _start_game() -> void:
 	mode = "room"
 	_apply_visuals()
 	_center_on(Vector2(935, 560))
-	tutor.visible = not seen_tutor
+	tutor_wrap.visible = not seen_tutor
 	_refresh_hud()
 
 
@@ -354,10 +394,11 @@ func _confirm_create() -> void:
 		return
 	var work: Dictionary = result.get("work", {})
 	var scores: Dictionary = work.get("scores", {})
-	var body := "传播 %d · 互动 %d · 涨粉 %d\n深度 %.0f · 趣味 %.0f · 表达 %.0f · 契合 %.0f\n整段收益预计 %s，之后每天到账，前几天多，后面只剩薄薄一层。\n%s" % [
+	var body := "%s · %s\n%s %d · 互动 %d · 涨粉 %d\n深度 %.0f · 趣味 %.0f · 表达 %.0f · 契合 %.0f" % [
+		"视频" if str(work.get("form", "")) == "video" else "文章", str(work.get("topic_name", "")),
+		"播放" if str(work.get("form", "")) == "video" else "阅读",
 		int(work.get("reach", 0)), int(work.get("engage", 0)), int(work.get("follow", 0)),
 		float(scores.get("depth", 0)), float(scores.get("fun", 0)), float(scores.get("voice", 0)), float(scores.get("fit", 0)),
-		sim.gold_text(int(work.get("lifetime", 0))), str(work.get("note", "")),
 	]
 	body += _report_text(result.get("report", {}))
 	_consume_reports(result.get("report", {}))
@@ -366,30 +407,118 @@ func _confirm_create() -> void:
 
 
 func _show_history() -> void:
-	var rows: Array = [["title", "往期"], ["body", "粉丝 %d · 信任 %.0f。每篇的钱按天继续进账，不会在第三天清零。" % [sim.fans, sim.trust]]]
-	var start := maxi(0, sim.works.size() - 8)
-	for index in range(start, sim.works.size()):
-		var work: Dictionary = sim.works[index]
-		rows.append(["body", "第%d日 %s《%s》已到账 %s / 预计 %s。%s" % [
-			int(work.get("born_day", 0)), "视频" if str(work.get("form", "")) == "video" else "文章",
-			str(work.get("topic_name", "")), sim.gold_text(int(work.get("paid", 0))),
-			sim.gold_text(int(work.get("lifetime", 0))), str(work.get("note", "")),
-		]])
+	_fill([])
+	if selected_work < 0 or selected_work >= sim.works.size():
+		selected_work = sim.works.size() - 1
+	var board := HBoxContainer.new()
+	board.add_theme_constant_override("separation", 16)
+	board.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	page_box.add_child(board)
+	var list := VBoxContainer.new()
+	list.custom_minimum_size = Vector2(340, 0)
+	list.add_theme_constant_override("separation", 8)
+	board.add_child(list)
+	list.add_child(_label("往期", 28))
 	if sim.works.is_empty():
-		rows.append(["body", "还没有作品。"])
-	rows.append(["button", "本周喜爱", _show_chart])
-	rows.append(["button", "返回", _show_computer])
-	_fill(rows)
+		list.add_child(_wrap_label("还没有发出去的作品。"))
+	else:
+		for index in sim.works.size():
+			var work: Dictionary = sim.works[index]
+			var item := Button.new()
+			item.custom_minimum_size = Vector2(320, 64)
+			item.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			item.text = "第%d日  %s\n%s" % [int(work.get("born_day", 0)), "视频" if str(work.get("form", "")) == "video" else "文章", str(work.get("topic_name", ""))]
+			item.pressed.connect(_select_work.bind(index))
+			if index == selected_work:
+				item.modulate = Color("F6E2A8")
+			list.add_child(item)
+	var actions := HBoxContainer.new()
+	actions.add_theme_constant_override("separation", 8)
+	var chart_button := Button.new()
+	chart_button.text = "本周喜爱"
+	chart_button.custom_minimum_size = Vector2(140, 44)
+	chart_button.pressed.connect(_show_chart)
+	var back := Button.new()
+	back.text = "返回"
+	back.custom_minimum_size = Vector2(100, 44)
+	back.pressed.connect(_show_computer)
+	actions.add_child(chart_button)
+	actions.add_child(back)
+	list.add_child(actions)
+	var detail := VBoxContainer.new()
+	detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail.add_theme_constant_override("separation", 8)
+	board.add_child(detail)
+	if sim.works.is_empty():
+		detail.add_child(_wrap_label("发出一篇之后，这里会列出阅读或播放、互动、涨粉，以及每天到账的钱。"))
+		return
+	var work: Dictionary = sim.works[selected_work]
+	var series: Array = sim.income_series(work)
+	var today := 0
+	var total := int(work.get("paid", 0))
+	if not series.is_empty():
+		var last: Dictionary = series[series.size() - 1]
+		today = int(last.get("amount", 0))
+		total = int(last.get("total", total))
+	var form := "视频" if str(work.get("form", "")) == "video" else "文章"
+	detail.add_child(_label("%s · %s" % [form, str(work.get("topic_name", ""))], 26))
+	detail.add_child(_wrap_label("第%d日发出" % int(work.get("born_day", 0))))
+	var reach_name := "播放" if form == "视频" else "阅读"
+	detail.add_child(_wrap_label("%s %d    互动 %d    涨粉 %d" % [reach_name, int(work.get("reach", 0)), int(work.get("engage", 0)), int(work.get("follow", 0))]))
+	detail.add_child(_wrap_label("当日 %s 金    累计 %s 金" % [sim.gold_text(today), sim.gold_text(total)]))
+	var scores: Dictionary = work.get("scores", {})
+	detail.add_child(_score_bar("深度", float(scores.get("depth", 0))))
+	detail.add_child(_score_bar("趣味", float(scores.get("fun", 0))))
+	detail.add_child(_score_bar("表达", float(scores.get("voice", 0))))
+	detail.add_child(_score_bar("契合", float(scores.get("fit", 0))))
+	if form == "视频":
+		detail.add_child(_score_bar("声音", float(scores.get("audio", 0))))
+	var fusion := _fusion_line(work)
+	if fusion != "":
+		detail.add_child(_wrap_label(fusion))
+	var chart := IncomeChart.new()
+	chart.custom_minimum_size = Vector2(360, 160)
+	chart.points = series
+	detail.add_child(chart)
+
+
+func _select_work(index: int) -> void:
+	selected_work = index
+	_show_history()
 
 
 func _show_chart() -> void:
-	var rows: Array = [["title", "本周观众喜爱"], ["body", "用来选题。排前面只是更好接，不是必火。每周换一次，写在存档里。"]]
+	_fill([])
+	page_box.add_child(_label("本周观众喜爱", 28))
+	page_box.add_child(_wrap_label("用来选题。靠前只是更好接，不是必成。每周换一次，并写在存档里。"))
+	var rows: Array = sim.chart_rows()
+	var top := 1
+	if not rows.is_empty():
+		top = maxi(1, int(rows[0].get("score", 1)))
 	var rank := 1
-	for row in sim.chart_rows():
-		rows.append(["body", "%d. %s" % [rank, str(row.get("name", ""))]])
+	for row in rows:
+		var line := HBoxContainer.new()
+		line.add_theme_constant_override("separation", 12)
+		var name := _label("%d  %s" % [rank, str(row.get("name", ""))], 18)
+		name.custom_minimum_size = Vector2(220, 0)
+		name.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		line.add_child(name)
+		var bar := ProgressBar.new()
+		bar.max_value = float(top)
+		bar.value = float(row.get("score", 0))
+		bar.show_percentage = false
+		bar.custom_minimum_size = Vector2(220, 22)
+		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		line.add_child(bar)
+		page_box.add_child(line)
 		rank += 1
-	rows.append(["button", "返回", _show_history])
-	_fill(rows)
+	var back_row := HBoxContainer.new()
+	var back := Button.new()
+	back.text = "返回往期"
+	back.custom_minimum_size = Vector2(140, 44)
+	back.pressed.connect(_show_history)
+	back_row.add_child(back)
+	page_box.add_child(back_row)
 
 
 func _show_items() -> void:
@@ -445,7 +574,7 @@ func _use_place(id: String) -> void:
 		page_scroll.visible = false
 	place_view.visible = true
 	place_view.place_id = id
-	place_view.portrait = char_layer.texture if char_layer != null else null
+	place_view.portrait = null
 	place_view.mouse_filter = Control.MOUSE_FILTER_STOP
 	place_view.queue_redraw()
 	for child in place_view.get_children():
@@ -617,14 +746,15 @@ func _wide_home() -> bool:
 
 
 func _apply_visuals() -> void:
+	if room_view == null:
+		return
 	var wide := _wide_home()
 	var bed_level := 1 if sim == null else int(sim.furniture.get("bed", 1))
 	var desk_level := 1 if sim == null else int(sim.furniture.get("desk", 1))
 	var shelf_level := 1 if sim == null else int(sim.furniture.get("shelf", 1))
-	_set_tex(shell_layer, "res://assets/room/layers/shell.png")
-	_set_tex(bed_layer, "res://assets/room/layers/bed%s%s.png" % ["_b" if wide else "", "_l2" if bed_level >= 2 else ""])
-	_set_tex(shelf_layer, "res://assets/room/layers/shelf%s.png" % ["_l2" if shelf_level >= 2 else ""])
-	_set_tex(chair_layer, "res://assets/room/layers/chair%s.png" % ["_b" if wide else ""])
+	var bed_name := "bed%s%s" % ["_b" if wide else "", "_l2" if bed_level >= 2 else ""]
+	var shelf_name := "shelf%s" % ["_l2" if shelf_level >= 2 else ""]
+	var chair_name := "chair%s" % ["_b" if wide else ""]
 	var desk_name := "desk_front"
 	if wide and desk_level >= 2:
 		desk_name = "desk_b_l2"
@@ -632,9 +762,11 @@ func _apply_visuals() -> void:
 		desk_name = "desk_b"
 	elif desk_level >= 2:
 		desk_name = "desk_l2"
-	_set_tex(desk_layer, "res://assets/room/layers/%s.png" % desk_name)
-	if char_layer == null:
-		return
+	room_view.set_pair("shell", "res://assets/room/layers/shell.png", "")
+	room_view.set_pair("bed", "res://assets/room/layers/%s.png" % bed_name, "res://assets/room/layers/%s_z.png" % bed_name)
+	room_view.set_pair("shelf", "res://assets/room/layers/%s.png" % shelf_name, "res://assets/room/layers/%s_z.png" % shelf_name)
+	room_view.set_pair("chair", "res://assets/room/layers/%s.png" % chair_name, "res://assets/room/layers/%s_z.png" % chair_name)
+	room_view.set_pair("desk", "res://assets/room/layers/%s.png" % desk_name, "res://assets/room/layers/%s_z.png" % desk_name)
 	var who := "m" if (sim != null and sim.gender == "m") or (sim == null and gender == "m") else "f"
 	var pose := "sit"
 	if sim != null:
@@ -648,9 +780,10 @@ func _apply_visuals() -> void:
 	var suffix := ""
 	if wide and (pose == "sit" or pose == "bed"):
 		suffix = "_b"
-	var path := "res://assets/room/layers/char_%s_%s%s.png" % [who, pose, suffix]
-	if not _set_tex(char_layer, path):
-		_set_tex(char_layer, "res://assets/room/layers/char_%s_%s.png" % [who, pose])
+	var char_name := "char_%s_%s%s" % [who, pose, suffix]
+	if not FileAccess.file_exists("res://assets/room/layers/%s.png" % char_name):
+		char_name = "char_%s_%s" % [who, pose]
+	room_view.set_pair("char", "res://assets/room/layers/%s.png" % char_name, "res://assets/room/layers/%s_z.png" % char_name)
 	_place_hotspots(wide)
 
 
@@ -669,13 +802,13 @@ func _place_hotspots(wide: bool) -> void:
 	var parsed: Variant = JSON.parse_string(file.get_as_text() if file else "{}")
 	var pack: Dictionary = {}
 	if typeof(parsed) == TYPE_DICTIONARY:
-		pack = parsed.get("anchors_b", {}) if wide else parsed.get("anchors", {})
+		pack = parsed.get("rects_b", {}) if wide else parsed.get("rects", {})
 	for id in hotspots.keys():
 		var button: Button = hotspots[id]
-		var spec: Dictionary = pack.get(id, {})
-		var pixel: Array = spec.get("pixel", [400, 400])
-		button.position = Vector2(float(pixel[0]), float(pixel[1])) - Vector2(48, 62)
-		button.text = str(spec.get("label", button.text))
+		var rect: Array = pack.get(id, [400, 400, 160, 80])
+		button.position = Vector2(float(rect[0]), float(rect[1]))
+		button.size = Vector2(float(rect[2]), float(rect[3]))
+		button.custom_minimum_size = button.size
 
 
 func _center_on(pixel: Vector2) -> void:
@@ -719,11 +852,14 @@ func _refresh_hud() -> void:
 		hud_time.text = "尚未开局"
 		hud_money.text = ""
 		hud_bill.text = ""
+		if hud_loan != null:
+			hud_loan.text = ""
 		return
 	hud_time.text = sim.clock_text()
-	hud_money.text = sim.gold_text(sim.money)
-	hud_body.text = "体力 %d/%d  灵感 %d  粉 %d" % [sim.stamina, sim.stamina_max, sim.inspiration, sim.fans]
-	hud_bill.text = "%s  %s" % [sim.next_rent_text(), sim.next_loan_text()]
+	hud_money.text = "现金  %s 金" % sim.gold_text(sim.money)
+	hud_body.text = "体力 %d/%d    灵感 %d    粉丝 %d" % [sim.stamina, sim.stamina_max, sim.inspiration, sim.fans]
+	hud_bill.text = "%s 金" % sim.next_rent_text()
+	hud_loan.text = "%s 金" % sim.next_loan_text()
 
 
 func _chart_line() -> String:
@@ -731,6 +867,75 @@ func _chart_line() -> String:
 	if rows.is_empty():
 		return "还没有"
 	return str(rows[0].get("name", ""))
+
+
+func _hud_label(text: String) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.add_theme_font_size_override("font_size", 18)
+	label.add_theme_color_override("font_color", Color("2C241C"))
+	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	return label
+
+
+func _wrap_label(text: String) -> Label:
+	var label := _hud_label(text)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return label
+
+
+func _hot_style(alpha: float) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = Color(1, 0.96, 0.88, alpha)
+	box.set_corner_radius_all(12)
+	box.set_border_width_all(0)
+	return box
+
+
+func _hover_slot(id: String) -> int:
+	match id:
+		"bed":
+			return 1
+		"bookshelf":
+			return 2
+		"computer":
+			return 3
+		"door":
+			return 4
+	return 0
+
+
+func _score_bar(title: String, value: float) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	var name := _hud_label(title)
+	name.custom_minimum_size = Vector2(52, 0)
+	var bar := ProgressBar.new()
+	bar.min_value = 0.0
+	bar.max_value = 100.0
+	bar.value = value
+	bar.show_percentage = false
+	bar.custom_minimum_size = Vector2(160, 16)
+	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(name)
+	row.add_child(bar)
+	row.add_child(_hud_label("%.0f" % value))
+	return row
+
+
+func _fusion_line(work: Dictionary) -> String:
+	var note := str(work.get("note", ""))
+	if note.find("缺过渡") >= 0:
+		return "融梗：没接上"
+	if note.find("火花") >= 0:
+		return "融梗：只接上一部分"
+	if note.find("接上了") >= 0:
+		return "融梗：接上了"
+	var memes: Array = work.get("memes", [])
+	if memes.is_empty():
+		return "这篇没有放梗"
+	return ""
 
 
 func _label(text: String, size: int = 16) -> Label:
@@ -795,14 +1000,16 @@ func _report_text(report: Dictionary) -> String:
 	return text
 
 
-func _hot_hover(id: String, button: Button, entered: bool) -> void:
+func _hot_hover(id: String, _button: Button, entered: bool) -> void:
 	if entered:
 		selected = id
-		button.modulate = Color("F6E2A8")
+		if room_view != null:
+			room_view.set_hover(_hover_slot(id))
 	else:
 		if selected == id:
 			selected = ""
-		button.modulate = Color.WHITE
+			if room_view != null:
+				room_view.set_hover(0)
 
 
 func _hot_input(event: InputEvent, id: String, button: Button) -> void:
@@ -836,8 +1043,8 @@ func _hot_input(event: InputEvent, id: String, button: Button) -> void:
 
 
 func _dismiss_tutor() -> void:
-	if tutor != null:
-		tutor.visible = false
+	if tutor_wrap != null:
+		tutor_wrap.visible = false
 	if not seen_tutor:
 		seen_tutor = true
 		_save_settings()
@@ -921,6 +1128,16 @@ func _do_buy(id: String) -> void:
 	_shop_result(sim.buy_good(id))
 
 
+func _clear_hover() -> void:
+	var motion := InputEventMouseMotion.new()
+	motion.position = Vector2(6, 6)
+	motion.global_position = Vector2(6, 6)
+	get_viewport().push_input(motion)
+	selected = ""
+	if room_view != null:
+		room_view.set_hover(0)
+
+
 func _shot_tour() -> void:
 	var shots := ShotUtil.new()
 	add_child(shots)
@@ -930,13 +1147,23 @@ func _shot_tour() -> void:
 	gender = "f"
 	_start_game()
 	await shots.capture(self, "02_room_sit")
+	await shots.capture(self, "quality_fix_sit")
+	_show_history()
+	await shots.capture(self, "quality_fix_history_empty")
+	_close_page()
 	await shots.click(self, "hot_bed")
 	await shots.capture(self, "03_rest_note")
 	_close_page()
+	_clear_hover()
+	await get_tree().process_frame
 	await shots.capture(self, "04_bed")
+	await shots.capture(self, "quality_fix_bed")
 	sim.read_home()
 	_close_page()
+	_clear_hover()
+	await get_tree().process_frame
 	await shots.capture(self, "05_read")
+	await shots.capture(self, "quality_fix_read")
 	_open_city()
 	await shots.capture(self, "06_city")
 	_enter_place("park")
@@ -957,11 +1184,19 @@ func _shot_tour() -> void:
 	sim.stamina = 90
 	var made := sim.confirm_work("article", "life", [], "串联", "none")
 	sim.advance_time(DiarySim.DAY * 3)
+	sim.works_today = 0
+	sim.inspiration = 80
+	sim.stamina = 80
+	sim.confirm_work("video", "film", [], "串联", "short")
+	sim.advance_time(DiarySim.DAY)
 	_refresh_hud()
+	selected_work = 0
 	_show_history()
 	await shots.capture(self, "12_history")
+	await shots.capture(self, "quality_fix_history")
 	_show_chart()
 	await shots.capture(self, "13_chart")
+	await shots.capture(self, "quality_fix_chart")
 	sim.money = 9000 * DiarySim.GOLD
 	sim.upgrade("bed")
 	sim.upgrade("desk")

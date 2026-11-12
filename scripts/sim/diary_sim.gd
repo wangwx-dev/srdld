@@ -612,11 +612,31 @@ func _pay_tails(ended_day: int) -> int:
 		var amount := tail_amount(int(work.get("lifetime", 0)), age)
 		if amount <= 0:
 			continue
-		ledger[key] = true
+		ledger[key] = amount
 		money += amount
 		work["paid"] = int(work.get("paid", 0)) + amount
 		total += amount
 	return total
+
+
+func income_series(work: Dictionary) -> Array:
+	var born := int(work.get("born_day", 1))
+	var work_id := str(work.get("id", ""))
+	var life := int(work.get("lifetime", 0))
+	var rows: Array = []
+	var total := 0
+	var last_age := absolute_day() - born
+	for age in range(1, last_age + 1):
+		var key := "%s:%d" % [work_id, age]
+		if not ledger.has(key):
+			continue
+		var raw: Variant = ledger[key]
+		var amt := tail_amount(life, age)
+		if typeof(raw) == TYPE_INT or typeof(raw) == TYPE_FLOAT:
+			amt = int(raw)
+		total += amt
+		rows.append({"age": age, "day": born + age - 1, "amount": amt, "total": total})
+	return rows
 
 
 func _tail_norm() -> float:

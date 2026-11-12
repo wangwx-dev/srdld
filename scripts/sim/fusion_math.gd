@@ -81,7 +81,7 @@ static func sample_r(plan: Dictionary, unit: float) -> float:
 static func apply_to_scores(base: Dictionary, plan: Dictionary, r: float) -> Dictionary:
 	var out := base.duplicate(true)
 	if int(plan.get("n", 0)) <= 0:
-		out["fusion_note"] = "这篇没有融梗，评价只看题材、属性和家具。"
+		out["fusion_note"] = ""
 		return out
 	var phi := float(plan["phi"])
 	var lift := phi * pow(r, 1.7) * 28.0
