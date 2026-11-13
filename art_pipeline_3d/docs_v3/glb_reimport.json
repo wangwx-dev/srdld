@@ -1,0 +1,401 @@
+{
+  "female_rigged.glb": {
+    "bytes": 3440168,
+    "gltf_version": "2.0",
+    "mesh_count": 1,
+    "skins": 1,
+    "animations": [
+      "Idle",
+      "Sit_Desk",
+      "Sleep_Bed",
+      "Read_Book",
+      "Pet_Cat"
+    ],
+    "embedded_images": 19,
+    "external_image_uris": [],
+    "glb_triangles": 11178,
+    "skin_joints": [
+      [
+        "Hips",
+        "Spine",
+        "Chest",
+        "Neck",
+        "Head",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase"
+      ]
+    ],
+    "animation_motion": {
+      "Idle": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      },
+      "Sit_Desk": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      },
+      "Sleep_Bed": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      },
+      "Read_Book": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      },
+      "Pet_Cat": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      }
+    },
+    "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+    "glb_duplicate_index_faces": 0,
+    "expected_blender_reimport_triangles": 11178,
+    "glb_scene_instance_triangles": 11178,
+    "glb_valid_scene_instance_triangles": 11178,
+    "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+    "blender_bone_display_helpers_excluded": [
+      {
+        "name": "Icosphere",
+        "vertices": 42,
+        "faces": 80,
+        "purpose": "Blender importer-created pose-bone custom shape; not an exported character mesh"
+      }
+    ],
+    "reimported_bones": {
+      "female_Rig": 21
+    },
+    "reimported_triangles": 11178,
+    "all_meshes_uv": true,
+    "all_images_loaded": true,
+    "finite_geometry": true,
+    "unweighted_vertices": 0,
+    "weight_sum_max_error": 2.9802322387695312e-08,
+    "bone_parent_hierarchy": {
+      "Hips": null,
+      "Spine": "Hips",
+      "Chest": "Spine",
+      "Neck": "Chest",
+      "Head": "Neck",
+      "LeftShoulder": "Chest",
+      "LeftArm": "LeftShoulder",
+      "LeftForeArm": "LeftArm",
+      "LeftHand": "LeftForeArm",
+      "RightShoulder": "Chest",
+      "RightArm": "RightShoulder",
+      "RightForeArm": "RightArm",
+      "RightHand": "RightForeArm",
+      "LeftUpLeg": "Hips",
+      "LeftLeg": "LeftUpLeg",
+      "LeftFoot": "LeftLeg",
+      "LeftToeBase": "LeftFoot",
+      "RightUpLeg": "Hips",
+      "RightLeg": "RightUpLeg",
+      "RightFoot": "RightLeg",
+      "RightToeBase": "RightFoot"
+    },
+    "action_frame_checks": [
+      {
+        "action": "Idle",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Idle",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Idle",
+        "frame": 49,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Pet_Cat",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Pet_Cat",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Pet_Cat",
+        "frame": 49,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Read_Book",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Read_Book",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Read_Book",
+        "frame": 49,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sit_Desk",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sit_Desk",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sit_Desk",
+        "frame": 49,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sleep_Bed",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sleep_Bed",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sleep_Bed",
+        "frame": 49,
+        "finite_bone_matrices": true
+      }
+    ],
+    "passed_transport_checks": true
+  },
+  "male_rigged.glb": {
+    "bytes": 2998752,
+    "gltf_version": "2.0",
+    "mesh_count": 1,
+    "skins": 1,
+    "animations": [
+      "Idle",
+      "Sit_Desk",
+      "Sleep_Bed",
+      "Read_Book",
+      "Pet_Cat"
+    ],
+    "embedded_images": 18,
+    "external_image_uris": [],
+    "glb_triangles": 11362,
+    "skin_joints": [
+      [
+        "Hips",
+        "Spine",
+        "Chest",
+        "Neck",
+        "Head",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase"
+      ]
+    ],
+    "animation_motion": {
+      "Idle": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      },
+      "Sit_Desk": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      },
+      "Sleep_Bed": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      },
+      "Read_Book": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      },
+      "Pet_Cat": {
+        "nonconstant_channels": 0,
+        "genuine_motion_not_just_hold": false
+      }
+    },
+    "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+    "glb_duplicate_index_faces": 0,
+    "expected_blender_reimport_triangles": 11362,
+    "glb_scene_instance_triangles": 11362,
+    "glb_valid_scene_instance_triangles": 11362,
+    "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+    "blender_bone_display_helpers_excluded": [
+      {
+        "name": "Icosphere",
+        "vertices": 42,
+        "faces": 80,
+        "purpose": "Blender importer-created pose-bone custom shape; not an exported character mesh"
+      }
+    ],
+    "reimported_bones": {
+      "male_Rig": 21
+    },
+    "reimported_triangles": 11362,
+    "all_meshes_uv": true,
+    "all_images_loaded": true,
+    "finite_geometry": true,
+    "unweighted_vertices": 0,
+    "weight_sum_max_error": 2.9802322387695312e-08,
+    "bone_parent_hierarchy": {
+      "Hips": null,
+      "Spine": "Hips",
+      "Chest": "Spine",
+      "Neck": "Chest",
+      "Head": "Neck",
+      "LeftShoulder": "Chest",
+      "LeftArm": "LeftShoulder",
+      "LeftForeArm": "LeftArm",
+      "LeftHand": "LeftForeArm",
+      "RightShoulder": "Chest",
+      "RightArm": "RightShoulder",
+      "RightForeArm": "RightArm",
+      "RightHand": "RightForeArm",
+      "LeftUpLeg": "Hips",
+      "LeftLeg": "LeftUpLeg",
+      "LeftFoot": "LeftLeg",
+      "LeftToeBase": "LeftFoot",
+      "RightUpLeg": "Hips",
+      "RightLeg": "RightUpLeg",
+      "RightFoot": "RightLeg",
+      "RightToeBase": "RightFoot"
+    },
+    "action_frame_checks": [
+      {
+        "action": "Idle",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Idle",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Idle",
+        "frame": 49,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Pet_Cat",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Pet_Cat",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Pet_Cat",
+        "frame": 49,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Read_Book",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Read_Book",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Read_Book",
+        "frame": 49,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sit_Desk",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sit_Desk",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sit_Desk",
+        "frame": 49,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sleep_Bed",
+        "frame": 1,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sleep_Bed",
+        "frame": 25,
+        "finite_bone_matrices": true
+      },
+      {
+        "action": "Sleep_Bed",
+        "frame": 49,
+        "finite_bone_matrices": true
+      }
+    ],
+    "passed_transport_checks": true
+  },
+  "room_realtime.glb": {
+    "bytes": 64341024,
+    "gltf_version": "2.0",
+    "mesh_count": 267,
+    "skins": 0,
+    "animations": [],
+    "embedded_images": 23,
+    "external_image_uris": [],
+    "glb_triangles": 31446,
+    "skin_joints": [],
+    "animation_motion": {},
+    "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 16,
+    "glb_duplicate_index_faces": 0,
+    "expected_blender_reimport_triangles": 31446,
+    "glb_scene_instance_triangles": 31446,
+    "glb_valid_scene_instance_triangles": 31430,
+    "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+    "blender_bone_display_helpers_excluded": [],
+    "reimported_bones": {},
+    "reimported_triangles": 31446,
+    "all_meshes_uv": true,
+    "all_images_loaded": true,
+    "finite_geometry": true,
+    "passed_transport_checks": true
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "female": {
+    "triangles": 11178,
+    "vertices": 6067,
+    "bones": 21,
+    "head_inherit_scale": "FULL",
+    "shape_keys": [
+      "Basis",
+      "SleepLids"
+    ],
+    "unweighted_vertices": 0,
+    "weight_sum_max_error": 5.960464477539063e-08,
+    "duplicate_faces_by_coordinates": 0,
+    "duplicate_triangles_by_coordinates": 0,
+    "degenerate_triangles": 0,
+    "poses": {
+      "Idle": {
+        "head_deform_axis_lengths": [
+          1.0,
+          1.0000000055879354,
+          1.0000000055879354
+        ],
+        "head_deform_determinant": 1.0,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 1.225350700906347e-07,
+        "finite_matrices": true
+      },
+      "Sit_Desk": {
+        "head_deform_axis_lengths": [
+          1.0,
+          1.0000000074505806,
+          1.0000000074505806
+        ],
+        "head_deform_determinant": 1.0,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 1.2252257874934003e-07,
+        "finite_matrices": true
+      },
+      "Sleep_Bed": {
+        "head_deform_axis_lengths": [
+          1.0,
+          0.9999999725259837,
+          0.9999999725259837
+        ],
+        "head_deform_determinant": 0.9999999403953552,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 6.157355869618186e-08,
+        "finite_matrices": true
+      },
+      "Read_Book": {
+        "head_deform_axis_lengths": [
+          1.0,
+          0.999999988824129,
+          0.999999988824129
+        ],
+        "head_deform_determinant": 1.0,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 1.2251875602942164e-07,
+        "finite_matrices": true
+      },
+      "Pet_Cat": {
+        "head_deform_axis_lengths": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "head_deform_determinant": 1.0,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 1.2253464376499323e-07,
+        "finite_matrices": true
+      }
+    },
+    "materials": [
+      "V3_Knit_sage",
+      "V3_Recess_shadow",
+      "V3_Skin_F",
+      "V3_Lip_warm",
+      "V3_Eye_sclera",
+      "V3_Iris_hazel",
+      "V3_Pupil",
+      "V3_Hair_chestnut",
+      "V3_Brushed_fasteners",
+      "V3_Rubber_cupsole",
+      "V3_Canvas_shoe",
+      "V3_Cotton_laces",
+      "V3_Denim_indigo",
+      "V3_Collar_binding"
+    ]
+  },
+  "male": {
+    "triangles": 11362,
+    "vertices": 6167,
+    "bones": 21,
+    "head_inherit_scale": "FULL",
+    "shape_keys": [
+      "Basis",
+      "SleepLids"
+    ],
+    "unweighted_vertices": 0,
+    "weight_sum_max_error": 5.960464477539063e-08,
+    "duplicate_faces_by_coordinates": 0,
+    "duplicate_triangles_by_coordinates": 0,
+    "degenerate_triangles": 0,
+    "poses": {
+      "Idle": {
+        "head_deform_axis_lengths": [
+          1.0,
+          1.0000000055879354,
+          1.0000000055879354
+        ],
+        "head_deform_determinant": 1.0,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 1.225350700906347e-07,
+        "finite_matrices": true
+      },
+      "Sit_Desk": {
+        "head_deform_axis_lengths": [
+          1.0,
+          1.0000000074505806,
+          1.0000000074505806
+        ],
+        "head_deform_determinant": 1.0,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 1.2252257874934003e-07,
+        "finite_matrices": true
+      },
+      "Sleep_Bed": {
+        "head_deform_axis_lengths": [
+          1.0,
+          1.0000000917352694,
+          1.0000000917352694
+        ],
+        "head_deform_determinant": 1.000000238418579,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 6.157418397378933e-08,
+        "finite_matrices": true
+      },
+      "Read_Book": {
+        "head_deform_axis_lengths": [
+          1.0,
+          0.999999988824129,
+          0.999999988824129
+        ],
+        "head_deform_determinant": 1.0,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 1.2251875602942164e-07,
+        "finite_matrices": true
+      },
+      "Pet_Cat": {
+        "head_deform_axis_lengths": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "head_deform_determinant": 1.0,
+        "posed_degenerate_triangles": 0,
+        "posed_min_triangle_area_m2": 1.2253464376499323e-07,
+        "finite_matrices": true
+      }
+    },
+    "materials": [
+      "V3_Cotton_midnightblue",
+      "V3_Recess_shadow",
+      "V3_Skin_M",
+      "V3_Lip_warm",
+      "V3_Eye_sclera",
+      "V3_Iris_hazel",
+      "V3_Pupil",
+      "V3_Hair_espresso",
+      "V3_Rubber_cupsole",
+      "V3_Canvas_shoe",
+      "V3_Cotton_laces",
+      "V3_Brushed_fasteners",
+      "V3_Chinos_slate"
+    ]
+  }
+}

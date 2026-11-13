@@ -1,0 +1,64 @@
+{
+  "female": {
+    "Idle": {
+      "foot_lowest_world_z_m": 0.003000022144988179
+    },
+    "Sit_Desk": {
+      "foot_lowest_world_z_m": 0.003000041237100959,
+      "hand_keyboard_surface_gap_m": {
+        "Left": 0.0001525282859802246,
+        "Right": 0.0001525282859802246
+      },
+      "chair_back_penetrating_vertices": 0
+    },
+    "Sleep_Bed": {
+      "shoe_duvet_gap_m": {
+        "Left": 0.00010980505612678826,
+        "Right": 0.0016695117810741067
+      },
+      "head_pillow_surface_gap_m": 0.002779028145596385
+    },
+    "Read_Book": {
+      "foot_lowest_world_z_m": 0.003000020980834961,
+      "hand_book_surface_gap_m": {
+        "Left": 0.0015029936330392957,
+        "Right": 2.713739922910463e-05
+      }
+    },
+    "Pet_Cat": {
+      "foot_lowest_world_z_m": 0.002999992109835148,
+      "closest_hand_cat_head_gap_m": 0.005943883676081896
+    }
+  },
+  "male": {
+    "Idle": {
+      "foot_lowest_world_z_m": 0.003000022144988179
+    },
+    "Sit_Desk": {
+      "foot_lowest_world_z_m": 0.003000041237100959,
+      "hand_keyboard_surface_gap_m": {
+        "Left": 0.0001525282859802246,
+        "Right": 0.0001525282859802246
+      },
+      "chair_back_penetrating_vertices": 0
+    },
+    "Sleep_Bed": {
+      "shoe_duvet_gap_m": {
+        "Left": 0.00010980505612678826,
+        "Right": 0.0016695117810741067
+      },
+      "head_pillow_surface_gap_m": 0.00014393178571481258
+    },
+    "Read_Book": {
+      "foot_lowest_world_z_m": 0.003000020980834961,
+      "hand_book_surface_gap_m": {
+        "Left": 0.0015029936330392957,
+        "Right": 2.713739922910463e-05
+      }
+    },
+    "Pet_Cat": {
+      "foot_lowest_world_z_m": 0.002999992109835148,
+      "closest_hand_cat_head_gap_m": 0.005943883676081896
+    }
+  }
+}

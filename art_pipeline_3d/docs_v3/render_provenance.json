@@ -1,0 +1,164 @@
+[
+  {
+    "file": "renders/01_characters_v3_turntable.png",
+    "sha256": "a498ac076fa9fae7c1a15be18355bc1c7e8d387638d2093e4d472dbe153c5668",
+    "pixels": [
+      3200,
+      2400
+    ],
+    "source": "contact sheet of unmodified real Cycles renders"
+  },
+  {
+    "file": "renders/02_room_v3_poses.png",
+    "sha256": "c31fc61e5307390fe12147783965e016a52dd761849fbcf2b02854a7c71d3a12",
+    "pixels": [
+      3000,
+      2230
+    ],
+    "source": "contact sheet of unmodified real Cycles renders"
+  },
+  {
+    "file": "renders/03_godot_characters_v3.png",
+    "sha256": "22bbc96cada11c2523ab77fc02be69ef4d12a85ac9713ea1df74b5555e740583",
+    "pixels": [
+      1920,
+      1400
+    ],
+    "source": "Godot 4.5.1 actual viewport"
+  },
+  {
+    "file": "renders/04_v2_vs_v3_comparison.png",
+    "sha256": "9b1b467cfff5795f1dd6807d0f4f403d3512ce2db760e7c816d7724890d53dca",
+    "pixels": [
+      2800,
+      2300
+    ],
+    "source": "contact sheet of unmodified real Cycles renders"
+  },
+  {
+    "file": "renders/characters_front.png",
+    "sha256": "39a62dbede26ab9519d2d84336d35de0b2f3b0bac2b904c4f72d06e637898bbf",
+    "pixels": [
+      1600,
+      1200
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/characters_iso.png",
+    "sha256": "e282329b065e82ba875a9ccaab666e08d11087099ac5765eadb681e165918a30",
+    "pixels": [
+      1600,
+      1200
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/characters_side.png",
+    "sha256": "d5cfa83abc7792e0c03e2c1e9489bd40d69faa2e0f32572f8c9c84cd22f2e4ab",
+    "pixels": [
+      1600,
+      1200
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/characters_topology.png",
+    "sha256": "ad90e8e38d491cf8fa623e5c597f1d3076c2e5cfcbaa9bbea87ead7cf1bfeb4e",
+    "pixels": [
+      1600,
+      1200
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/faces_detail.png",
+    "sha256": "383b75aba31a1d80bd037156e557c5a6a3ff79516f2c130a4a58b8a2e5fa5e80",
+    "pixels": [
+      1800,
+      700
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/garment_detail.png",
+    "sha256": "eabd5c81791796c5f71671e3895b3d379c18fa3cd38ca4e328a46c8696385a18",
+    "pixels": [
+      1800,
+      800
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/pose_exit.png",
+    "sha256": "3838b8e87df8eb2e1b97fb1e9f26e387857a50929ef6ef67295b4aba42ebf0e8",
+    "pixels": [
+      1400,
+      1050
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/pose_pet.png",
+    "sha256": "f924c0537dc2607b64e0d8ef4038c396ee8ccf5e0e508282f4304e045797b0c9",
+    "pixels": [
+      1400,
+      1050
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/pose_read.png",
+    "sha256": "2edfb31ff38758473d8a14d11075c16caab60c4289a68a55c21d123134481102",
+    "pixels": [
+      1400,
+      1050
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/pose_sit.png",
+    "sha256": "3ea31073f072eaac8c08cb48385e625ec65a0a6b88f8fcc08bd6407ecd852da6",
+    "pixels": [
+      1400,
+      1050
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/pose_sleep.png",
+    "sha256": "bb98a10aea4d148eaf81e25d6253722f31db3c6f25c9072bb6a8aba3f4af0a2a",
+    "pixels": [
+      1400,
+      1050
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/shoes_detail.png",
+    "sha256": "0dac70de49046de440a8026f28c7164bde255df06c4d6eec4e9185389955dacc",
+    "pixels": [
+      1800,
+      650
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/v2_front.png",
+    "sha256": "ebd27b500954ee5bd71a991002ad6e33f010607ad53ea96f8e8128e5fa722e60",
+    "pixels": [
+      1600,
+      1200
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  },
+  {
+    "file": "renders/v2_iso.png",
+    "sha256": "bfe49a58c4df4c2f2d6bf3cf88b23296d6ed32afb24ff35acc3b1593976fd9e1",
+    "pixels": [
+      1600,
+      1200
+    ],
+    "source": "Blender 4.5.3 Cycles actual render"
+  }
+]

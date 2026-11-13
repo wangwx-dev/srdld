@@ -1,0 +1,201 @@
+{
+  "blender-realtime-sample": {
+    "blender_realtime_sample.blend": {
+      "expected": "6e3b60bf0b1d221c2a076fb263747cc0e18b0fa1f2626de36d64f7bf04a4a609",
+      "actual": "6e3b60bf0b1d221c2a076fb263747cc0e18b0fa1f2626de36d64f7bf04a4a609",
+      "unchanged": true
+    },
+    "REPORT.md": {
+      "expected": "d54bae5dd473a11d8105b4bd4bca6f362825d45f802c7e824fc9c7fef52b3049",
+      "actual": "d54bae5dd473a11d8105b4bd4bca6f362825d45f802c7e824fc9c7fef52b3049",
+      "unchanged": true
+    },
+    "verification.json": {
+      "expected": "a5a373fd84e941d4bc4d63c48d1aa8253d51d0914f5480dd6d5560edbdf736b0",
+      "actual": "a5a373fd84e941d4bc4d63c48d1aa8253d51d0914f5480dd6d5560edbdf736b0",
+      "unchanged": true
+    },
+    "asset_manifest.json": {
+      "expected": "a68299ab8a57d22bbef23527808354b0fecf470fd3309b35b31dbf99407dae00",
+      "actual": "a68299ab8a57d22bbef23527808354b0fecf470fd3309b35b31dbf99407dae00",
+      "unchanged": true
+    },
+    "exports/city_realtime.glb": {
+      "expected": "b8d5cb5156278c4d80555a8592b50fc392f873d1dbca65dc7cfe18ac5382b28b",
+      "actual": "b8d5cb5156278c4d80555a8592b50fc392f873d1dbca65dc7cfe18ac5382b28b",
+      "unchanged": true
+    },
+    "exports/door_module_2x3.glb": {
+      "expected": "0edd42e549e8ee5f91fe8c9a9c30a56935917f22640df73eb92300215e23342b",
+      "actual": "0edd42e549e8ee5f91fe8c9a9c30a56935917f22640df73eb92300215e23342b",
+      "unchanged": true
+    },
+    "exports/female_rigged.glb": {
+      "expected": "83c60a958e0f447ce316df5edd0769186db6ee357f722811e7362eb7e24270e2",
+      "actual": "83c60a958e0f447ce316df5edd0769186db6ee357f722811e7362eb7e24270e2",
+      "unchanged": true
+    },
+    "exports/floor_tile_2x2.glb": {
+      "expected": "8a102c45a13d72dbb5e5af1402b60bdb2bcd4de97df92551794f6305bbb86ab6",
+      "actual": "8a102c45a13d72dbb5e5af1402b60bdb2bcd4de97df92551794f6305bbb86ab6",
+      "unchanged": true
+    },
+    "exports/male_rigged.glb": {
+      "expected": "ba71459dfeeca51431d00d1d80e0304eeb5db62d8d12d9840e0e928525a0c297",
+      "actual": "ba71459dfeeca51431d00d1d80e0304eeb5db62d8d12d9840e0e928525a0c297",
+      "unchanged": true
+    },
+    "exports/room_realtime.glb": {
+      "expected": "44428ddb503cc6f93a0b5b4d3b6d4f65e1457bee6a204272ef45106c2353d561",
+      "actual": "44428ddb503cc6f93a0b5b4d3b6d4f65e1457bee6a204272ef45106c2353d561",
+      "unchanged": true
+    },
+    "exports/wall_back_2x3.glb": {
+      "expected": "30c5e1143cbf4965c5bf62606876c6beaa8eecde90d9ab65af80abc0a7a4ed55",
+      "actual": "30c5e1143cbf4965c5bf62606876c6beaa8eecde90d9ab65af80abc0a7a4ed55",
+      "unchanged": true
+    },
+    "exports/wall_corner_in_2x2x3.glb": {
+      "expected": "e2cd2e2571a38a208d86e32a455a8e6fd69bf2904fd8e635dd30d3f24bd6f06c",
+      "actual": "e2cd2e2571a38a208d86e32a455a8e6fd69bf2904fd8e635dd30d3f24bd6f06c",
+      "unchanged": true
+    },
+    "exports/wall_low_front_2x05.glb": {
+      "expected": "5df14af4e8f36b6043ffd80294cccba71c3b668de62687b6e7e7cae7852b0bfc",
+      "actual": "5df14af4e8f36b6043ffd80294cccba71c3b668de62687b6e7e7cae7852b0bfc",
+      "unchanged": true
+    },
+    "exports/wall_window_2x3.glb": {
+      "expected": "d1bf2bfc3e58b7f753c748a33f7c2c01bb5185b11de5d80d07093cc86aeb5d19",
+      "actual": "d1bf2bfc3e58b7f753c748a33f7c2c01bb5185b11de5d80d07093cc86aeb5d19",
+      "unchanged": true
+    },
+    "renders/01_characters_turntable.png": {
+      "expected": "fbdee16b76c04090450c7b79a0b7d27fa8b3035f70e0bd2db378edeedbab113e",
+      "actual": "fbdee16b76c04090450c7b79a0b7d27fa8b3035f70e0bd2db378edeedbab113e",
+      "unchanged": true
+    },
+    "renders/02_room_isometric_sit.png": {
+      "expected": "4911e67d98e9edb50e020c90468e25108940f2f691cf40b8e3226950e294be47",
+      "actual": "4911e67d98e9edb50e020c90468e25108940f2f691cf40b8e3226950e294be47",
+      "unchanged": true
+    },
+    "renders/03_room_poses_sheet.png": {
+      "expected": "54d1897125fbcf91c4323e39ced97e11004858ff4233ff0f8635e4b24bda0b35",
+      "actual": "54d1897125fbcf91c4323e39ced97e11004858ff4233ff0f8635e4b24bda0b35",
+      "unchanged": true
+    },
+    "renders/04_dither_occlusion_preview.png": {
+      "expected": "e281575ea139a911ff4ad80e09a96f4d0d531318d0925ecf9309c17976ad6eda",
+      "actual": "e281575ea139a911ff4ad80e09a96f4d0d531318d0925ecf9309c17976ad6eda",
+      "unchanged": true
+    },
+    "renders/05_city_overview_isometric.png": {
+      "expected": "c4d35210e63ae16e5637d102af4afccadde8f0802a57562c0db124b48595f35b",
+      "actual": "c4d35210e63ae16e5637d102af4afccadde8f0802a57562c0db124b48595f35b",
+      "unchanged": true
+    },
+    "renders/06_before_after_comparison.png": {
+      "expected": "941dbd9e1122009b1e1400a6232988ec3b0aedf64d45d8a13c290eea9d852be7",
+      "actual": "941dbd9e1122009b1e1400a6232988ec3b0aedf64d45d8a13c290eea9d852be7",
+      "unchanged": true
+    }
+  },
+  "blender-realtime-sample-v2": {
+    "blender_realtime_sample.blend": {
+      "expected": "a537b7b6539067d9ce7df51eabc0e9ace642d0a1adeb30bb3360972791ab12ba",
+      "actual": "a537b7b6539067d9ce7df51eabc0e9ace642d0a1adeb30bb3360972791ab12ba",
+      "unchanged": true
+    },
+    "REPORT.md": {
+      "expected": "59219f6e5ab3e664c3af266c573156b391a03ea7d2fe1a04d82039a91e48778a",
+      "actual": "59219f6e5ab3e664c3af266c573156b391a03ea7d2fe1a04d82039a91e48778a",
+      "unchanged": true
+    },
+    "verification.json": {
+      "expected": "4e19a15055b6d62f7ab8784b385c0d7d47f6d3e788ebee21f6eb97cdcf12c97f",
+      "actual": "4e19a15055b6d62f7ab8784b385c0d7d47f6d3e788ebee21f6eb97cdcf12c97f",
+      "unchanged": true
+    },
+    "PIPELINE_SPEC.json": {
+      "expected": "fb371a6a2eccc4abf49a83debfa6e4a59ce614b4a6b1af897e047b05c5c39e3f",
+      "actual": "fb371a6a2eccc4abf49a83debfa6e4a59ce614b4a6b1af897e047b05c5c39e3f",
+      "unchanged": true
+    },
+    "exports/room_realtime.glb": {
+      "expected": "ea3fa9720b75248fe6fb971a95241a304af9558f73006b861634f714e53c381c",
+      "actual": "ea3fa9720b75248fe6fb971a95241a304af9558f73006b861634f714e53c381c",
+      "unchanged": true
+    },
+    "exports/wall_corner_in_2x2x3.glb": {
+      "expected": "e2cd2e2571a38a208d86e32a455a8e6fd69bf2904fd8e635dd30d3f24bd6f06c",
+      "actual": "e2cd2e2571a38a208d86e32a455a8e6fd69bf2904fd8e635dd30d3f24bd6f06c",
+      "unchanged": true
+    },
+    "exports/door_module_2x3.glb": {
+      "expected": "832537b6e60a0ee80ede8c6ab131c9fc4b06c81bfea978028887df31a3055cd0",
+      "actual": "832537b6e60a0ee80ede8c6ab131c9fc4b06c81bfea978028887df31a3055cd0",
+      "unchanged": true
+    },
+    "exports/wall_low_front_2x05.glb": {
+      "expected": "5df14af4e8f36b6043ffd80294cccba71c3b668de62687b6e7e7cae7852b0bfc",
+      "actual": "5df14af4e8f36b6043ffd80294cccba71c3b668de62687b6e7e7cae7852b0bfc",
+      "unchanged": true
+    },
+    "exports/male_rigged.glb": {
+      "expected": "ab13b0c5da39d2b2b4e1655985f8bb8c547d898c8b22c20a094b9b228703a8db",
+      "actual": "ab13b0c5da39d2b2b4e1655985f8bb8c547d898c8b22c20a094b9b228703a8db",
+      "unchanged": true
+    },
+    "exports/wall_back_2x3.glb": {
+      "expected": "30c5e1143cbf4965c5bf62606876c6beaa8eecde90d9ab65af80abc0a7a4ed55",
+      "actual": "30c5e1143cbf4965c5bf62606876c6beaa8eecde90d9ab65af80abc0a7a4ed55",
+      "unchanged": true
+    },
+    "exports/wall_window_2x3.glb": {
+      "expected": "571317b569b35aa32a5d176d114aa8daac3524a1462c4ba54efe5c35e0328f36",
+      "actual": "571317b569b35aa32a5d176d114aa8daac3524a1462c4ba54efe5c35e0328f36",
+      "unchanged": true
+    },
+    "exports/floor_tile_2x2.glb": {
+      "expected": "8a102c45a13d72dbb5e5af1402b60bdb2bcd4de97df92551794f6305bbb86ab6",
+      "actual": "8a102c45a13d72dbb5e5af1402b60bdb2bcd4de97df92551794f6305bbb86ab6",
+      "unchanged": true
+    },
+    "exports/city_realtime.glb": {
+      "expected": "248baa04dd1fee995f8b6376bc5a18a5cb9e34924d50df57d245972da88d09e8",
+      "actual": "248baa04dd1fee995f8b6376bc5a18a5cb9e34924d50df57d245972da88d09e8",
+      "unchanged": true
+    },
+    "exports/female_rigged.glb": {
+      "expected": "de92a9224d47a76ce2881e0dc74a95ce59340f9b753c6c6508ab2e06c34d8548",
+      "actual": "de92a9224d47a76ce2881e0dc74a95ce59340f9b753c6c6508ab2e06c34d8548",
+      "unchanged": true
+    },
+    "renders/01_characters_turntable_v2.png": {
+      "expected": "b057ee8fef1639b467112f59a71249faff2492233eac7f25c73ffc728990755d",
+      "actual": "b057ee8fef1639b467112f59a71249faff2492233eac7f25c73ffc728990755d",
+      "unchanged": true
+    },
+    "renders/02_room_isometric_sit_v2.png": {
+      "expected": "6ac377b56bd72888222baa70481f60e30d0af22cf42916c96ef4e36bb7ee1930",
+      "actual": "6ac377b56bd72888222baa70481f60e30d0af22cf42916c96ef4e36bb7ee1930",
+      "unchanged": true
+    },
+    "renders/03_room_poses_sheet_v2.png": {
+      "expected": "a72733c5639d6e2b8149fd1c6d89227ac3cbefccb5d8260738168457c61d1e47",
+      "actual": "a72733c5639d6e2b8149fd1c6d89227ac3cbefccb5d8260738168457c61d1e47",
+      "unchanged": true
+    },
+    "renders/04_godot_room_realtime_v2.png": {
+      "expected": "ff69fd821b808ded6934ae21f21129e08a2fac37aa2096ac5419c58a30a04d8a",
+      "actual": "ff69fd821b808ded6934ae21f21129e08a2fac37aa2096ac5419c58a30a04d8a",
+      "unchanged": true
+    },
+    "renders/05_v1_vs_v2_comparison.png": {
+      "expected": "6b210a4cc8d97ecf78db1dd61f191d4fa1d6ad6d2dc5619d2f651f7670b157f7",
+      "actual": "6b210a4cc8d97ecf78db1dd61f191d4fa1d6ad6d2dc5619d2f651f7670b157f7",
+      "unchanged": true
+    }
+  }
+}
