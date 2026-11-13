@@ -1,0 +1,170 @@
+[
+  {
+    "id": "warm_comment",
+    "pool": "morning",
+    "once": true,
+    "weight": 12,
+    "min_day": 2,
+    "auto": true,
+    "text": "有人留了一条很长的评论，说你的片子让下班路没那么难走。",
+    "effects": {"mood": 8, "reputation": 1}
+  },
+  {
+    "id": "platform_boost",
+    "pool": "morning",
+    "once": true,
+    "weight": 8,
+    "min_day": 4,
+    "auto": true,
+    "text": "青帖给你发了一笔固定的新手推荐：粉丝 +36。通知里写了规则，不是随机暴击。",
+    "effects": {"reputation": 1, "fans": {"qingtie": 36}}
+  },
+  {
+    "id": "convenience_meal",
+    "pool": "morning",
+    "once": true,
+    "weight": 8,
+    "min_day": 3,
+    "auto": true,
+    "text": "午饭换成了便利店饭团，账上多出 15 元，心情没有一起变好。",
+    "effects": {"money": 15, "mood": -2}
+  },
+  {
+    "id": "neighbor_noise",
+    "pool": "morning",
+    "once": true,
+    "weight": 10,
+    "min_day": 3,
+    "auto": false,
+    "text": "邻居敲了敲墙，说你的收音像在客厅里开演唱会。",
+    "choices": [
+      {"id": "apologize", "label": "道歉并改期", "effects": {"stamina": -6, "mood": 3, "reputation": 1}},
+      {"id": "continue", "label": "戴耳机继续", "effects": {"stress": 7, "reputation": -1}}
+    ]
+  },
+  {
+    "id": "copied_post",
+    "pool": "morning",
+    "once": true,
+    "weight": 8,
+    "min_day": 7,
+    "auto": false,
+    "text": "你的稿子被另一个号原样搬走了，评论区正在对线。",
+    "choices": [
+      {"id": "statement", "label": "发一则说明", "effects": {"stress": 5, "reputation": 3}},
+      {"id": "ignore", "label": "先不去看", "effects": {"mood": -5, "stress": 2}}
+    ]
+  },
+  {
+    "id": "mom_call",
+    "pool": "morning",
+    "once": true,
+    "weight": 10,
+    "min_day": 2,
+    "auto": false,
+    "text": "家里来电，问这个月房租还撑得住吗。",
+    "choices": [
+      {"id": "fruit", "label": "报平安并转水果钱", "effects": {"money": -30, "mood": 10, "stress": -8}},
+      {"id": "busy", "label": "说正在忙", "effects": {"stress": 3}}
+    ]
+  },
+  {
+    "id": "all_nighter",
+    "pool": "morning",
+    "once": true,
+    "weight": 8,
+    "min_day": 4,
+    "min_stress": 45,
+    "auto": false,
+    "text": "你盯着时间线，觉得今晚不睡就能追上一整周。",
+    "choices": [
+      {"id": "stay_up", "label": "熬夜找灵感", "effects": {"inspiration": 12, "stamina": -22, "stress": 10, "mood": -4}},
+      {"id": "sleep", "label": "合上电脑", "effects": {"stress": -6, "mood": 4}}
+    ]
+  },
+  {
+    "id": "rival_akai",
+    "pool": "morning",
+    "once": true,
+    "weight": 8,
+    "min_day": 8,
+    "auto": false,
+    "text": "热搜阿凯留言：明天同一选题，看谁先把完播做上去。这不是正式比赛，也不会改你的账单。",
+    "choices": [
+      {"id": "accept", "label": "应战", "effects": {"stress": 6, "inspiration": 8, "duel_days": 2, "flag": "akai_duel"}},
+      {"id": "decline", "label": "不接招", "effects": {"mood": 4, "stress": -2}}
+    ]
+  },
+  {
+    "id": "rival_lin",
+    "pool": "morning",
+    "once": true,
+    "weight": 8,
+    "min_day": 12,
+    "auto": false,
+    "text": "慢半拍林约你连麦，主题是「第一个月怎么交租」。",
+    "choices": [
+      {"id": "join", "label": "连麦", "effects": {"inspiration": 10, "stamina": -8, "reputation": 2, "fans": {"changhe": 35}}},
+      {"id": "later", "label": "改日再说", "effects": {"mood": 2}}
+    ]
+  },
+  {
+    "id": "shenren_rumor",
+    "pool": "morning",
+    "once": true,
+    "weight": 6,
+    "min_day": 18,
+    "auto": true,
+    "text": "评论区在传「神人大乱斗」下赛季要组创作者对抗。无名神人还没露脸。这个月它不影响你的播放和账单。",
+    "effects": {"flag": "shenren_heard"}
+  },
+  {
+    "id": "laptop_lag",
+    "pool": "morning",
+    "once": true,
+    "weight": 8,
+    "min_day": 6,
+    "auto": false,
+    "text": "预览的时候风扇狂转，时间线一卡一卡。",
+    "choices": [
+      {"id": "repair", "label": "花 60 元清理", "effects": {"money": -60, "mood": 2, "clear_penalty": true}},
+      {"id": "endure", "label": "先凑合", "effects": {"editing_penalty": 0.6, "penalty_days": 3}}
+    ]
+  },
+  {
+    "id": "client_revision",
+    "pool": "morning",
+    "once": true,
+    "weight": 8,
+    "min_day": 2,
+    "max_days_since_freelance": 1,
+    "auto": false,
+    "text": "代笔客户想加一版小修改。加价 40 元，写在消息里，不是抽成。",
+    "choices": [
+      {"id": "revise", "label": "接这版修改", "effects": {"money": 40, "stamina": -8, "stress": 4}},
+      {"id": "original", "label": "按原约定交货", "effects": {"reputation": 1}}
+    ]
+  },
+  {
+    "id": "rainy_walk",
+    "pool": "outing",
+    "once": true,
+    "weight": 10,
+    "auto": true,
+    "text": "出门赶上小雨。街面反光，你记下了三个还能用的开头。",
+    "effects": {"inspiration": 8, "mood": 4, "stress": -4}
+  },
+  {
+    "id": "reader_cafe",
+    "pool": "outing",
+    "once": true,
+    "weight": 8,
+    "min_day": 5,
+    "auto": false,
+    "text": "咖啡店里有人认出你的声音，把靠窗的座位让了出来。",
+    "choices": [
+      {"id": "chat", "label": "聊十分钟", "effects": {"inspiration": 6, "stamina": -4, "fans": {"shizi": 25, "qingtie": 20}}},
+      {"id": "smile", "label": "微笑离开", "effects": {"mood": 5}}
+    ]
+  }
+]

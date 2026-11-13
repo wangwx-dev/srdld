@@ -1,0 +1,38 @@
+[
+  {
+    "id": "shizi",
+    "name": "柿子视频",
+    "blurb": "短视频平台。趋势和前几秒更要紧，单次播放不算贵。",
+    "preferred_format": "short",
+    "cold_audience": 2400,
+    "fan_weight": 2.4,
+    "follow_rate": 0.005,
+    "rpm": 26,
+    "trend_sensitivity": 1.0,
+    "fatigue_gain": 18
+  },
+  {
+    "id": "qingtie",
+    "name": "青帖",
+    "blurb": "图文社区。实用、可收藏的内容更吃香，收入稳一些。",
+    "preferred_format": "note",
+    "cold_audience": 1500,
+    "fan_weight": 3.4,
+    "follow_rate": 0.008,
+    "rpm": 36,
+    "trend_sensitivity": 0.62,
+    "fatigue_gain": 14
+  },
+  {
+    "id": "changhe",
+    "name": "长河",
+    "blurb": "中长视频。剪辑和完播更重要，涨粉慢，但每次观看更值钱。",
+    "preferred_format": "long",
+    "cold_audience": 820,
+    "fan_weight": 4.2,
+    "follow_rate": 0.01,
+    "rpm": 52,
+    "trend_sensitivity": 0.42,
+    "fatigue_gain": 12
+  }
+]

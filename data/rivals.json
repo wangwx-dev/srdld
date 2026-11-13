@@ -1,0 +1,23 @@
+[
+  {
+    "id": "akai",
+    "name": "热搜阿凯",
+    "platform": "shizi",
+    "weekly_base": 900,
+    "line": "在柿子视频上冲短视频，爱约人同题。这不是正式比赛。"
+  },
+  {
+    "id": "lin",
+    "name": "慢半拍林",
+    "platform": "changhe",
+    "weekly_base": 280,
+    "line": "在长河做慢热长视频，偶尔约人连麦聊房租。"
+  },
+  {
+    "id": "shenren",
+    "name": "无名神人",
+    "platform": "",
+    "weekly_base": 0,
+    "line": "传闻在筹备「神人大乱斗」。下赛季才开，本月不影响你的播放和账单。"
+  }
+]

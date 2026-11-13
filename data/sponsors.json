@@ -1,0 +1,38 @@
+[
+  {
+    "id": "nuanwu",
+    "brand": "暖屋家居",
+    "pay": 420,
+    "tag": "生活",
+    "platform": "qingtie",
+    "weight": 10,
+    "blurb": "想让你拍一张出租屋的角落。报酬是写死的。"
+  },
+  {
+    "id": "qingquan",
+    "brand": "清泉汽水",
+    "pay": 560,
+    "tag": "美食",
+    "platform": "shizi",
+    "weight": 8,
+    "blurb": "要一条饮料口播。和美食比较贴，和故事不太贴。"
+  },
+  {
+    "id": "mobai",
+    "brand": "墨白课堂",
+    "pay": 500,
+    "tag": "技能",
+    "platform": "changhe",
+    "weight": 8,
+    "blurb": "课程优惠，适合学习向的长视频。"
+  },
+  {
+    "id": "corner",
+    "brand": "街角咖啡",
+    "pay": 320,
+    "tag": "城市",
+    "platform": "shizi",
+    "weight": 10,
+    "blurb": "预算不大，但和散步、街头内容合拍。"
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "topics": [
+    {"id": "life", "name": "生活观察", "tags": ["生活", "情绪"]},
+    {"id": "film", "name": "影视闲聊", "tags": ["影视", "娱乐"]},
+    {"id": "knowledge", "name": "知识科普", "tags": ["知识"]},
+    {"id": "mood", "name": "情绪树洞", "tags": ["情绪", "生活"]},
+    {"id": "consume", "name": "消费开箱", "tags": ["消费", "娱乐"]},
+    {"id": "society", "name": "社会议题", "tags": ["知识", "社会"]}
+  ],
+  "memes": [
+    {"id": "alley_cat", "name": "楼道里的猫", "tags": ["生活", "情绪"], "family": "daily", "heat": 70, "place": "park"},
+    {"id": "rain_bus", "name": "雨天末班车", "tags": ["情绪", "生活"], "family": "daily", "heat": 74, "place": "park"},
+    {"id": "old_reel", "name": "散场灯还没亮", "tags": ["影视", "娱乐"], "family": "screen", "heat": 78, "place": "cinema"},
+    {"id": "extra_ticket", "name": "多买的一张票", "tags": ["影视", "消费"], "family": "screen", "heat": 66, "place": "cinema"},
+    {"id": "margin_note", "name": "书页边上的批注", "tags": ["知识", "社会"], "family": "book", "heat": 64, "place": "library"},
+    {"id": "quiet_stack", "name": "闭馆前的书堆", "tags": ["知识"], "family": "book", "heat": 60, "place": "library"},
+    {"id": "window_price", "name": "橱窗价签", "tags": ["消费", "娱乐"], "family": "shop", "heat": 72, "place": "mall"},
+    {"id": "sample_spoon", "name": "试吃的小勺", "tags": ["消费", "生活"], "family": "shop", "heat": 58, "place": "mall"},
+    {"id": "late_rep", "name": "最后一组还是做了", "tags": ["生活", "情绪"], "family": "body", "heat": 63, "place": "gym"}
+  ],
+  "places": [
+    {"id": "park", "name": "公园", "open": [360, 1320], "trip": 15, "activity": 90, "cost": 0, "inspiration": 12, "stamina": -4, "interruptible": true},
+    {"id": "cinema", "name": "电影院", "open": [600, 1380], "trip": 20, "activity": 120, "cost": 4000, "inspiration": 22, "stamina": -6, "interruptible": false},
+    {"id": "mall", "name": "商场", "open": [600, 1320], "trip": 20, "activity": 60, "cost": 0, "inspiration": 4, "stamina": -3, "interruptible": true},
+    {"id": "gym", "name": "健身房", "open": [420, 1260], "trip": 20, "activity": 90, "cost": 0, "inspiration": 2, "stamina": 0, "interruptible": false},
+    {"id": "library", "name": "图书馆", "open": [480, 1200], "trip": 15, "activity": 90, "cost": 0, "inspiration": 16, "stamina": -2, "interruptible": true}
+  ],
+  "gym_packages": [
+    {"id": "light", "name": "轻量", "cost": 1500, "stamina_cost": 8, "cap": 6, "fitness": 0.4},
+    {"id": "regular", "name": "常规", "cost": 3000, "stamina_cost": 14, "cap": 10, "fitness": 0.8},
+    {"id": "hard", "name": "加强", "cost": 4500, "stamina_cost": 22, "cap": 14, "fitness": 1.1}
+  ],
+  "goods": [
+    {"id": "snack", "name": "方便食品", "cost": 800, "stamina": 12, "kind": "consumable"},
+    {"id": "bento", "name": "盒饭", "cost": 1800, "stamina": 22, "kind": "consumable"},
+    {"id": "drink", "name": "提神饮料", "cost": 1500, "stamina": 10, "kind": "consumable", "craft_discount": 2}
+  ]
+}
