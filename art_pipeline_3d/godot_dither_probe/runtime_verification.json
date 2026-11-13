@@ -1,0 +1,185 @@
+{
+  "city_realtime.glb": {
+    "animation_players": [],
+    "loaded": true,
+    "meshes": 182,
+    "skeletons": [],
+    "textured_surfaces": 133,
+    "triangles": 17538
+  },
+  "door_module_2x3.glb": {
+    "animation_players": [],
+    "loaded": true,
+    "meshes": 1,
+    "skeletons": [],
+    "textured_surfaces": 3,
+    "triangles": 96
+  },
+  "female_rigged.glb": {
+    "animation_players": [
+      [
+        "Idle",
+        "Pet_Cat",
+        "Read_Book",
+        "Sit_Desk",
+        "Sleep_Bed"
+      ]
+    ],
+    "loaded": true,
+    "meshes": 1,
+    "skeletons": [
+      {
+        "bones": 21,
+        "name": "Skeleton3D"
+      }
+    ],
+    "textured_surfaces": 5,
+    "triangles": 4832
+  },
+  "floor_tile_2x2.glb": {
+    "animation_players": [],
+    "loaded": true,
+    "meshes": 1,
+    "skeletons": [],
+    "textured_surfaces": 1,
+    "triangles": 12
+  },
+  "male_rigged.glb": {
+    "animation_players": [
+      [
+        "Idle",
+        "Pet_Cat",
+        "Read_Book",
+        "Sit_Desk",
+        "Sleep_Bed"
+      ]
+    ],
+    "loaded": true,
+    "meshes": 1,
+    "skeletons": [
+      {
+        "bones": 21,
+        "name": "Skeleton3D"
+      }
+    ],
+    "textured_surfaces": 4,
+    "triangles": 4784
+  },
+  "room_realtime.glb": {
+    "animation_players": [],
+    "loaded": true,
+    "meshes": 267,
+    "skeletons": [],
+    "textured_surfaces": 237,
+    "triangles": 31446
+  },
+  "shader": {
+    "default_uniforms": [
+      {
+        "class_name": "",
+        "hint": 17,
+        "hint_string": "Texture2D",
+        "name": "albedo_tex",
+        "type": 24,
+        "usage": 6
+      },
+      {
+        "class_name": "",
+        "hint": 17,
+        "hint_string": "Texture2D",
+        "name": "roughness_tex",
+        "type": 24,
+        "usage": 6
+      },
+      {
+        "class_name": "",
+        "hint": 17,
+        "hint_string": "Texture2D",
+        "name": "normal_tex",
+        "type": 24,
+        "usage": 6
+      },
+      {
+        "class_name": "",
+        "hint": 0,
+        "hint_string": "",
+        "name": "subject_screen_uv",
+        "type": 5,
+        "usage": 6
+      },
+      {
+        "class_name": "",
+        "hint": 0,
+        "hint_string": "",
+        "name": "subject_view_depth",
+        "type": 3,
+        "usage": 6
+      },
+      {
+        "class_name": "",
+        "hint": 1,
+        "hint_string": "20.0,400.0,0.0010000000475",
+        "name": "radius_pixels",
+        "type": 3,
+        "usage": 6
+      },
+      {
+        "class_name": "",
+        "hint": 1,
+        "hint_string": "0.0,1.0,0.0010000000475",
+        "name": "removed_coverage",
+        "type": 3,
+        "usage": 6
+      },
+      {
+        "class_name": "",
+        "hint": 1,
+        "hint_string": "0.0,1.0,0.0010000000475",
+        "name": "normal_strength",
+        "type": 3,
+        "usage": 6
+      },
+      {
+        "class_name": "",
+        "hint": 0,
+        "hint_string": "",
+        "name": "enabled",
+        "type": 1,
+        "usage": 6
+      }
+    ],
+    "resource_loaded": true
+  },
+  "wall_back_2x3.glb": {
+    "animation_players": [],
+    "loaded": true,
+    "meshes": 1,
+    "skeletons": [],
+    "textured_surfaces": 2,
+    "triangles": 24
+  },
+  "wall_corner_in_2x2x3.glb": {
+    "animation_players": [],
+    "loaded": true,
+    "meshes": 1,
+    "skeletons": [],
+    "textured_surfaces": 1,
+    "triangles": 24
+  },
+  "wall_low_front_2x05.glb": {
+    "animation_players": [],
+    "loaded": true,
+    "meshes": 1,
+    "skeletons": [],
+    "textured_surfaces": 2,
+    "triangles": 24
+  },
+  "wall_window_2x3.glb": {
+    "animation_players": [],
+    "loaded": true,
+    "meshes": 1,
+    "skeletons": [],
+    "textured_surfaces": 2,
+    "triangles": 168
+  }
+}

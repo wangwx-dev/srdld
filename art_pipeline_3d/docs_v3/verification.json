@@ -1,0 +1,1343 @@
+{
+  "version": "V3",
+  "created_at_cst": "2026-11-13T17:17:35.452556+08:00",
+  "core_checks": {
+    "female": {
+      "triangle_budget": true,
+      "exactly_21_bones": true,
+      "SleepLids": true,
+      "unweighted_zero": true,
+      "duplicate_faces_zero": true,
+      "degenerate_triangles_zero": true,
+      "glb_roundtrip": true,
+      "godot_sleep_head_unit_scale": true,
+      "all_five_godot_actions": true
+    },
+    "male": {
+      "triangle_budget": true,
+      "exactly_21_bones": true,
+      "SleepLids": true,
+      "unweighted_zero": true,
+      "duplicate_faces_zero": true,
+      "degenerate_triangles_zero": true,
+      "glb_roundtrip": true,
+      "godot_sleep_head_unit_scale": true,
+      "all_five_godot_actions": true
+    }
+  },
+  "contact_checks": {
+    "female": {
+      "floor_clearance_within_5mm": true,
+      "keyboard_within_5mm": true,
+      "chair_back_no_vertices": true,
+      "book_within_5mm": true,
+      "cat_within_10mm": true,
+      "pillow_within_5mm": true,
+      "shoes_duvet_within_5mm": true
+    },
+    "male": {
+      "floor_clearance_within_5mm": true,
+      "keyboard_within_5mm": true,
+      "chair_back_no_vertices": true,
+      "book_within_5mm": true,
+      "cat_within_10mm": true,
+      "pillow_within_5mm": true,
+      "shoes_duvet_within_5mm": true
+    }
+  },
+  "characters": {
+    "female": {
+      "triangles": 11178,
+      "vertices": 6067,
+      "bones": 21,
+      "head_inherit_scale": "FULL",
+      "shape_keys": [
+        "Basis",
+        "SleepLids"
+      ],
+      "unweighted_vertices": 0,
+      "weight_sum_max_error": 5.960464477539063e-08,
+      "duplicate_faces_by_coordinates": 0,
+      "duplicate_triangles_by_coordinates": 0,
+      "degenerate_triangles": 0,
+      "poses": {
+        "Idle": {
+          "head_deform_axis_lengths": [
+            1.0,
+            1.0000000055879354,
+            1.0000000055879354
+          ],
+          "head_deform_determinant": 1.0,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 1.225350700906347e-07,
+          "finite_matrices": true
+        },
+        "Sit_Desk": {
+          "head_deform_axis_lengths": [
+            1.0,
+            1.0000000074505806,
+            1.0000000074505806
+          ],
+          "head_deform_determinant": 1.0,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 1.2252257874934003e-07,
+          "finite_matrices": true
+        },
+        "Sleep_Bed": {
+          "head_deform_axis_lengths": [
+            1.0,
+            0.9999999725259837,
+            0.9999999725259837
+          ],
+          "head_deform_determinant": 0.9999999403953552,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 6.157355869618186e-08,
+          "finite_matrices": true
+        },
+        "Read_Book": {
+          "head_deform_axis_lengths": [
+            1.0,
+            0.999999988824129,
+            0.999999988824129
+          ],
+          "head_deform_determinant": 1.0,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 1.2251875602942164e-07,
+          "finite_matrices": true
+        },
+        "Pet_Cat": {
+          "head_deform_axis_lengths": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "head_deform_determinant": 1.0,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 1.2253464376499323e-07,
+          "finite_matrices": true
+        }
+      },
+      "materials": [
+        "V3_Knit_sage",
+        "V3_Recess_shadow",
+        "V3_Skin_F",
+        "V3_Lip_warm",
+        "V3_Eye_sclera",
+        "V3_Iris_hazel",
+        "V3_Pupil",
+        "V3_Hair_chestnut",
+        "V3_Brushed_fasteners",
+        "V3_Rubber_cupsole",
+        "V3_Canvas_shoe",
+        "V3_Cotton_laces",
+        "V3_Denim_indigo",
+        "V3_Collar_binding"
+      ]
+    },
+    "male": {
+      "triangles": 11362,
+      "vertices": 6167,
+      "bones": 21,
+      "head_inherit_scale": "FULL",
+      "shape_keys": [
+        "Basis",
+        "SleepLids"
+      ],
+      "unweighted_vertices": 0,
+      "weight_sum_max_error": 5.960464477539063e-08,
+      "duplicate_faces_by_coordinates": 0,
+      "duplicate_triangles_by_coordinates": 0,
+      "degenerate_triangles": 0,
+      "poses": {
+        "Idle": {
+          "head_deform_axis_lengths": [
+            1.0,
+            1.0000000055879354,
+            1.0000000055879354
+          ],
+          "head_deform_determinant": 1.0,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 1.225350700906347e-07,
+          "finite_matrices": true
+        },
+        "Sit_Desk": {
+          "head_deform_axis_lengths": [
+            1.0,
+            1.0000000074505806,
+            1.0000000074505806
+          ],
+          "head_deform_determinant": 1.0,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 1.2252257874934003e-07,
+          "finite_matrices": true
+        },
+        "Sleep_Bed": {
+          "head_deform_axis_lengths": [
+            1.0,
+            1.0000000917352694,
+            1.0000000917352694
+          ],
+          "head_deform_determinant": 1.000000238418579,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 6.157418397378933e-08,
+          "finite_matrices": true
+        },
+        "Read_Book": {
+          "head_deform_axis_lengths": [
+            1.0,
+            0.999999988824129,
+            0.999999988824129
+          ],
+          "head_deform_determinant": 1.0,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 1.2251875602942164e-07,
+          "finite_matrices": true
+        },
+        "Pet_Cat": {
+          "head_deform_axis_lengths": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "head_deform_determinant": 1.0,
+          "posed_degenerate_triangles": 0,
+          "posed_min_triangle_area_m2": 1.2253464376499323e-07,
+          "finite_matrices": true
+        }
+      },
+      "materials": [
+        "V3_Cotton_midnightblue",
+        "V3_Recess_shadow",
+        "V3_Skin_M",
+        "V3_Lip_warm",
+        "V3_Eye_sclera",
+        "V3_Iris_hazel",
+        "V3_Pupil",
+        "V3_Hair_espresso",
+        "V3_Rubber_cupsole",
+        "V3_Canvas_shoe",
+        "V3_Cotton_laces",
+        "V3_Brushed_fasteners",
+        "V3_Chinos_slate"
+      ]
+    }
+  },
+  "glb_roundtrip": {
+    "female_rigged.glb": {
+      "bytes": 3440168,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 1,
+      "animations": [
+        "Idle",
+        "Sit_Desk",
+        "Sleep_Bed",
+        "Read_Book",
+        "Pet_Cat"
+      ],
+      "embedded_images": 19,
+      "external_image_uris": [],
+      "glb_triangles": 11178,
+      "skin_joints": [
+        [
+          "Hips",
+          "Spine",
+          "Chest",
+          "Neck",
+          "Head",
+          "LeftShoulder",
+          "LeftArm",
+          "LeftForeArm",
+          "LeftHand",
+          "RightShoulder",
+          "RightArm",
+          "RightForeArm",
+          "RightHand",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase"
+        ]
+      ],
+      "animation_motion": {
+        "Idle": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        },
+        "Sit_Desk": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        },
+        "Sleep_Bed": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        },
+        "Read_Book": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        },
+        "Pet_Cat": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        }
+      },
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 11178,
+      "glb_scene_instance_triangles": 11178,
+      "glb_valid_scene_instance_triangles": 11178,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [
+        {
+          "name": "Icosphere",
+          "vertices": 42,
+          "faces": 80,
+          "purpose": "Blender importer-created pose-bone custom shape; not an exported character mesh"
+        }
+      ],
+      "reimported_bones": {
+        "female_Rig": 21
+      },
+      "reimported_triangles": 11178,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "unweighted_vertices": 0,
+      "weight_sum_max_error": 2.9802322387695312e-08,
+      "bone_parent_hierarchy": {
+        "Hips": null,
+        "Spine": "Hips",
+        "Chest": "Spine",
+        "Neck": "Chest",
+        "Head": "Neck",
+        "LeftShoulder": "Chest",
+        "LeftArm": "LeftShoulder",
+        "LeftForeArm": "LeftArm",
+        "LeftHand": "LeftForeArm",
+        "RightShoulder": "Chest",
+        "RightArm": "RightShoulder",
+        "RightForeArm": "RightArm",
+        "RightHand": "RightForeArm",
+        "LeftUpLeg": "Hips",
+        "LeftLeg": "LeftUpLeg",
+        "LeftFoot": "LeftLeg",
+        "LeftToeBase": "LeftFoot",
+        "RightUpLeg": "Hips",
+        "RightLeg": "RightUpLeg",
+        "RightFoot": "RightLeg",
+        "RightToeBase": "RightFoot"
+      },
+      "action_frame_checks": [
+        {
+          "action": "Idle",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Idle",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Idle",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 49,
+          "finite_bone_matrices": true
+        }
+      ],
+      "passed_transport_checks": true
+    },
+    "male_rigged.glb": {
+      "bytes": 2998752,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 1,
+      "animations": [
+        "Idle",
+        "Sit_Desk",
+        "Sleep_Bed",
+        "Read_Book",
+        "Pet_Cat"
+      ],
+      "embedded_images": 18,
+      "external_image_uris": [],
+      "glb_triangles": 11362,
+      "skin_joints": [
+        [
+          "Hips",
+          "Spine",
+          "Chest",
+          "Neck",
+          "Head",
+          "LeftShoulder",
+          "LeftArm",
+          "LeftForeArm",
+          "LeftHand",
+          "RightShoulder",
+          "RightArm",
+          "RightForeArm",
+          "RightHand",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase"
+        ]
+      ],
+      "animation_motion": {
+        "Idle": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        },
+        "Sit_Desk": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        },
+        "Sleep_Bed": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        },
+        "Read_Book": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        },
+        "Pet_Cat": {
+          "nonconstant_channels": 0,
+          "genuine_motion_not_just_hold": false
+        }
+      },
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 11362,
+      "glb_scene_instance_triangles": 11362,
+      "glb_valid_scene_instance_triangles": 11362,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [
+        {
+          "name": "Icosphere",
+          "vertices": 42,
+          "faces": 80,
+          "purpose": "Blender importer-created pose-bone custom shape; not an exported character mesh"
+        }
+      ],
+      "reimported_bones": {
+        "male_Rig": 21
+      },
+      "reimported_triangles": 11362,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "unweighted_vertices": 0,
+      "weight_sum_max_error": 2.9802322387695312e-08,
+      "bone_parent_hierarchy": {
+        "Hips": null,
+        "Spine": "Hips",
+        "Chest": "Spine",
+        "Neck": "Chest",
+        "Head": "Neck",
+        "LeftShoulder": "Chest",
+        "LeftArm": "LeftShoulder",
+        "LeftForeArm": "LeftArm",
+        "LeftHand": "LeftForeArm",
+        "RightShoulder": "Chest",
+        "RightArm": "RightShoulder",
+        "RightForeArm": "RightArm",
+        "RightHand": "RightForeArm",
+        "LeftUpLeg": "Hips",
+        "LeftLeg": "LeftUpLeg",
+        "LeftFoot": "LeftLeg",
+        "LeftToeBase": "LeftFoot",
+        "RightUpLeg": "Hips",
+        "RightLeg": "RightUpLeg",
+        "RightFoot": "RightLeg",
+        "RightToeBase": "RightFoot"
+      },
+      "action_frame_checks": [
+        {
+          "action": "Idle",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Idle",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Idle",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 49,
+          "finite_bone_matrices": true
+        }
+      ],
+      "passed_transport_checks": true
+    },
+    "room_realtime.glb": {
+      "bytes": 64341024,
+      "gltf_version": "2.0",
+      "mesh_count": 267,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 23,
+      "external_image_uris": [],
+      "glb_triangles": 31446,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 16,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 31446,
+      "glb_scene_instance_triangles": 31446,
+      "glb_valid_scene_instance_triangles": 31430,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 31446,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    }
+  },
+  "pose_contact_measurements_m": {
+    "female": {
+      "Idle": {
+        "foot_lowest_world_z_m": 0.003000022144988179
+      },
+      "Sit_Desk": {
+        "foot_lowest_world_z_m": 0.003000041237100959,
+        "hand_keyboard_surface_gap_m": {
+          "Left": 0.0001525282859802246,
+          "Right": 0.0001525282859802246
+        },
+        "chair_back_penetrating_vertices": 0
+      },
+      "Sleep_Bed": {
+        "shoe_duvet_gap_m": {
+          "Left": 0.00010980505612678826,
+          "Right": 0.0016695117810741067
+        },
+        "head_pillow_surface_gap_m": 0.002779028145596385
+      },
+      "Read_Book": {
+        "foot_lowest_world_z_m": 0.003000020980834961,
+        "hand_book_surface_gap_m": {
+          "Left": 0.0015029936330392957,
+          "Right": 2.713739922910463e-05
+        }
+      },
+      "Pet_Cat": {
+        "foot_lowest_world_z_m": 0.002999992109835148,
+        "closest_hand_cat_head_gap_m": 0.005943883676081896
+      }
+    },
+    "male": {
+      "Idle": {
+        "foot_lowest_world_z_m": 0.003000022144988179
+      },
+      "Sit_Desk": {
+        "foot_lowest_world_z_m": 0.003000041237100959,
+        "hand_keyboard_surface_gap_m": {
+          "Left": 0.0001525282859802246,
+          "Right": 0.0001525282859802246
+        },
+        "chair_back_penetrating_vertices": 0
+      },
+      "Sleep_Bed": {
+        "shoe_duvet_gap_m": {
+          "Left": 0.00010980505612678826,
+          "Right": 0.0016695117810741067
+        },
+        "head_pillow_surface_gap_m": 0.00014393178571481258
+      },
+      "Read_Book": {
+        "foot_lowest_world_z_m": 0.003000020980834961,
+        "hand_book_surface_gap_m": {
+          "Left": 0.0015029936330392957,
+          "Right": 2.713739922910463e-05
+        }
+      },
+      "Pet_Cat": {
+        "foot_lowest_world_z_m": 0.002999992109835148,
+        "closest_hand_cat_head_gap_m": 0.005943883676081896
+      }
+    }
+  },
+  "godot": {
+    "characters": {
+      "female": {
+        "bones": 21,
+        "clips": [
+          "Idle",
+          "Pet_Cat",
+          "Read_Book",
+          "Sit_Desk",
+          "Sleep_Bed"
+        ],
+        "materials": [
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Knit_sage",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Recess_shadow",
+            "normal_enabled": false,
+            "roughness_factor": 0.949999988079071,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Skin_F",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": true
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Lip_warm",
+            "normal_enabled": false,
+            "roughness_factor": 0.479999989271164,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Eye_sclera",
+            "normal_enabled": false,
+            "roughness_factor": 0.300000011920929,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Iris_hazel",
+            "normal_enabled": false,
+            "roughness_factor": 0.25,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Pupil",
+            "normal_enabled": false,
+            "roughness_factor": 0.219999998807907,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Hair_chestnut",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 1.0,
+            "name": "V3_Brushed_fasteners",
+            "normal_enabled": false,
+            "roughness_factor": 0.189999997615814,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Rubber_cupsole",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Canvas_shoe",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Cotton_laces",
+            "normal_enabled": false,
+            "roughness_factor": 0.870000004768372,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Denim_indigo",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Collar_binding",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          }
+        ],
+        "poses": {
+          "Idle": {
+            "head_axis_lengths": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "head_determinant": 1.0,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 0.0
+              }
+            ]
+          },
+          "Pet_Cat": {
+            "head_axis_lengths": [
+              1.0,
+              0.999999940395355,
+              0.999999940395355
+            ],
+            "head_determinant": 0.99999988079071,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 0.0
+              }
+            ]
+          },
+          "Read_Book": {
+            "head_axis_lengths": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "head_determinant": 1.0,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 0.0
+              }
+            ]
+          },
+          "Sit_Desk": {
+            "head_axis_lengths": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "head_determinant": 1.0,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 0.0
+              }
+            ]
+          },
+          "Sleep_Bed": {
+            "head_axis_lengths": [
+              1.0,
+              0.999999940395355,
+              0.999999940395355
+            ],
+            "head_determinant": 0.999999940395355,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 1.0
+              }
+            ]
+          }
+        }
+      },
+      "male": {
+        "bones": 21,
+        "clips": [
+          "Idle",
+          "Pet_Cat",
+          "Read_Book",
+          "Sit_Desk",
+          "Sleep_Bed"
+        ],
+        "materials": [
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Cotton_midnightblue",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Recess_shadow",
+            "normal_enabled": false,
+            "roughness_factor": 0.949999988079071,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Skin_M",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": true
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Lip_warm",
+            "normal_enabled": false,
+            "roughness_factor": 0.479999989271164,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Eye_sclera",
+            "normal_enabled": false,
+            "roughness_factor": 0.300000011920929,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Iris_hazel",
+            "normal_enabled": false,
+            "roughness_factor": 0.25,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Pupil",
+            "normal_enabled": false,
+            "roughness_factor": 0.219999998807907,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Hair_espresso",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Rubber_cupsole",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Canvas_shoe",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 0.0,
+            "name": "V3_Cotton_laces",
+            "normal_enabled": false,
+            "roughness_factor": 0.870000004768372,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": false,
+            "has_roughness": false,
+            "metallic": 1.0,
+            "name": "V3_Brushed_fasteners",
+            "normal_enabled": false,
+            "roughness_factor": 0.189999997615814,
+            "warm_skin_rim": false
+          },
+          {
+            "has_albedo": true,
+            "has_roughness": true,
+            "metallic": 0.0,
+            "name": "V3_Chinos_slate",
+            "normal_enabled": true,
+            "roughness_factor": 1.0,
+            "warm_skin_rim": false
+          }
+        ],
+        "poses": {
+          "Idle": {
+            "head_axis_lengths": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "head_determinant": 1.0,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 0.0
+              }
+            ]
+          },
+          "Pet_Cat": {
+            "head_axis_lengths": [
+              1.0,
+              0.999999940395355,
+              0.999999940395355
+            ],
+            "head_determinant": 0.99999988079071,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 0.0
+              }
+            ]
+          },
+          "Read_Book": {
+            "head_axis_lengths": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "head_determinant": 1.0,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 0.0
+              }
+            ]
+          },
+          "Sit_Desk": {
+            "head_axis_lengths": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "head_determinant": 1.0,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 0.0
+              }
+            ]
+          },
+          "Sleep_Bed": {
+            "head_axis_lengths": [
+              1.0,
+              0.999999940395355,
+              0.999999940395355
+            ],
+            "head_determinant": 0.999999940395355,
+            "morph_values": [
+              {
+                "name": "SleepLids",
+                "value": 1.0
+              }
+            ]
+          }
+        }
+      }
+    },
+    "engine": {
+      "build": "official",
+      "hash": "f62fdbde15035c5576dad93e586201f4d41ef0cb",
+      "hex": 263425,
+      "major": 4,
+      "minor": 5,
+      "patch": 1,
+      "status": "stable",
+      "string": "4.5.1-stable (official)",
+      "timestamp": 0
+    },
+    "renderer": "llvmpipe (LLVM 19.1.7, 256 bits)"
+  },
+  "materials": {
+    "skin": {
+      "roughness_min": 0.45098039215686275,
+      "roughness_max": 0.4627450980392157,
+      "normal_convention": "OpenGL +Y",
+      "normal_map": "textures/skin_normal.png"
+    },
+    "hair": {
+      "roughness_min": 0.4392156862745098,
+      "roughness_max": 0.4549019607843137,
+      "normal_convention": "OpenGL +Y",
+      "normal_map": "textures/hair_normal.png"
+    },
+    "knit": {
+      "roughness_min": 0.9098039215686274,
+      "roughness_max": 0.9254901960784314,
+      "normal_convention": "OpenGL +Y",
+      "normal_map": "textures/knit_normal.png"
+    },
+    "cotton": {
+      "roughness_min": 0.8941176470588236,
+      "roughness_max": 0.9019607843137255,
+      "normal_convention": "OpenGL +Y",
+      "normal_map": "textures/cotton_normal.png"
+    },
+    "denim": {
+      "roughness_min": 0.8705882352941177,
+      "roughness_max": 0.8823529411764706,
+      "normal_convention": "OpenGL +Y",
+      "normal_map": "textures/denim_normal.png"
+    },
+    "rubber": {
+      "roughness_min": 0.3843137254901961,
+      "roughness_max": 0.39215686274509803,
+      "normal_convention": "OpenGL +Y",
+      "normal_map": "textures/rubber_normal.png"
+    },
+    "canvas": {
+      "roughness_min": 0.5333333333333333,
+      "roughness_max": 0.5450980392156862,
+      "normal_convention": "OpenGL +Y",
+      "normal_map": "textures/canvas_normal.png"
+    }
+  },
+  "normal_convention": "OpenGL +Y; PNG image-down gradient Y is inverted to UV-up normal Y",
+  "uv_policy": {
+    "head": "rear vertical scalp seam",
+    "shirt": "side seam, folded internal collar and hem returns",
+    "sleeves_forearms": "medial arm seam",
+    "trousers": "waist side seam and inside-leg seam",
+    "shoes": "rear heel seam"
+  },
+  "topology_policy": "asymmetric elbow inner compression; >=3 knee-front / elbow-outer support rings; 21 rigid bone world transforms, no inherited non-uniform scale",
+  "original_deliverables_unchanged": true,
+  "render_provenance": [
+    {
+      "file": "renders/01_characters_v3_turntable.png",
+      "sha256": "a498ac076fa9fae7c1a15be18355bc1c7e8d387638d2093e4d472dbe153c5668",
+      "pixels": [
+        3200,
+        2400
+      ],
+      "source": "contact sheet of unmodified real Cycles renders"
+    },
+    {
+      "file": "renders/02_room_v3_poses.png",
+      "sha256": "c31fc61e5307390fe12147783965e016a52dd761849fbcf2b02854a7c71d3a12",
+      "pixels": [
+        3000,
+        2230
+      ],
+      "source": "contact sheet of unmodified real Cycles renders"
+    },
+    {
+      "file": "renders/03_godot_characters_v3.png",
+      "sha256": "22bbc96cada11c2523ab77fc02be69ef4d12a85ac9713ea1df74b5555e740583",
+      "pixels": [
+        1920,
+        1400
+      ],
+      "source": "Godot 4.5.1 actual viewport"
+    },
+    {
+      "file": "renders/04_v2_vs_v3_comparison.png",
+      "sha256": "9b1b467cfff5795f1dd6807d0f4f403d3512ce2db760e7c816d7724890d53dca",
+      "pixels": [
+        2800,
+        2300
+      ],
+      "source": "contact sheet of unmodified real Cycles renders"
+    },
+    {
+      "file": "renders/characters_front.png",
+      "sha256": "39a62dbede26ab9519d2d84336d35de0b2f3b0bac2b904c4f72d06e637898bbf",
+      "pixels": [
+        1600,
+        1200
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/characters_iso.png",
+      "sha256": "e282329b065e82ba875a9ccaab666e08d11087099ac5765eadb681e165918a30",
+      "pixels": [
+        1600,
+        1200
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/characters_side.png",
+      "sha256": "d5cfa83abc7792e0c03e2c1e9489bd40d69faa2e0f32572f8c9c84cd22f2e4ab",
+      "pixels": [
+        1600,
+        1200
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/characters_topology.png",
+      "sha256": "ad90e8e38d491cf8fa623e5c597f1d3076c2e5cfcbaa9bbea87ead7cf1bfeb4e",
+      "pixels": [
+        1600,
+        1200
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/faces_detail.png",
+      "sha256": "383b75aba31a1d80bd037156e557c5a6a3ff79516f2c130a4a58b8a2e5fa5e80",
+      "pixels": [
+        1800,
+        700
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/garment_detail.png",
+      "sha256": "eabd5c81791796c5f71671e3895b3d379c18fa3cd38ca4e328a46c8696385a18",
+      "pixels": [
+        1800,
+        800
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/pose_exit.png",
+      "sha256": "3838b8e87df8eb2e1b97fb1e9f26e387857a50929ef6ef67295b4aba42ebf0e8",
+      "pixels": [
+        1400,
+        1050
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/pose_pet.png",
+      "sha256": "f924c0537dc2607b64e0d8ef4038c396ee8ccf5e0e508282f4304e045797b0c9",
+      "pixels": [
+        1400,
+        1050
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/pose_read.png",
+      "sha256": "2edfb31ff38758473d8a14d11075c16caab60c4289a68a55c21d123134481102",
+      "pixels": [
+        1400,
+        1050
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/pose_sit.png",
+      "sha256": "3ea31073f072eaac8c08cb48385e625ec65a0a6b88f8fcc08bd6407ecd852da6",
+      "pixels": [
+        1400,
+        1050
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/pose_sleep.png",
+      "sha256": "bb98a10aea4d148eaf81e25d6253722f31db3c6f25c9072bb6a8aba3f4af0a2a",
+      "pixels": [
+        1400,
+        1050
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/shoes_detail.png",
+      "sha256": "0dac70de49046de440a8026f28c7164bde255df06c4d6eec4e9185389955dacc",
+      "pixels": [
+        1800,
+        650
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/v2_front.png",
+      "sha256": "ebd27b500954ee5bd71a991002ad6e33f010607ad53ea96f8e8128e5fa722e60",
+      "pixels": [
+        1600,
+        1200
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    },
+    {
+      "file": "renders/v2_iso.png",
+      "sha256": "bfe49a58c4df4c2f2d6bf3cf88b23296d6ed32afb24ff35acc3b1593976fd9e1",
+      "pixels": [
+        1600,
+        1200
+      ],
+      "source": "Blender 4.5.3 Cycles actual render"
+    }
+  ],
+  "known_limits": [
+    "Godot software llvmpipe: image verification only, not target-device FPS.",
+    "Blender SSS and fabric sheen are not exact GLB/Godot Compatibility equivalents; warm skin rim is the explicit runtime approximation.",
+    "All five clips are held poses, not a full animation acting pass.",
+    "Contact gaps are nearest surface distances, not complete continuous collision simulation.",
+    "V2 scenery GLB copied byte-for-byte retains 16 tiny-area diagnostic triangles; both V3 character GLBs have zero.",
+    "21 bones means no separately animated fingers; static separated finger blocks are weighted to hand bones."
+  ]
+}
