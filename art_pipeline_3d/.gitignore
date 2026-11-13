@@ -1,0 +1,22 @@
+# Poly Haven downloads, Blender exports, and renders. Regenerate locally.
+textures/
+exports/
+renders/
+evidence/
+asset_manifest.json
+*.blend
+*.blend1
+*.glb
+*.gltf
+*.bin
+*.hdr
+*.exr
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.tif
+*.tiff
+
+# Import cache if the probe project is opened on its own.
+.godot/

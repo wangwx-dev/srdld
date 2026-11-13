@@ -1,0 +1,1224 @@
+{
+  "version": "v2",
+  "generated_at_Asia_Shanghai": "2026-11-13T16:24:49.664569+08:00",
+  "checks": {
+    "v1_deliverables_sha256_unchanged": true,
+    "characters_2000_to_5000_exported_triangles": true,
+    "characters_4_5_to_5_5_head_units": true,
+    "characters_exactly_21_bones": true,
+    "characters_zero_unweighted_vertices": true,
+    "characters_weight_sum_error_below_1e_minus5": true,
+    "all_exports_zero_duplicate_index_faces": true,
+    "characters_zero_degenerate_triangles": true,
+    "five_motion_clips_each": true,
+    "sleep_eyelid_morph_channels_all_five_clips": true,
+    "face_textures_2048_square": true,
+    "library_pivots_zero_error": true,
+    "placed_modules_on_2m_grid": true,
+    "both_character_contacts_within_documented_tolerances": true,
+    "all_glbs_reimport_transport_pass": true,
+    "godot_tested_files_sha256_match_final_exports": true,
+    "godot_all_exports_loaded": true,
+    "godot_21_bones_and_five_clips": true,
+    "godot_real_room_render_finished_no_errors": true,
+    "dither_shader_real_opengl_render_and_changed_pixels": true,
+    "five_required_images_exist": true,
+    "manual_visual_review_recorded": true
+  },
+  "all_required_checks_passed": true,
+  "source_audit": {
+    "placements": [
+      {
+        "name": "floor_tile_2x2.001",
+        "location_m": [
+          -4.0,
+          -2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "floor_tile_2x2.002",
+        "location_m": [
+          -4.0,
+          0.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "floor_tile_2x2.003",
+        "location_m": [
+          -4.0,
+          2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "floor_tile_2x2.004",
+        "location_m": [
+          -2.0,
+          -2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "floor_tile_2x2.005",
+        "location_m": [
+          -2.0,
+          0.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "floor_tile_2x2.006",
+        "location_m": [
+          -2.0,
+          2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "floor_tile_2x2.007",
+        "location_m": [
+          0.0,
+          -2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "floor_tile_2x2.008",
+        "location_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "floor_tile_2x2.009",
+        "location_m": [
+          0.0,
+          2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "wall_back_2x3.001",
+        "location_m": [
+          -4.0,
+          4.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "door_module_2x3.001",
+        "location_m": [
+          -2.0,
+          4.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "wall_window_2x3.001",
+        "location_m": [
+          0.0,
+          4.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "wall_back_2x3.002",
+        "location_m": [
+          -4.0,
+          0.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 2.5044781648553283e-06
+      },
+      {
+        "name": "wall_back_2x3.003",
+        "location_m": [
+          -4.0,
+          2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 2.5044781648553283e-06
+      },
+      {
+        "name": "wall_back_2x3.004",
+        "location_m": [
+          -4.0,
+          4.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 2.5044781648553283e-06
+      },
+      {
+        "name": "wall_low_front_2x05.001",
+        "location_m": [
+          -4.0,
+          -2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "wall_low_front_2x05.002",
+        "location_m": [
+          -2.0,
+          -2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      },
+      {
+        "name": "wall_low_front_2x05.003",
+        "location_m": [
+          0.0,
+          -2.0,
+          0.0
+        ],
+        "grid_error_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quarter_turn_error_degrees": 0.0
+      }
+    ],
+    "characters": {
+      "female": {
+        "source_triangles": 4832,
+        "bone_count": 21,
+        "mesh_height_m": 1.6971250995993614,
+        "head_region_height_m": 0.3601250648498535,
+        "head_units": 4.712599219682033,
+        "face_texture_pixels": [
+          2048,
+          2048
+        ],
+        "uv_layers": 1,
+        "morph_keys": [
+          "Basis",
+          "SleepLids"
+        ]
+      },
+      "male": {
+        "source_triangles": 4784,
+        "bone_count": 21,
+        "mesh_height_m": 1.6971250995993614,
+        "head_region_height_m": 0.3601250648498535,
+        "head_units": 4.712599219682033,
+        "face_texture_pixels": [
+          2048,
+          2048
+        ],
+        "uv_layers": 1,
+        "morph_keys": [
+          "Basis",
+          "SleepLids"
+        ]
+      }
+    }
+  },
+  "contacts": {
+    "female": {
+      "Idle": {
+        "foot_lowest_world_z_m": 0.002901526167988777
+      },
+      "Sit_Desk": {
+        "foot_lowest_world_z_m": 0.0009922017343342304,
+        "hand_keyboard_surface_gap_m": {
+          "Left": 0.00034749507904052734,
+          "Right": 0.00010466575622558594
+        },
+        "chair_back_penetrating_vertices": 0
+      },
+      "Sleep_Bed": {
+        "shoe_duvet_gap_m": {
+          "Left": 0.0004879498446825892,
+          "Right": 0.00047372744302265346
+        },
+        "head_pillow_surface_gap_m": 1.4213426766218618e-05
+      },
+      "Read_Book": {
+        "foot_lowest_world_z_m": 0.002355260541662574,
+        "hand_book_surface_gap_m": {
+          "Left": 0.0007800905732437968,
+          "Right": 0.00019054545555263758
+        }
+      },
+      "Pet_Cat": {
+        "foot_lowest_world_z_m": 0.008013862185180187,
+        "closest_hand_cat_head_gap_m": 0.0008539700647816062
+      }
+    },
+    "male": {
+      "Idle": {
+        "foot_lowest_world_z_m": 0.002901526167988777
+      },
+      "Sit_Desk": {
+        "foot_lowest_world_z_m": 0.0009922017343342304,
+        "hand_keyboard_surface_gap_m": {
+          "Left": 0.00034749507904052734,
+          "Right": 0.00010466575622558594
+        },
+        "chair_back_penetrating_vertices": 0
+      },
+      "Sleep_Bed": {
+        "shoe_duvet_gap_m": {
+          "Left": 0.0004879498446825892,
+          "Right": 0.00047372744302265346
+        },
+        "head_pillow_surface_gap_m": 0.001126640010625124
+      },
+      "Read_Book": {
+        "foot_lowest_world_z_m": 0.002355260541662574,
+        "hand_book_surface_gap_m": {
+          "Left": 0.0007800905732437968,
+          "Right": 0.00019054545555263758
+        }
+      },
+      "Pet_Cat": {
+        "foot_lowest_world_z_m": 0.008013862185180187,
+        "closest_hand_cat_head_gap_m": 0.0008539700647816062
+      }
+    }
+  },
+  "glb_reimport": {
+    "city_realtime.glb": {
+      "bytes": 62984372,
+      "gltf_version": "2.0",
+      "mesh_count": 182,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 18,
+      "external_image_uris": [],
+      "glb_triangles": 17538,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 17538,
+      "glb_scene_instance_triangles": 17538,
+      "glb_valid_scene_instance_triangles": 17538,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 17538,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    },
+    "door_module_2x3.glb": {
+      "bytes": 18600548,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 6,
+      "external_image_uris": [],
+      "glb_triangles": 96,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 96,
+      "glb_scene_instance_triangles": 96,
+      "glb_valid_scene_instance_triangles": 96,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 96,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    },
+    "female_rigged.glb": {
+      "bytes": 35428968,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 1,
+      "animations": [
+        "Idle",
+        "Sit_Desk",
+        "Sleep_Bed",
+        "Read_Book",
+        "Pet_Cat"
+      ],
+      "embedded_images": 10,
+      "external_image_uris": [],
+      "glb_triangles": 4832,
+      "skin_joints": [
+        [
+          "Hips",
+          "Spine",
+          "Chest",
+          "Neck",
+          "Head",
+          "LeftShoulder",
+          "LeftArm",
+          "LeftForeArm",
+          "LeftHand",
+          "RightShoulder",
+          "RightArm",
+          "RightForeArm",
+          "RightHand",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase"
+        ]
+      ],
+      "animation_motion": {
+        "Idle": {
+          "nonconstant_channels": 1,
+          "genuine_motion_not_just_hold": true
+        },
+        "Sit_Desk": {
+          "nonconstant_channels": 2,
+          "genuine_motion_not_just_hold": true
+        },
+        "Sleep_Bed": {
+          "nonconstant_channels": 1,
+          "genuine_motion_not_just_hold": true
+        },
+        "Read_Book": {
+          "nonconstant_channels": 1,
+          "genuine_motion_not_just_hold": true
+        },
+        "Pet_Cat": {
+          "nonconstant_channels": 1,
+          "genuine_motion_not_just_hold": true
+        }
+      },
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 4832,
+      "glb_scene_instance_triangles": 4832,
+      "glb_valid_scene_instance_triangles": 4832,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [
+        {
+          "name": "Icosphere",
+          "vertices": 42,
+          "faces": 80,
+          "purpose": "Blender importer-created pose-bone custom shape; not an exported character mesh"
+        }
+      ],
+      "reimported_bones": {
+        "female_Rig": 21
+      },
+      "reimported_triangles": 4832,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "unweighted_vertices": 0,
+      "weight_sum_max_error": 5.960464477539063e-08,
+      "bone_parent_hierarchy": {
+        "Hips": null,
+        "Spine": "Hips",
+        "Chest": "Spine",
+        "Neck": "Chest",
+        "Head": "Neck",
+        "LeftShoulder": "Chest",
+        "LeftArm": "LeftShoulder",
+        "LeftForeArm": "LeftArm",
+        "LeftHand": "LeftForeArm",
+        "RightShoulder": "Chest",
+        "RightArm": "RightShoulder",
+        "RightForeArm": "RightArm",
+        "RightHand": "RightForeArm",
+        "LeftUpLeg": "Hips",
+        "LeftLeg": "LeftUpLeg",
+        "LeftFoot": "LeftLeg",
+        "LeftToeBase": "LeftFoot",
+        "RightUpLeg": "Hips",
+        "RightLeg": "RightUpLeg",
+        "RightFoot": "RightLeg",
+        "RightToeBase": "RightFoot"
+      },
+      "action_frame_checks": [
+        {
+          "action": "Idle",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Idle",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Idle",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 49,
+          "finite_bone_matrices": true
+        }
+      ],
+      "passed_transport_checks": true
+    },
+    "floor_tile_2x2.glb": {
+      "bytes": 8559356,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 3,
+      "external_image_uris": [],
+      "glb_triangles": 12,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 12,
+      "glb_scene_instance_triangles": 12,
+      "glb_valid_scene_instance_triangles": 12,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 12,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    },
+    "male_rigged.glb": {
+      "bytes": 35423440,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 1,
+      "animations": [
+        "Idle",
+        "Sit_Desk",
+        "Sleep_Bed",
+        "Read_Book",
+        "Pet_Cat"
+      ],
+      "embedded_images": 10,
+      "external_image_uris": [],
+      "glb_triangles": 4784,
+      "skin_joints": [
+        [
+          "Hips",
+          "Spine",
+          "Chest",
+          "Neck",
+          "Head",
+          "LeftShoulder",
+          "LeftArm",
+          "LeftForeArm",
+          "LeftHand",
+          "RightShoulder",
+          "RightArm",
+          "RightForeArm",
+          "RightHand",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase"
+        ]
+      ],
+      "animation_motion": {
+        "Idle": {
+          "nonconstant_channels": 1,
+          "genuine_motion_not_just_hold": true
+        },
+        "Sit_Desk": {
+          "nonconstant_channels": 2,
+          "genuine_motion_not_just_hold": true
+        },
+        "Sleep_Bed": {
+          "nonconstant_channels": 1,
+          "genuine_motion_not_just_hold": true
+        },
+        "Read_Book": {
+          "nonconstant_channels": 1,
+          "genuine_motion_not_just_hold": true
+        },
+        "Pet_Cat": {
+          "nonconstant_channels": 1,
+          "genuine_motion_not_just_hold": true
+        }
+      },
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 4784,
+      "glb_scene_instance_triangles": 4784,
+      "glb_valid_scene_instance_triangles": 4784,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [
+        {
+          "name": "Icosphere",
+          "vertices": 42,
+          "faces": 80,
+          "purpose": "Blender importer-created pose-bone custom shape; not an exported character mesh"
+        }
+      ],
+      "reimported_bones": {
+        "male_Rig": 21
+      },
+      "reimported_triangles": 4784,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "unweighted_vertices": 0,
+      "weight_sum_max_error": 7.078051567077637e-08,
+      "bone_parent_hierarchy": {
+        "Hips": null,
+        "Spine": "Hips",
+        "Chest": "Spine",
+        "Neck": "Chest",
+        "Head": "Neck",
+        "LeftShoulder": "Chest",
+        "LeftArm": "LeftShoulder",
+        "LeftForeArm": "LeftArm",
+        "LeftHand": "LeftForeArm",
+        "RightShoulder": "Chest",
+        "RightArm": "RightShoulder",
+        "RightForeArm": "RightArm",
+        "RightHand": "RightForeArm",
+        "LeftUpLeg": "Hips",
+        "LeftLeg": "LeftUpLeg",
+        "LeftFoot": "LeftLeg",
+        "LeftToeBase": "LeftFoot",
+        "RightUpLeg": "Hips",
+        "RightLeg": "RightUpLeg",
+        "RightFoot": "RightLeg",
+        "RightToeBase": "RightFoot"
+      },
+      "action_frame_checks": [
+        {
+          "action": "Idle",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Idle",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Idle",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Pet_Cat",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Read_Book",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sit_Desk",
+          "frame": 49,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 1,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 25,
+          "finite_bone_matrices": true
+        },
+        {
+          "action": "Sleep_Bed",
+          "frame": 49,
+          "finite_bone_matrices": true
+        }
+      ],
+      "passed_transport_checks": true
+    },
+    "room_realtime.glb": {
+      "bytes": 64341024,
+      "gltf_version": "2.0",
+      "mesh_count": 267,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 23,
+      "external_image_uris": [],
+      "glb_triangles": 31446,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 16,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 31446,
+      "glb_scene_instance_triangles": 31446,
+      "glb_valid_scene_instance_triangles": 31430,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 31446,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    },
+    "wall_back_2x3.glb": {
+      "bytes": 18593788,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 6,
+      "external_image_uris": [],
+      "glb_triangles": 24,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 24,
+      "glb_scene_instance_triangles": 24,
+      "glb_valid_scene_instance_triangles": 24,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 24,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    },
+    "wall_corner_in_2x2x3.glb": {
+      "bytes": 10301984,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 3,
+      "external_image_uris": [],
+      "glb_triangles": 24,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 24,
+      "glb_scene_instance_triangles": 24,
+      "glb_valid_scene_instance_triangles": 24,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 24,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    },
+    "wall_low_front_2x05.glb": {
+      "bytes": 18593800,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 6,
+      "external_image_uris": [],
+      "glb_triangles": 24,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 24,
+      "glb_scene_instance_triangles": 24,
+      "glb_valid_scene_instance_triangles": 24,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 24,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    },
+    "wall_window_2x3.glb": {
+      "bytes": 18604144,
+      "gltf_version": "2.0",
+      "mesh_count": 1,
+      "skins": 0,
+      "animations": [],
+      "embedded_images": 6,
+      "external_image_uris": [],
+      "glb_triangles": 168,
+      "skin_joints": [],
+      "animation_motion": {},
+      "glb_near_zero_area_triangles_threshold_squared_cross_1e18": 0,
+      "glb_duplicate_index_faces": 0,
+      "expected_blender_reimport_triangles": 168,
+      "glb_scene_instance_triangles": 168,
+      "glb_valid_scene_instance_triangles": 168,
+      "triangle_accounting_note": "glb_triangles counts unique mesh index triplets; scene-instance counts include reused meshes. Near-zero-area counts are diagnostic only. Blender removes duplicate indexed faces; expected reimport count subtracts those, not the tiny-area faces.",
+      "blender_bone_display_helpers_excluded": [],
+      "reimported_bones": {},
+      "reimported_triangles": 168,
+      "all_meshes_uv": true,
+      "all_images_loaded": true,
+      "finite_geometry": true,
+      "passed_transport_checks": true
+    }
+  },
+  "godot": {
+    "city_realtime.glb": {
+      "animation_players": [],
+      "loaded": true,
+      "meshes": 182,
+      "skeletons": [],
+      "textured_surfaces": 133,
+      "triangles": 17538
+    },
+    "door_module_2x3.glb": {
+      "animation_players": [],
+      "loaded": true,
+      "meshes": 1,
+      "skeletons": [],
+      "textured_surfaces": 3,
+      "triangles": 96
+    },
+    "female_rigged.glb": {
+      "animation_players": [
+        [
+          "Idle",
+          "Pet_Cat",
+          "Read_Book",
+          "Sit_Desk",
+          "Sleep_Bed"
+        ]
+      ],
+      "loaded": true,
+      "meshes": 1,
+      "skeletons": [
+        {
+          "bones": 21,
+          "name": "Skeleton3D"
+        }
+      ],
+      "textured_surfaces": 5,
+      "triangles": 4832
+    },
+    "floor_tile_2x2.glb": {
+      "animation_players": [],
+      "loaded": true,
+      "meshes": 1,
+      "skeletons": [],
+      "textured_surfaces": 1,
+      "triangles": 12
+    },
+    "male_rigged.glb": {
+      "animation_players": [
+        [
+          "Idle",
+          "Pet_Cat",
+          "Read_Book",
+          "Sit_Desk",
+          "Sleep_Bed"
+        ]
+      ],
+      "loaded": true,
+      "meshes": 1,
+      "skeletons": [
+        {
+          "bones": 21,
+          "name": "Skeleton3D"
+        }
+      ],
+      "textured_surfaces": 4,
+      "triangles": 4784
+    },
+    "room_realtime.glb": {
+      "animation_players": [],
+      "loaded": true,
+      "meshes": 267,
+      "skeletons": [],
+      "textured_surfaces": 237,
+      "triangles": 31446
+    },
+    "shader": {
+      "default_uniforms": [
+        {
+          "class_name": "",
+          "hint": 17,
+          "hint_string": "Texture2D",
+          "name": "albedo_tex",
+          "type": 24,
+          "usage": 6
+        },
+        {
+          "class_name": "",
+          "hint": 17,
+          "hint_string": "Texture2D",
+          "name": "roughness_tex",
+          "type": 24,
+          "usage": 6
+        },
+        {
+          "class_name": "",
+          "hint": 17,
+          "hint_string": "Texture2D",
+          "name": "normal_tex",
+          "type": 24,
+          "usage": 6
+        },
+        {
+          "class_name": "",
+          "hint": 0,
+          "hint_string": "",
+          "name": "subject_screen_uv",
+          "type": 5,
+          "usage": 6
+        },
+        {
+          "class_name": "",
+          "hint": 0,
+          "hint_string": "",
+          "name": "subject_view_depth",
+          "type": 3,
+          "usage": 6
+        },
+        {
+          "class_name": "",
+          "hint": 1,
+          "hint_string": "20.0,400.0,0.0010000000475",
+          "name": "radius_pixels",
+          "type": 3,
+          "usage": 6
+        },
+        {
+          "class_name": "",
+          "hint": 1,
+          "hint_string": "0.0,1.0,0.0010000000475",
+          "name": "removed_coverage",
+          "type": 3,
+          "usage": 6
+        },
+        {
+          "class_name": "",
+          "hint": 1,
+          "hint_string": "0.0,1.0,0.0010000000475",
+          "name": "normal_strength",
+          "type": 3,
+          "usage": 6
+        },
+        {
+          "class_name": "",
+          "hint": 0,
+          "hint_string": "",
+          "name": "enabled",
+          "type": 1,
+          "usage": 6
+        }
+      ],
+      "resource_loaded": true
+    },
+    "wall_back_2x3.glb": {
+      "animation_players": [],
+      "loaded": true,
+      "meshes": 1,
+      "skeletons": [],
+      "textured_surfaces": 2,
+      "triangles": 24
+    },
+    "wall_corner_in_2x2x3.glb": {
+      "animation_players": [],
+      "loaded": true,
+      "meshes": 1,
+      "skeletons": [],
+      "textured_surfaces": 1,
+      "triangles": 24
+    },
+    "wall_low_front_2x05.glb": {
+      "animation_players": [],
+      "loaded": true,
+      "meshes": 1,
+      "skeletons": [],
+      "textured_surfaces": 2,
+      "triangles": 24
+    },
+    "wall_window_2x3.glb": {
+      "animation_players": [],
+      "loaded": true,
+      "meshes": 1,
+      "skeletons": [],
+      "textured_surfaces": 2,
+      "triangles": 168
+    }
+  },
+  "eyelid_morph_channels": {
+    "female": {
+      "Idle": 1,
+      "Sit_Desk": 1,
+      "Sleep_Bed": 1,
+      "Read_Book": 1,
+      "Pet_Cat": 1
+    },
+    "male": {
+      "Idle": 1,
+      "Sit_Desk": 1,
+      "Sleep_Bed": 1,
+      "Read_Book": 1,
+      "Pet_Cat": 1
+    }
+  },
+  "images": {
+    "01_characters_turntable_v2.png": {
+      "dimensions": [
+        2400,
+        1600
+      ],
+      "sha256": "b057ee8fef1639b467112f59a71249faff2492233eac7f25c73ffc728990755d"
+    },
+    "02_room_isometric_sit_v2.png": {
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "sha256": "6ac377b56bd72888222baa70481f60e30d0af22cf42916c96ef4e36bb7ee1930"
+    },
+    "03_room_poses_sheet_v2.png": {
+      "dimensions": [
+        2400,
+        1600
+      ],
+      "sha256": "a72733c5639d6e2b8149fd1c6d89227ac3cbefccb5d8260738168457c61d1e47"
+    },
+    "04_godot_room_realtime_v2.png": {
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "sha256": "ff69fd821b808ded6934ae21f21129e08a2fac37aa2096ac5419c58a30a04d8a"
+    },
+    "05_v1_vs_v2_comparison.png": {
+      "dimensions": [
+        2400,
+        1700
+      ],
+      "sha256": "6b210a4cc8d97ecf78db1dd61f191d4fa1d6ad6d2dc5619d2f651f7670b157f7"
+    }
+  },
+  "v1_hash_checks": {
+    "blender_realtime_sample.blend": true,
+    "REPORT.md": true,
+    "verification.json": true,
+    "asset_manifest.json": true,
+    "exports/city_realtime.glb": true,
+    "exports/door_module_2x3.glb": true,
+    "exports/female_rigged.glb": true,
+    "exports/floor_tile_2x2.glb": true,
+    "exports/male_rigged.glb": true,
+    "exports/room_realtime.glb": true,
+    "exports/wall_back_2x3.glb": true,
+    "exports/wall_corner_in_2x2x3.glb": true,
+    "exports/wall_low_front_2x05.glb": true,
+    "exports/wall_window_2x3.glb": true,
+    "renders/01_characters_turntable.png": true,
+    "renders/02_room_isometric_sit.png": true,
+    "renders/03_room_poses_sheet.png": true,
+    "renders/04_dither_occlusion_preview.png": true,
+    "renders/05_city_overview_isometric.png": true,
+    "renders/06_before_after_comparison.png": true
+  },
+  "dither_changed_pixels": 52717,
+  "diagnostics_not_visual_failures": {
+    "room_microscopic_area_triangles": 16,
+    "note": "Scene-only imported coffee-table bevel details; duplicate index faces are zero. This diagnostic is separate from character zero-degenerate validation."
+  }
+}
